@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubbardston Budget Dashboard</title>
+    <style>
+        :root {
+            --primary-green: #2E7D32;
+            --light-green: #A5D6A7;
+            --dark-green: #1B5E20;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --border-color: #ddd;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: var(--gray);
+            color: var(--dark-green);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-green);
+        }
+
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 2px solid var(--primary-green);
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--white);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        tbody tr:hover {
+            background-color: var(--light-green);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Hubbardston Budget Dashboard</h2>
+
+    <label for="search">🔍 Search Budget Data:</label>
+    <input type="text" id="search" placeholder="Type to search...">
+
+    <table id="budgetTable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>FY[XX] Budget</th>
+                <th>FY[XX] Projection</th>
+                <th>% Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Property Taxes</td><td>$4,500,000</td><td>$4,700,000</td><td>+4.4%</td></tr>
+            <tr><td>Local Receipts</td><td>$800,000</td><td>$850,000</td><td>+6.2%</td></tr>
+            <tr><td>Grants & Aid</td><td>$1,200,000</td><td>$1,100,000</td><td>-8.3%</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById("search").addEventListener("keyup", function() {
+            let searchQuery = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#budgetTable tbody tr");
+
+            rows.forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(searchQuery) ? "" : "none";
+            });
+        });
+    </script>
+
+</body>
+</html>
