@@ -1,5 +1,5 @@
 # 🏛️ Town of Hubbardston Budget Proposal Repository  
-## 📆 Fiscal Year [Insert Year]  
+## 📆 Fiscal Year 2026 
 
 ### Welcome to the **Interactive Budget Book**  
 This repository serves as the **single source of truth** for financial planning, revenues, expenditures, and capital improvements in the Town of Hubbardston.
