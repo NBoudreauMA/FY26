@@ -21,7 +21,6 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: right;
         }
         th {
             background-color: #5a2d82;
@@ -82,8 +81,15 @@
             rows.slice(1).forEach(row => {
                 if (row.length > 1) {
                     tableBody += "<tr>";
-                    row.forEach((cell) => {
+                    row.forEach((cell, index) => {
                         let cellValue = cell.trim();
+
+                        // Fix Department & Category Spacing
+                        if (index === 0 || index === 1) {
+                            cellValue = cellValue.replace(/([a-z])([A-Z])/g, '$1 $2'); // Add spaces in camelCase text
+                            cellValue = cellValue.replace(/([0-9])([A-Za-z])/g, '$1 $2'); // Add space between numbers and words
+                            cellValue = cellValue.replace(/-/g, " - "); // Ensure hyphenated words are properly spaced
+                        }
 
                         // Fix Number Formatting: Remove spaces in large numbers (e.g., "1 500" → "1500")
                         cellValue = cellValue.replace(/"|\s/g, "");  // Remove extra spaces & quotes
@@ -104,6 +110,9 @@
 
         loadBudgetData();
     </script>
+
+    <!-- Optional: Suppress the favicon.ico 404 error -->
+    <link rel="icon" href="data:,">
 
 </body>
 </html>
