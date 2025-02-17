@@ -1,3 +1,7 @@
+---
+layout: default
+title: Revenue Summary
+---
 # 💰 Revenue Summary  
 > **Green Themed Budget Section for Clarity & Readability**  
 
