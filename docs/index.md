@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +18,7 @@
 
         /* Background Image */
         body {
-            background: url('assets/hubbardston-ma-2.jpg') no-repeat center center fixed;
+            background: url('assets/hubbardston_bg.jpg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
             color: #ffffff;
