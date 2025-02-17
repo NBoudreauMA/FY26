@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,20 +11,18 @@
             background-color: #f5f5f5;
             margin: 0;
         }
-        h1, h2 {
+        
+        h1 {
             color: #5a2d82;
         }
-        .container {
+
+        table {
             width: 90%;
             margin: auto;
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        table {
-            width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
+
         thead {
             position: sticky;
             top: 0;
@@ -31,30 +30,41 @@
             color: white;
             z-index: 100;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             white-space: nowrap;
         }
+
         th {
             background-color: #5a2d82;
             color: white;
             font-weight: bold;
         }
+
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         tbody tr:hover {
             background-color: #f1f1f1;
+        }
+
+        .container {
+            overflow-y: auto;
+            max-height: 80vh; /* Allows vertical scrolling */
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+
     <h1>FY26</h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
-    
+
     <div class="container">
         <table id="budgetTable">
             <thead>
@@ -77,35 +87,35 @@
     </div>
 
     <script>
-        async function loadBudgetData() {
+        async function loadCSV() {
             try {
-                const response = await fetch('budget.csv'); // Ensure this file is correctly linked
-                if (!response.ok) throw new Error("Failed to load CSV file");
-                
-                const csvText = await response.text();
-                const rows = csvText.split("\n").map(row => row.split(","));
+                const response = await fetch("budget.csv");
+                const data = await response.text();
+                const rows = data.split("\n").map(row => row.split(","));
 
-                let tbody = document.querySelector("#budgetTable tbody");
-                tbody.innerHTML = ""; 
+                let tableBody = document.querySelector("#budgetTable tbody");
+                tableBody.innerHTML = ""; 
 
-                rows.forEach((row, index) => {
-                    if (row.length < 9) return; // Skip incomplete rows
+                for (let i = 1; i < rows.length; i++) { 
+                    let row = document.createElement("tr");
 
-                    let tr = document.createElement("tr");
-                    row.forEach((cell) => {
-                        let td = document.createElement("td");
-                        td.textContent = cell.trim();
-                        tr.appendChild(td);
+                    rows[i].forEach(cell => {
+                        let cellElement = document.createElement("td");
+                        cellElement.textContent = cell.trim();
+                        row.appendChild(cellElement);
                     });
 
-                    tbody.appendChild(tr);
-                });
+                    tableBody.appendChild(row);
+                }
             } catch (error) {
-                console.error("Error loading CSV data:", error);
+                console.error("Error loading data:", error);
+                let tableBody = document.querySelector("#budgetTable tbody");
+                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color: red;">Error loading data</td></tr>`;
             }
         }
 
-        document.addEventListener("DOMContentLoaded", loadBudgetData);
+        document.addEventListener("DOMContentLoaded", loadCSV);
     </script>
+
 </body>
 </html>
