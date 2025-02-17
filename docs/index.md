@@ -1,6 +1,5 @@
 ![Hubbardston Seal](assets/Dedication_PH.jpg)
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
