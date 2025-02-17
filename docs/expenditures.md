@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,14 +9,18 @@
             text-align: center;
             background-color: #f5f5f5;
             margin: 0;
-            padding: 0;
         }
-        h1 {
+        h1, h2 {
             color: #5a2d82;
         }
-        table {
+        .container {
             width: 90%;
             margin: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        table {
+            width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
@@ -45,18 +48,13 @@
         tbody tr:hover {
             background-color: #f1f1f1;
         }
-        .container {
-            max-width: 95%;
-            margin: auto;
-            overflow-x: auto; /* Prevents unnecessary horizontal scrolling */
-        }
     </style>
 </head>
 <body>
     <h1>FY26</h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
-
+    
     <div class="container">
         <table id="budgetTable">
             <thead>
@@ -79,30 +77,35 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('budget.csv')
-                .then(response => response.text())
-                .then(data => {
-                    const rows = data.split("\n").map(row => row.split(","));
-                    const tableBody = document.querySelector("#budgetTable tbody");
+        async function loadBudgetData() {
+            try {
+                const response = await fetch('budget.csv'); // Ensure this file is correctly linked
+                if (!response.ok) throw new Error("Failed to load CSV file");
+                
+                const csvText = await response.text();
+                const rows = csvText.split("\n").map(row => row.split(","));
 
-                    rows.forEach((row, rowIndex) => {
-                        if (row.length > 1) { // Avoid empty lines
-                            let tr = document.createElement("tr");
-                            row.forEach(cell => {
-                                let td = document.createElement("td");
-                                td.textContent = cell.trim();
-                                tr.appendChild(td);
-                            });
-                            tableBody.appendChild(tr);
-                        }
+                let tbody = document.querySelector("#budgetTable tbody");
+                tbody.innerHTML = ""; 
+
+                rows.forEach((row, index) => {
+                    if (row.length < 9) return; // Skip incomplete rows
+
+                    let tr = document.createElement("tr");
+                    row.forEach((cell) => {
+                        let td = document.createElement("td");
+                        td.textContent = cell.trim();
+                        tr.appendChild(td);
                     });
-                })
-                .catch(error => {
-                    console.error("Error loading CSV:", error);
-                    document.querySelector("#budgetTable tbody").innerHTML = "<tr><td colspan='9' style='color: red; text-align: center;'>Error loading data</td></tr>";
+
+                    tbody.appendChild(tr);
                 });
-        });
+            } catch (error) {
+                console.error("Error loading CSV data:", error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadBudgetData);
     </script>
 </body>
 </html>
