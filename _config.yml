@@ -1,15 +1,41 @@
-title: "Town of Hubbardston Budget Repository"
-description: "Transparent, Interactive Budget Book "
+title: "Town of Hubbardston Budget Portal"
+description: "A modern, interactive platform for financial transparency and community engagement."
 theme: null  # Disables GitHub's default theme
 markdown: kramdown
 exclude: ["README.md"]
 
-# Include the _layouts folder from the root
+# Ensure Jekyll includes layouts and assets
 include:
   - _layouts
+  - docs/assets
 
-# Set the base URL in case GitHub Pages needs it
-baseurl: "/FY26"
-
-# Permalinks to ensure clean URLs
+# Set a clean base URL for GitHub Pages
+baseurl: "/FY26"  # Adjust if deploying elsewhere
 permalink: pretty
+
+# Enable plugins (if GitHub Pages allows them)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Navigation links (Optional, if you want dynamic navigation)
+nav_links:
+  Home: "index.html"
+  Revenue: "revenue.html"
+  Expenditures: "expenditures.html"
+  Dashboard: "dashboard/index.html"
+
+# Default metadata for pages
+defaults:
+  - scope:
+      path: "docs"
+      type: "pages"
+    values:
+      layout: "default"
+
+# Theme settings (Optional, can be referenced in CSS)
+theme_settings:
+  primary_color: "#004400"  # Dark Green (Hubbardston Style)
+  secondary_color: "#F5F5F5"  # Light Gray for contrast
+  background_image: "docs/assets/hubbardston_bg.jpg"  # Ensure this file exists
+  logo: "docs/assets/seal.png"
