@@ -1,6 +1,6 @@
 title: "Town of Hubbardston Budget Portal"
 description: "A modern, interactive platform for financial transparency and community engagement."
-theme: null  # Disables GitHub's default theme
+theme: null
 markdown: kramdown
 exclude: ["README.md"]
 
@@ -8,18 +8,18 @@ exclude: ["README.md"]
 include:
   - _layouts
   - docs/assets
-  - _data
+  - _data  # ✅ Make sure _data is included
 
 # Set a clean base URL for GitHub Pages
-baseurl: "/FY26"  # Adjust if deploying elsewhere
+baseurl: "/FY26"  # ✅ Ensure this matches your GitHub Pages repo name
 permalink: pretty
 
-# Enable plugins (if GitHub Pages allows them)
+# Enable plugins
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Navigation links (Optional, if you want dynamic navigation)
+# Navigation links
 nav_links:
   Home: "index.html"
   Revenue: "revenue.html"
@@ -33,13 +33,6 @@ defaults:
       type: "pages"
     values:
       layout: "default"
-
-# Theme settings (Optional, can be referenced in CSS)
-theme_settings:
-  primary_color: "#004400"  # Dark Green (Hubbardston Style)
-  secondary_color: "#F5F5F5"  # Light Gray for contrast
-  background_image: "docs/assets/hubbardston_bg.jpg"  # Ensure this file exists
-  logo: "docs/assets/seal.png"
 
 # Ensure _data files are included
 defaults:
