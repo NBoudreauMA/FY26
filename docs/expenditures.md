@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +30,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: auto; /* Ensures proper table scaling */
+            table-layout: fixed;
         }
 
         thead {
@@ -42,9 +43,9 @@
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
-            white-space: nowrap; /* Prevents header text from wrapping */
+            white-space: nowrap;
             overflow: hidden;
         }
 
@@ -72,7 +73,7 @@
     <div class="container">
         <table id="budgetTable">
             <thead>
-                <tr id="headerRow">
+                <tr>
                     <th>Department</th>
                     <th>Category</th>
                     <th>FY24</th>
@@ -108,18 +109,28 @@
                     tableBody.innerHTML = "";  // Clear the "Loading" message
                     
                     let rows = data.split("\n").map(row => row.split(","));
-                    rows = rows.filter(row => row.some(cell => cell.trim() !== "")); // Remove empty rows
-
-                    // Ensure headers are not repeated in the body
-                    rows.shift(); // Remove the first row since it's the header
                     
+                    // Ensure no empty rows are included
+                    rows = rows.filter(row => row.some(cell => cell.trim() !== ""));
+
+                    // Remove header row from CSV if it exists (to prevent duplicates)
+                    if (rows[0][0].toLowerCase().includes("department")) {
+                        rows.shift();
+                    }
+
                     rows.forEach(row => {
                         let tr = document.createElement("tr");
 
-                        row.forEach(cell => {
+                        row.forEach((cell, index) => {
                             let cleanedCell = cell.replace(/['"]+/g, '').trim(); // Remove quotes
                             let td = document.createElement("td");
                             td.textContent = cleanedCell;
+
+                            // Apply bold style to department headers
+                            if (index === 0 && cleanedCell !== "" && cleanedCell.toUpperCase() === cleanedCell) {
+                                td.style.fontWeight = "bold";
+                            }
+
                             tr.appendChild(td);
                         });
 
