@@ -1,29 +1,37 @@
----
-layout: default
-title: Town of Hubbardston Budget
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubbardston Budget</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        Town of Hubbardston Budget Repository
+    </div>
 
-<div class="container">
-  <h1>🏛️ Town of Hubbardston Budget Repository</h1>
-  <h3>📆 Fiscal Year [Insert Year] | 📊 Transparent & Data-Driven Budgeting</h3>
+    <div class="navbar">
+        <a href="index.html">🏠 Home</a>
+        <a href="revenue.html">💰 Revenue</a>
+        <a href="expenditures.html">💸 Expenditures</a>
+        <a href="dashboard/index.html">📊 Dashboard</a>
+    </div>
 
-  <div class="navbar">
-      <a href="introduction.md">📖 Introduction</a>
-      <a href="revenue.md">💰 Revenue</a>
-      <a href="expenditures.md">💸 Expenditures</a>
-      <a href="../dashboard/index.html">📊 Budget Dashboard</a>
-  </div>
+    <div class="container">
+        <h1>Welcome to the Interactive Budget</h1>
+        <p>This website is designed to make the Town of Hubbardston's budget process transparent and accessible to residents.</p>
 
-  <p>Welcome to the <strong>interactive budget book</strong> for the <strong>Town of Hubbardston</strong>! 📖</p>
+        <h2>📂 Quick Links</h2>
+        <ul>
+            <li><a href="revenue.html">View Revenue Details</a></li>
+            <li><a href="expenditures.html">View Expenditures</a></li>
+            <li><a href="dashboard/index.html">Explore Budget Dashboard</a></li>
+        </ul>
+    </div>
 
-  <h2>🚀 Quick Links</h2>
-  <ul>
-    <li><a href="priorities.md">🎯 Budget Priorities</a></li>
-    <li><a href="capital.md">🏗️ Capital Improvement Plan</a></li>
-    <li><a href="forecast.md">📊 Financial Forecast</a></li>
-  </ul>
-</div>
-
-<footer class="footer">
-  &copy; Town of Hubbardston | Budget Transparency Initiative
-</footer>
+    <div class="footer">
+        &copy; 2025 Town of Hubbardston | All Rights Reserved
+    </div>
+</body>
+</html>
