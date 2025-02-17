@@ -81,10 +81,14 @@
                     tableBody += "<tr>";
                     row.forEach((cell, index) => {
                         let cellValue = cell.trim();
-                        // Format numeric values correctly
-                        if (!isNaN(cellValue) && cellValue !== "") {
-                            cellValue = parseFloat(cellValue).toLocaleString(); // Adds thousand separators
+
+                        // Clean up number formatting
+                        if (!isNaN(cellValue.replace(/"/g, "").replace(/\s/g, "")) && cellValue !== "") {
+                            cellValue = parseFloat(cellValue.replace(/"/g, "").replace(/\s/g, "")).toLocaleString();
+                        } else {
+                            cellValue = cellValue.replace(/"/g, ""); // Remove unnecessary quotes
                         }
+
                         tableBody += `<td>${cellValue}</td>`;
                     });
                     tableBody += "</tr>";
