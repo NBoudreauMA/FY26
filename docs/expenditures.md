@@ -32,7 +32,8 @@
 
     <script>
         function loadCSV() {
-            fetch('/FY26/assets/budget.csv') // Ensure this is the correct relative path
+            fetch('https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv')
+') // Ensure this is the correct relative path
                 .then(response => response.text())
                 .then(csvText => {
                     Papa.parse(csvText, {
