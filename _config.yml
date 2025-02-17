@@ -1,4 +1,4 @@
-title: "Town of Hubbardston Budget Portal "
+title: "Town of Hubbardston Budget Portal"
 description: "A modern, interactive platform for financial transparency and community engagement."
 theme: null  # Disables GitHub's default theme
 markdown: kramdown
@@ -8,6 +8,7 @@ exclude: ["README.md"]
 include:
   - _layouts
   - docs/assets
+  - _data
 
 # Set a clean base URL for GitHub Pages
 baseurl: "/FY26"  # Adjust if deploying elsewhere
@@ -18,7 +19,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Navigation links for dynamic use (Optional, but useful)
+# Navigation links (Optional, if you want dynamic navigation)
 nav_links:
   Home: "index.html"
   Revenue: "revenue.html"
@@ -33,35 +34,17 @@ defaults:
     values:
       layout: "default"
 
-# Theme settings (Used in CSS or site-wide styles)
+# Theme settings (Optional, can be referenced in CSS)
 theme_settings:
   primary_color: "#004400"  # Dark Green (Hubbardston Style)
   secondary_color: "#F5F5F5"  # Light Gray for contrast
   background_image: "docs/assets/hubbardston_bg.jpg"  # Ensure this file exists
   logo: "docs/assets/seal.png"
 
-# Jekyll Build Options
-future: true  # Ensure future-dated posts/pages show up
-lsi: false  # Disable Latent Semantic Indexing (not needed for static sites)
-safe: true  # Keep safe mode enabled for GitHub Pages
-
-# Custom Collections (If Needed)
-collections:
-  budget:
-    output: true
-    permalink: /:collection/:path/
-
-# Site Generation Caching (Helps with speed)
-keep_files:
-  - assets
-  - docs/assets
-
-# Ensure Jekyll includes data files
-include:
-  - _layouts
-  - docs/assets
-  - _data  # Allow Jekyll to read YAML files
-
-# Base URL for GitHub Pages
-baseurl: "/FY26"  # Adjust if deploying elsewhere
-permalink: pretty
+# Ensure _data files are included
+defaults:
+  - scope:
+      path: "_data"
+      type: "data"
+    values:
+      budget: budget
