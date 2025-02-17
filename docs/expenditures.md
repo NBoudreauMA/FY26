@@ -10,19 +10,26 @@
             text-align: center;
             background-color: #f5f5f5;
             margin: 0;
+            padding: 0;
         }
-        
-        h1 {
+        h1, h2 {
             color: #5a2d82;
         }
-
-        table {
+        .container {
             width: 90%;
             margin: auto;
+            overflow-y: auto;
+            max-height: 80vh;
+            border: 1px solid #ddd;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
             border-collapse: collapse;
             background-color: white;
         }
-
         thead {
             position: sticky;
             top: 0;
@@ -30,32 +37,22 @@
             color: white;
             z-index: 100;
         }
-
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             white-space: nowrap;
         }
-
         th {
             background-color: #5a2d82;
             color: white;
             font-weight: bold;
         }
-
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-
         tbody tr:hover {
             background-color: #f1f1f1;
-        }
-
-        .container {
-            overflow-y: auto;
-            max-height: 80vh; /* Allows vertical scrolling */
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -88,33 +85,28 @@
 
     <script>
         async function loadCSV() {
-            try {
-                const response = await fetch("budget.csv");
-                const data = await response.text();
-                const rows = data.split("\n").map(row => row.split(","));
+            const response = await fetch('budget.csv'); // Ensure this path is correct
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // Skip header row
 
-                let tableBody = document.querySelector("#budgetTable tbody");
-                tableBody.innerHTML = ""; 
+            const tbody = document.querySelector("#budgetTable tbody");
+            tbody.innerHTML = ""; // Clear table
 
-                for (let i = 1; i < rows.length; i++) { 
-                    let row = document.createElement("tr");
-
-                    rows[i].forEach(cell => {
-                        let cellElement = document.createElement("td");
-                        cellElement.textContent = cell.trim();
-                        row.appendChild(cellElement);
+            rows.forEach(row => {
+                const columns = row.split(',');
+                if (columns.length > 1) { // Avoid empty rows
+                    const tr = document.createElement("tr");
+                    columns.forEach(col => {
+                        const td = document.createElement("td");
+                        td.textContent = col.trim();
+                        tr.appendChild(td);
                     });
-
-                    tableBody.appendChild(row);
+                    tbody.appendChild(tr);
                 }
-            } catch (error) {
-                console.error("Error loading data:", error);
-                let tableBody = document.querySelector("#budgetTable tbody");
-                tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color: red;">Error loading data</td></tr>`;
-            }
+            });
         }
 
-        document.addEventListener("DOMContentLoaded", loadCSV);
+        loadCSV();
     </script>
 
 </body>
