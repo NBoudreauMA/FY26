@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Expenditures</title>
-    <link rel="stylesheet" href="/FY26/assets/css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
     <h1>Budget Expenditures</h1>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
 
-    <table id="budget-table" border="1">
+    <table id="expendituresTable" border="1">
         <thead>
             <tr>
                 <th>Department</th>
@@ -27,59 +26,35 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Data will be inserted here by JavaScript -->
         </tbody>
     </table>
 
     <script>
-        function loadCSV() {
+        document.addEventListener("DOMContentLoaded", function() {
             fetch('https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv')
-  .then(response => response.text())
-  .then(data => {
-      let rows = data.trim().split("\n").map(row => row.split(","));
-      let table = document.getElementById("expendituresTable");
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("HTTP error " + response.status);
+                }
+                return response.text();
+            })
+            .then(csv => {
+                let rows = csv.trim().split("\n").map(row => row.split(","));
+                let tbody = document.querySelector("#expendituresTable tbody");
 
-      for (let row of rows) {
-          let tr = document.createElement("tr");
-          for (let cell of row) {
-              let td = document.createElement("td");
-              td.textContent = cell;
-              tr.appendChild(td);
-          }
-          table.appendChild(tr);
-      }
-  })
-  .catch(error => console.error("Error loading CSV:", error));
-')
-') // Ensure this is the correct relative path
-                .then(response => response.text())
-                .then(csvText => {
-                    Papa.parse(csvText, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: function(results) {
-                            let tableBody = document.querySelector("#budget-table tbody");
-                            results.data.forEach(row => {
-                                let tr = document.createElement("tr");
-                                tr.innerHTML = `
-                                    <td>${row.Department || ''}</td>
-                                    <td>${row.Category || ''}</td>
-                                    <td>${row.FY24 || ''}</td>
-                                    <td>${row["FY25 Request"] || ''}</td>
-                                    <td>${row.FY25 || ''}</td>
-                                    <td>${row["FY26 Dept"] || ''}</td>
-                                    <td>${row["FY26 Admin"] || ''}</td>
-                                    <td>${row["Change ($)"] || ''}</td>
-                                    <td>${row["Change (%)"] || ''}</td>
-                                `;
-                                tableBody.appendChild(tr);
-                            });
-                        }
+                rows.slice(1).forEach(row => { // Skip the header row
+                    let tr = document.createElement("tr");
+                    row.forEach(cell => {
+                        let td = document.createElement("td");
+                        td.textContent = cell;
+                        tr.appendChild(td);
                     });
-                })
-                .catch(error => console.error("Error loading CSV:", error));
-        }
-
-        window.onload = loadCSV;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error("CSV Load Error:", error));
+        });
     </script>
 
 </body>
