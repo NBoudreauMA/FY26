@@ -33,7 +33,7 @@
     <script>
         // Function to fetch and display CSV data
         function loadCSV() {
-            fetch('assets/budget.csv')  // Make sure the path is correct
+            fetch('assets/budget.csv')  // Ensure the path is correct
                 .then(response => response.text())
                 .then(csvText => {
                     Papa.parse(csvText, {
@@ -44,15 +44,15 @@
                             results.data.forEach(row => {
                                 let tr = document.createElement("tr");
                                 tr.innerHTML = `
-                                    <td>${row.Department}</td>
-                                    <td>${row.Category}</td>
-                                    <td>${row.FY24}</td>
-                                    <td>${row.FY25_Request}</td>
-                                    <td>${row.FY25}</td>
-                                    <td>${row.FY26_Dept}</td>
-                                    <td>${row.FY26_Admin}</td>
-                                    <td>${row["Change ($)"]}</td>
-                                    <td>${row["Change (%)"]}</td>
+                                    <td>${row.Department || ''}</td>
+                                    <td>${row.Category || ''}</td>
+                                    <td>${row.FY24 || ''}</td>
+                                    <td>${row.FY25_Request || ''}</td>
+                                    <td>${row.FY25 || ''}</td>
+                                    <td>${row.FY26_Dept || ''}</td>
+                                    <td>${row.FY26_Admin || ''}</td>
+                                    <td>${row["Change ($)"] || ''}</td>
+                                    <td>${row["Change (%)"] || ''}</td>
                                 `;
                                 tableBody.appendChild(tr);
                             });
