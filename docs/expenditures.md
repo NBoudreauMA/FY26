@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,12 +9,14 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             text-align: center;
+            margin: 0;
         }
         h1, h2 {
             color: #5a2d82;
+            margin-bottom: 5px;
         }
         table {
-            width: 90%;
+            width: 95%;
             margin: 20px auto;
             border-collapse: collapse;
             background-color: white;
@@ -21,8 +24,9 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background-color: #5a2d82;
@@ -35,6 +39,13 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+        .table-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            margin: 20px;
+            border: 1px solid #ddd;
+            background: white;
+        }
         #error {
             color: red;
             font-weight: bold;
@@ -45,27 +56,29 @@
     <h1><a href="index.html" style="text-decoration: none; color: #5a2d82;">FY26</a></h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
-    
-    <table id="budgetTable">
-        <thead>
-            <tr>
-                <th>Department</th>
-                <th>Category</th>
-                <th>FY24</th>
-                <th>FY25 Request</th>
-                <th>FY25</th>
-                <th>FY26 Dept</th>
-                <th>FY26 Admin</th>
-                <th>Change ($)</th>
-                <th>Change (%)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr id="errorRow">
-                <td colspan="9" id="error">Loading data...</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="table-container">
+        <table id="budgetTable">
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Category</th>
+                    <th>FY24</th>
+                    <th>FY25 Request</th>
+                    <th>FY25</th>
+                    <th>FY26 Dept</th>
+                    <th>FY26 Admin</th>
+                    <th>Change ($)</th>
+                    <th>Change (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="errorRow">
+                    <td colspan="9" id="error">Loading data...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         async function loadCSV() {
@@ -75,7 +88,7 @@
                 if (!response.ok) throw new Error('CSV file not found');
 
                 const csvText = await response.text();
-                const rows = csvText.split('\n').map(row => row.split(','));
+                const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/['"]+/g, '').trim()));
 
                 let tableBody = document.querySelector("#budgetTable tbody");
                 tableBody.innerHTML = ""; // Clear error message
@@ -85,7 +98,7 @@
                         let tr = document.createElement("tr");
                         row.forEach(cell => {
                             let td = document.createElement("td");
-                            td.textContent = cell.trim();
+                            td.textContent = cell;
                             tr.appendChild(td);
                         });
                         tableBody.appendChild(tr);
