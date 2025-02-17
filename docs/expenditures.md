@@ -21,7 +21,7 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: right; /* Align numbers to the right */
+            text-align: right;
         }
         th {
             background-color: #5a2d82;
@@ -63,30 +63,34 @@
     <script>
         async function loadBudgetData() {
             const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Update with correct CSV link
+
             try {
                 const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Failed to load CSV file.");
+                if (!response.ok) throw new Error("Failed to load CSV file. Ensure the URL is correct.");
+
                 const data = await response.text();
                 populateTable(data);
             } catch (error) {
-                document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="9" class="error">Error loading budget data: ${error.message}</td></tr>`;
+                document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
             }
         }
 
         function populateTable(csvText) {
             const rows = csvText.trim().split("\n").map(row => row.split(","));
             let tableBody = "";
+
             rows.slice(1).forEach(row => {
                 if (row.length > 1) {
                     tableBody += "<tr>";
-                    row.forEach((cell, index) => {
+                    row.forEach((cell) => {
                         let cellValue = cell.trim();
 
-                        // Clean up number formatting
-                        if (!isNaN(cellValue.replace(/"/g, "").replace(/\s/g, "")) && cellValue !== "") {
-                            cellValue = parseFloat(cellValue.replace(/"/g, "").replace(/\s/g, "")).toLocaleString();
-                        } else {
-                            cellValue = cellValue.replace(/"/g, ""); // Remove unnecessary quotes
+                        // Fix Number Formatting: Remove spaces in large numbers (e.g., "1 500" → "1500")
+                        cellValue = cellValue.replace(/"|\s/g, "");  // Remove extra spaces & quotes
+
+                        // Convert numeric values correctly
+                        if (!isNaN(cellValue) && cellValue !== "") {
+                            cellValue = parseFloat(cellValue).toLocaleString(); // Format as number with commas
                         }
 
                         tableBody += `<td>${cellValue}</td>`;
@@ -94,6 +98,7 @@
                     tableBody += "</tr>";
                 }
             });
+
             document.querySelector("#budgetTable tbody").innerHTML = tableBody;
         }
 
