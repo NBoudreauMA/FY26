@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hubbardston Budget Portal</title>
+
+    <!-- Google Fonts for Modern Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link to CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+
     <style>
         /* General Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Arial", sans-serif;
+            font-family: 'Inter', sans-serif; /* Modern Font */
             scroll-behavior: smooth;
         }
 
@@ -37,48 +43,50 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.45);
             z-index: -1;
         }
 
         /* Transparent Logo Header */
         .header {
             position: absolute;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            width: 160px;
+            width: 140px;
             opacity: 0.95;
-            filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.4));
+            filter: drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.3));
         }
 
         /* Main Title */
         .title {
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: 1px;
             color: #4CAF50; /* Green Theme */
-            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 15px;
         }
 
         /* Navigation Bar */
         .navbar {
             display: flex;
-            gap: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 12px 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            gap: 18px;
+            background: rgba(0, 0, 0, 0.65);
+            padding: 10px 28px;
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
             transition: 0.3s ease-in-out;
         }
 
         .navbar a {
             color: white;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 15px;
             padding: 8px 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: 0.3s ease-in-out;
         }
 
@@ -88,13 +96,13 @@
 
         /* Main Container */
         .container {
-            max-width: 800px;
-            padding: 35px;
-            background: rgba(255, 255, 255, 0.12);
+            max-width: 750px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1.2s ease-in-out;
+            border-radius: 12px;
+            box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
         }
 
         /* Quick Links */
@@ -104,9 +112,9 @@
         }
 
         .quick-links li {
-            margin: 12px 0;
-            padding: 14px;
-            background: rgba(0, 0, 0, 0.4);
+            margin: 10px 0;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.35);
             border-radius: 8px;
             transition: 0.3s ease;
         }
@@ -114,30 +122,31 @@
         .quick-links li a {
             text-decoration: none;
             color: white;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 600;
             display: block;
         }
 
         .quick-links li:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         /* Footer */
         .footer {
             position: absolute;
-            bottom: 15px;
+            bottom: 12px;
             font-size: 14px;
             background: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 8px;
+            font-weight: 400;
         }
 
         /* Fade-in Effect */
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-8px);
             }
             to {
                 opacity: 1;
@@ -163,12 +172,12 @@
     <!-- Main Content -->
     <div class="container">
         <h1 class="title">Welcome to Hubbardston's Budget Portal</h1>
-        <p>
-            A **modern, interactive platform** designed to enhance **financial transparency** 
-            and **community engagement** in Hubbardston.
+        <p style="font-size: 17px; font-weight: 400;">
+            A <strong>modern, interactive platform</strong> designed to enhance <strong>financial transparency</strong> 
+            and <strong>community engagement</strong> in Hubbardston.
         </p>
 
-        <h2>📂 Quick Links</h2>
+        <h2 style="margin-top: 15px;">📂 Quick Links</h2>
         <ul class="quick-links">
             <li><a href="revenue.html">💰 View Revenue Details</a></li>
             <li><a href="expenditures.html">💸 View Expenditures</a></li>
