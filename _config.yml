@@ -1,0 +1,5 @@
+title: "Town of Hubbardston Budget Repository"
+description: "Transparent, Interactive Budget Book"
+theme: null  # Disable default GitHub Pages themes
+markdown: kramdown
+exclude: ["README.md"]
