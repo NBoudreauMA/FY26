@@ -1,3 +1,5 @@
+![Hubbardston Seal](assets/Dedication_PH.jpg)
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,6 @@
 </head>
 <body>
     <div class="header">
-        Town of Hubbardston Budget Repository
     </div>
 
     <div class="navbar">
