@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +29,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: fixed; /* Ensures uniform column width */
+            table-layout: auto; /* Ensures proper table scaling */
         }
 
         thead {
@@ -44,8 +43,9 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            word-wrap: break-word;
             text-align: left;
+            white-space: nowrap; /* Prevents header text from wrapping */
+            overflow: hidden;
         }
 
         th {
@@ -72,7 +72,7 @@
     <div class="container">
         <table id="budgetTable">
             <thead>
-                <tr>
+                <tr id="headerRow">
                     <th>Department</th>
                     <th>Category</th>
                     <th>FY24</th>
@@ -110,12 +110,15 @@
                     let rows = data.split("\n").map(row => row.split(","));
                     rows = rows.filter(row => row.some(cell => cell.trim() !== "")); // Remove empty rows
 
-                    rows.forEach((row, index) => {
+                    // Ensure headers are not repeated in the body
+                    rows.shift(); // Remove the first row since it's the header
+                    
+                    rows.forEach(row => {
                         let tr = document.createElement("tr");
 
                         row.forEach(cell => {
                             let cleanedCell = cell.replace(/['"]+/g, '').trim(); // Remove quotes
-                            let td = document.createElement(index === 0 ? "th" : "td");
+                            let td = document.createElement("td");
                             td.textContent = cleanedCell;
                             tr.appendChild(td);
                         });
