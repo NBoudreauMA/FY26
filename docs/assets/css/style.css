@@ -1,0 +1,69 @@
+/* Green Background Theme for GitHub Pages */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1B5E20;  /* Dark Green */
+    color: #ffffff; /* White text */
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #A5D6A7; /* Light Green */
+}
+
+/* Navigation */
+.navbar {
+    background: #2E7D32; /* Green */
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.navbar a:hover {
+    background: #A5D6A7; /* Light Green */
+    color: black;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    color: black;
+    margin-top: 20px;
+}
+
+th {
+    background: #4CAF50; /* Green Header */
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+}
