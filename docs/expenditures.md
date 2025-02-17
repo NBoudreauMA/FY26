@@ -7,7 +7,7 @@ title: Expenditures
 
 This page provides an overview of the expenditures for the Town of Hubbardston.
 
-<table>
+<table id="budget-table">
   <thead>
     <tr>
       <th>Department</th>
@@ -21,36 +21,32 @@ This page provides an overview of the expenditures for the Town of Hubbardston.
       <th>Change (%)</th>
     </tr>
   </thead>
-  <tbody>
-    {% for item in site.data.budget.expenditures %}
-    {% if item.Department and item.Department != "nan" %}  <!-- Ignore invalid rows -->
-    <tr>
-      <td>{{ item.Department }}</td>
-      <td>{{ item.Category }}</td>
-      <td>{{ item.FY24 }}</td>
-      <td>{{ item.FY25_Request }}</td>
-      <td>{{ item.FY25 }}</td>
-      <td>{{ item.FY26_Dept }}</td>
-      <td>{{ item.FY26_Admin }}</td>
-      <td>${{ item.Change_Dollar }}</td>
-      <td>{{ item.Change_Percent }}</td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-  </tbody>
+  <tbody></tbody>
 </table>
 
----
-🔹 **Why This Works:**
-- It ensures only valid department rows are displayed.
-- It properly references `_data/budget.yml`.
+<script>
+  async function loadBudgetData() {
+    const csvURL = "{{ site.baseurl }}/docs/assets/budget.csv"; // Reference CSV file location
 
----
+    const response = await fetch(csvURL);
+    const data = await response.text();
+    const rows = data.split("\n").map(row => row.split(","));
 
-### ✅ **Final Steps**
-1. **Ensure `_data/budget.yml` is in `_data/` and not `data/`.**
-2. **Commit and push all changes:**
-   ```sh
-   git add _config.yml _data/budget.yml docs/expenditures.md
-   git commit -m "Fix budget data loading"
-   git push origin main
+    const tableBody = document.querySelector("#budget-table tbody");
+    tableBody.innerHTML = ""; // Clear existing content
+
+    for (let i = 1; i < rows.length; i++) { // Skip header row
+      const row = rows[i];
+      if (row.length < 9) continue; // Ensure valid row length
+      const tr = document.createElement("tr");
+      row.forEach(cell => {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+      tableBody.appendChild(tr);
+    }
+  }
+
+  loadBudgetData();
+</script>
