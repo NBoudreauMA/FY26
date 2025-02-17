@@ -1,70 +1,20 @@
 expenditures:
-  - Category: Stipend
-    Department: Moderator - 114
+  - Category: "Stipend"
+    Change_Dollar: "$0"
+    Change_Percent: "0.00%"
+    Department: "Moderator - 114"
     FY24: "$100"
-    FY25: "$100"
     FY25_Request: "$100"
+    FY25: "$100"
     FY26_Dept: "$100"
     FY26_Admin: "$100"
-    Change_Dollar: "$0"
-    Change_Percent: "0.00%"
 
-  - Category: Executive Assistant
-    Department: Select Board - 122
-    FY24: "$28,111"
-    FY25: "$28,673"
-    FY25_Request: "$28,673"
-    FY26_Dept: "$36,870"
-    FY26_Admin: "$34,348"
-    Change_Dollar: "$5,675"
-    Change_Percent: "19.79%"
-
-  - Category: Legal
-    Department: Select Board - 122
-    FY24: "$40,000"
-    FY25: "$40,000"
-    FY25_Request: "$40,000"
-    FY26_Dept: "$40,000"
-    FY26_Admin: "$40,000"
-    Change_Dollar: "$0"
-    Change_Percent: "0.00%"
-
-  - Category: Salary
-    Department: Town Admin - 129
-    FY24: "$110,000"
-    FY25: "$112,200"
-    FY25_Request: "$112,200"
-    FY26_Dept: "$112,200"
-    FY26_Admin: "$115,566"
-    Change_Dollar: "$3,366"
-    Change_Percent: "3.00%"
-
-  - Category: IT Maintenance
-    Department: IT Services - 155
-    FY24: "$70,000"
-    FY25: "$80,000"
-    FY25_Request: "$78,000"
-    FY26_Dept: "$85,000"
-    FY26_Admin: "$85,000"
-    Change_Dollar: "$7,000"
-    Change_Percent: "8.97%"
-
-  - Category: Police Wages
-    Department: Police - 210
-    FY24: "$525,636"
-    FY25: "$536,739"
-    FY25_Request: "$505,000"
-    FY26_Dept: "$511,345"
-    FY26_Admin: "$510,050"
-    Change_Dollar: "$5,050"
-    Change_Percent: "1.00%"
-
-  - Category: Quabbin Regional
-    Department: School - 300
-    FY24: "$5,820,063"
-    FY25: "$6,343,869"
-    FY25_Request: "$6,370,641"
-    FY26_Dept: "$6,880,292"
-    FY26_Admin: "$6,880,292"
-    Change_Dollar: "$509,651"
-    Change_Percent: "8.00%"
+  - Category: "TOTAL"
+    Change_Dollar: "$10,175"
+    Change_Percent: "13.31%"
+    Department: "Select Board - 122"
+    FY24: "$77,161"
+    FY25_Request: "$76,473"
+    FY25: "$76,473"
+    FY26_Dept: "$86,170"
+    FY26_Admin: "$86,648"
