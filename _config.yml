@@ -10,6 +10,10 @@ include:
   - _layouts
   - docs/assets
 
+# Set a clean base URL for GitHub Pages
+baseurl: "/FY26"  # Adjust if deploying elsewhere
+permalink: pretty
+
 # Enable plugins (if GitHub Pages allows them)
 plugins:
   - jekyll-seo-tag
