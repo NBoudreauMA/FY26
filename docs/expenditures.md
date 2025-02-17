@@ -10,54 +10,52 @@
             text-align: center;
             background-color: #f5f5f5;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
+
         h1, h2 {
             color: #5a2d82;
         }
+
         .container {
             width: 90%;
             margin: auto;
-            overflow-y: auto;
-            max-height: 80vh;
-            border: 1px solid #ddd;
-            background-color: white;
-            padding: 10px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
             background-color: white;
         }
+
         thead {
-            position: sticky;
-            top: 0;
             background-color: #5a2d82;
             color: white;
-            z-index: 100;
+            font-weight: bold;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             white-space: nowrap;
         }
-        th {
-            background-color: #5a2d82;
-            color: white;
-            font-weight: bold;
-        }
+
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         tbody tr:hover {
             background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
-
     <h1>FY26</h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
@@ -84,30 +82,36 @@
     </div>
 
     <script>
-        async function loadCSV() {
-            const response = await fetch('budget.csv'); // Ensure this path is correct
-            const data = await response.text();
-            const rows = data.split('\n').slice(1); // Skip header row
+        document.addEventListener("DOMContentLoaded", function () {
+            const tableBody = document.querySelector("#budgetTable tbody");
+            const csvUrl = "https://raw.githubusercontent.com/YOURUSERNAME/YOURREPO/main/budget.csv"; // 🔹 Update this!
 
-            const tbody = document.querySelector("#budgetTable tbody");
-            tbody.innerHTML = ""; // Clear table
+            fetch(csvUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to load CSV: " + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    const rows = csvText.split("\n").map(row => row.split(","));
+                    rows.forEach((row, index) => {
+                        if (row.length < 2 || row.every(cell => cell.trim() === "")) return; // Remove empty rows
 
-            rows.forEach(row => {
-                const columns = row.split(',');
-                if (columns.length > 1) { // Avoid empty rows
-                    const tr = document.createElement("tr");
-                    columns.forEach(col => {
-                        const td = document.createElement("td");
-                        td.textContent = col.trim();
-                        tr.appendChild(td);
+                        const tr = document.createElement("tr");
+                        row.forEach(cell => {
+                            const td = document.createElement(index === 0 ? "th" : "td");
+                            td.textContent = cell.trim();
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
                     });
-                    tbody.appendChild(tr);
-                }
-            });
-        }
-
-        loadCSV();
+                })
+                .catch(error => {
+                    console.error("Error loading CSV:", error);
+                    tableBody.innerHTML = `<tr><td colspan="9" style="color: red; text-align: center;">Error loading budget data</td></tr>`;
+                });
+        });
     </script>
-
 </body>
 </html>
