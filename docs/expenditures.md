@@ -13,7 +13,7 @@
             color: #5a2d82;
         }
         table {
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
             text-align: left;
@@ -21,10 +21,12 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
+            text-align: right; /* Align numbers to the right */
         }
         th {
             background-color: #5a2d82;
             color: white;
+            text-align: center;
         }
         .error {
             color: red;
@@ -60,7 +62,7 @@
 
     <script>
         async function loadBudgetData() {
-            const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Update with your raw GitHub CSV link
+            const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Update with correct CSV link
             try {
                 const response = await fetch(csvUrl);
                 if (!response.ok) throw new Error("Failed to load CSV file.");
@@ -72,11 +74,20 @@
         }
 
         function populateTable(csvText) {
-            const rows = csvText.split("\n").map(row => row.split(","));
+            const rows = csvText.trim().split("\n").map(row => row.split(","));
             let tableBody = "";
             rows.slice(1).forEach(row => {
                 if (row.length > 1) {
-                    tableBody += `<tr>${row.map(cell => `<td>${cell.trim()}</td>`).join("")}</tr>`;
+                    tableBody += "<tr>";
+                    row.forEach((cell, index) => {
+                        let cellValue = cell.trim();
+                        // Format numeric values correctly
+                        if (!isNaN(cellValue) && cellValue !== "") {
+                            cellValue = parseFloat(cellValue).toLocaleString(); // Adds thousand separators
+                        }
+                        tableBody += `<td>${cellValue}</td>`;
+                    });
+                    tableBody += "</tr>";
                 }
             });
             document.querySelector("#budgetTable tbody").innerHTML = tableBody;
