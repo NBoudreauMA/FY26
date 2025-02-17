@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,7 @@
         }
         .table-container {
             width: 95%;
-            max-height: 75vh;
+            max-height: 80vh;
             overflow-y: auto;
             margin: 20px auto;
             border: 1px solid #ddd;
@@ -25,13 +26,15 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
             background-color: white;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-            white-space: nowrap;
+            word-wrap: break-word;
+            white-space: normal;
         }
         th {
             background-color: #5a2d82;
@@ -94,11 +97,13 @@
                 rows.slice(1).forEach(row => {  // Skip the header
                     if (row.length > 1 && row.some(cell => cell.trim() !== "")) { // Ignore empty lines
                         let tr = document.createElement("tr");
+
                         row.forEach(cell => {
                             let td = document.createElement("td");
-                            td.textContent = cell;
+                            td.textContent = cell.replace(/\s?000$/, ''); // Fix number format issue
                             tr.appendChild(td);
                         });
+
                         tableBody.appendChild(tr);
                     }
                 });
