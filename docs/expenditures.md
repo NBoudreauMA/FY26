@@ -10,23 +10,24 @@
             text-align: center;
             background-color: #f5f5f5;
             margin: 0;
+            padding: 20px;
         }
         h1, h2 {
             color: #5a2d82;
         }
-        .container {
+        table {
             width: 90%;
             margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
             background-color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        thead {
+            background-color: #5a2d82;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         th, td {
             border: 1px solid #ddd;
@@ -45,18 +46,19 @@
         tbody tr:hover {
             background-color: #f1f1f1;
         }
-        .error-message {
+        .error {
             color: red;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
+
     <h1>FY26</h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
 
-    <div class="container">
+    <div>
         <table id="budgetTable">
             <thead>
                 <tr>
@@ -72,46 +74,52 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td colspan="9" class="error-message">Loading budget data...</td></tr>
+                <tr><td colspan="9" class="error">Loading budget data...</td></tr>
             </tbody>
         </table>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const tableBody = document.querySelector("#budgetTable tbody");
-            const csvUrl = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/budget.csv"; // Update with your actual CSV URL
-            
-            console.log("Fetching CSV from:", csvUrl); // Debugging log
+            const csvUrl = 'docs/budget.csv'; // Update if necessary
 
             fetch(csvUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Failed to load CSV: " + response.statusText);
+                        throw new Error("Failed to load CSV");
                     }
                     return response.text();
                 })
-                .then(csvText => {
-                    console.log("CSV Loaded Successfully!"); // Debugging log
-                    tableBody.innerHTML = ""; // Clear loading message
-                    const rows = csvText.split("\n").map(row => row.split(","));
-                    
-                    rows.forEach((row, index) => {
-                        if (row.length < 2 || row.every(cell => cell.trim() === "")) return; // Skip empty rows
-                        const tr = document.createElement("tr");
-                        row.forEach(cell => {
-                            const td = document.createElement(index === 0 ? "th" : "td");
-                            td.textContent = cell.trim();
-                            tr.appendChild(td);
-                        });
-                        tableBody.appendChild(tr);
-                    });
-                })
+                .then(data => parseCSV(data))
                 .catch(error => {
-                    console.error("Error loading CSV:", error);
-                    tableBody.innerHTML = `<tr><td colspan="9" class="error-message">Error loading budget data: ${error.message}</td></tr>`;
+                    document.getElementById("budgetTable").innerHTML = 
+                        `<tr><td colspan="9" class="error">Error loading budget data: ${error.message}</td></tr>`;
                 });
+
+            function parseCSV(data) {
+                const rows = data.split("\n").map(row => row.split(","));
+                let tableBody = "";
+                for (let i = 1; i < rows.length; i++) {  // Skip header row
+                    if (rows[i].length < 9) continue; // Skip malformed rows
+                    tableBody += `
+                        <tr>
+                            <td>${rows[i][0]}</td>
+                            <td>${rows[i][1]}</td>
+                            <td>${rows[i][2]}</td>
+                            <td>${rows[i][3]}</td>
+                            <td>${rows[i][4]}</td>
+                            <td>${rows[i][5]}</td>
+                            <td>${rows[i][6]}</td>
+                            <td>${rows[i][7]}</td>
+                            <td>${rows[i][8]}</td>
+                        </tr>
+                    `;
+                }
+                document.querySelector("#budgetTable tbody").innerHTML = tableBody || 
+                    `<tr><td colspan="9" class="error">No budget data found.</td></tr>`;
+            }
         });
     </script>
+
 </body>
 </html>
