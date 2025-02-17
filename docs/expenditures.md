@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -79,12 +78,15 @@
     <script>
         $(document).ready(function() {
             const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv";
-            
+
+            console.log("Fetching CSV data from:", csvUrl);
+
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
                 complete: function(results) {
+                    console.log("CSV Data Parsed:", results.data);
                     const data = results.data;
                     const tableBody = $("#budgetTable tbody");
                     tableBody.empty();
@@ -95,6 +97,7 @@
                     }
 
                     data.forEach(row => {
+                        if (!row["Department"]) return; // Skip empty rows
                         const newRow = `
                             <tr>
                                 <td>${row["Department"] || ""}</td>
@@ -111,6 +114,7 @@
                     });
                 },
                 error: function() {
+                    console.log("Error: Failed to load CSV.");
                     $("#budgetTable tbody").html("<tr><td colspan='9' class='error'>Error loading data</td></tr>");
                 }
             });
