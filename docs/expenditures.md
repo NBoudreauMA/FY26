@@ -33,6 +33,23 @@
     <script>
         function loadCSV() {
             fetch('https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv')
+  .then(response => response.text())
+  .then(data => {
+      let rows = data.trim().split("\n").map(row => row.split(","));
+      let table = document.getElementById("expendituresTable");
+
+      for (let row of rows) {
+          let tr = document.createElement("tr");
+          for (let cell of row) {
+              let td = document.createElement("td");
+              td.textContent = cell;
+              tr.appendChild(td);
+          }
+          table.appendChild(tr);
+      }
+  })
+  .catch(error => console.error("Error loading CSV:", error));
+')
 ') // Ensure this is the correct relative path
                 .then(response => response.text())
                 .then(csvText => {
