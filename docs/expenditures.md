@@ -26,25 +26,34 @@ This page provides an overview of the expenditures for the Town of Hubbardston.
 
 <script>
   async function loadBudgetData() {
-    const csvURL = "{{ site.baseurl }}/docs/assets/budget.csv"; // Reference CSV file location
+    const csvURL = "{{ site.baseurl }}/docs/assets/budget.csv";
+    console.log("Fetching CSV from:", csvURL); // Debugging: Check URL
 
-    const response = await fetch(csvURL);
-    const data = await response.text();
-    const rows = data.split("\n").map(row => row.split(","));
+    try {
+      const response = await fetch(csvURL);
+      if (!response.ok) throw new Error("CSV file not found");
 
-    const tableBody = document.querySelector("#budget-table tbody");
-    tableBody.innerHTML = ""; // Clear existing content
+      const data = await response.text();
+      console.log("CSV Data Loaded:", data); // Debugging: Print CSV content
 
-    for (let i = 1; i < rows.length; i++) { // Skip header row
-      const row = rows[i];
-      if (row.length < 9) continue; // Ensure valid row length
-      const tr = document.createElement("tr");
-      row.forEach(cell => {
-        const td = document.createElement("td");
-        td.textContent = cell;
-        tr.appendChild(td);
-      });
-      tableBody.appendChild(tr);
+      const rows = data.split("\n").map(row => row.split(","));
+      const tableBody = document.querySelector("#budget-table tbody");
+      tableBody.innerHTML = ""; 
+
+      for (let i = 1; i < rows.length; i++) { // Skip header row
+        const row = rows[i];
+        if (row.length < 9) continue;
+
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      }
+    } catch (error) {
+      console.error("Error loading CSV:", error);
     }
   }
 
