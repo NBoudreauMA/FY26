@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Expenditures</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/FY26/assets/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
@@ -31,9 +31,8 @@
     </table>
 
     <script>
-        // Function to fetch and display CSV data
         function loadCSV() {
-            fetch('assets/budget.csv')  // Ensure the path is correct
+            fetch('/FY26/assets/budget.csv') // Ensure this is the correct relative path
                 .then(response => response.text())
                 .then(csvText => {
                     Papa.parse(csvText, {
@@ -47,10 +46,10 @@
                                     <td>${row.Department || ''}</td>
                                     <td>${row.Category || ''}</td>
                                     <td>${row.FY24 || ''}</td>
-                                    <td>${row.FY25_Request || ''}</td>
+                                    <td>${row["FY25 Request"] || ''}</td>
                                     <td>${row.FY25 || ''}</td>
-                                    <td>${row.FY26_Dept || ''}</td>
-                                    <td>${row.FY26_Admin || ''}</td>
+                                    <td>${row["FY26 Dept"] || ''}</td>
+                                    <td>${row["FY26 Admin"] || ''}</td>
                                     <td>${row["Change ($)"] || ''}</td>
                                     <td>${row["Change (%)"] || ''}</td>
                                 `;
@@ -62,7 +61,6 @@
                 .catch(error => console.error("Error loading CSV:", error));
         }
 
-        // Load CSV when the page loads
         window.onload = loadCSV;
     </script>
 
