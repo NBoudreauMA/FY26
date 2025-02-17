@@ -1,28 +1,21 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
 </head>
 <body>
 
-    <!-- Background Image -->
-    <div class="background"></div>
-
-    <!-- Header Section -->
-    <header>
-        <img src="{{ site.baseurl }}/assets/seal.png" alt="Hubbardston Seal" class="seal-logo">
-        <h1>{{ page.title }}</h1>
+    <!-- Transparent Header with Hubbardston Seal -->
+    <header class="header">
+        <img src="{{ site.baseurl }}/docs/assets/seal.png" alt="Hubbardston Seal" class="logo">
+        <h1>Town of Hubbardston Budget Portal</h1>
     </header>
 
-    <!-- Navigation Bar -->
-    <nav>
+    <!-- Modern Navigation Bar -->
+    <nav class="navbar">
         <a href="{{ site.baseurl }}/index.html">🏠 Home</a>
         <a href="{{ site.baseurl }}/revenue.html">💰 Revenue</a>
         <a href="{{ site.baseurl }}/expenditures.html">💸 Expenditures</a>
@@ -30,12 +23,12 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="content">
+    <main class="container">
         {{ content }}
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         &copy; 2025 Town of Hubbardston | All Rights Reserved
     </footer>
 
