@@ -26,6 +26,7 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
         /* Dark Overlay for Readability */
@@ -46,19 +47,30 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 150px;
-            opacity: 0.9;
+            width: 160px;
+            opacity: 0.95;
+            filter: drop-shadow(0px 0px 8px rgba(255, 255, 255, 0.4));
         }
 
-        /* Navbar */
+        /* Main Title */
+        .title {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #4CAF50; /* Green Theme */
+            text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Navigation Bar */
         .navbar {
             display: flex;
             gap: 20px;
             background: rgba(0, 0, 0, 0.6);
-            padding: 15px 25px;
-            border-radius: 10px;
+            padding: 12px 30px;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
             box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            transition: 0.3s ease-in-out;
         }
 
         .navbar a {
@@ -66,7 +78,7 @@
             text-decoration: none;
             font-weight: bold;
             padding: 8px 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: 0.3s ease-in-out;
         }
 
@@ -76,24 +88,13 @@
 
         /* Main Container */
         .container {
-            max-width: 900px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
-            border-radius: 12px;
+            border-radius: 15px;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-            color: #4CAF50; /* Green Theme */
-        }
-
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            animation: fadeIn 1.2s ease-in-out;
         }
 
         /* Quick Links */
@@ -103,10 +104,10 @@
         }
 
         .quick-links li {
-            margin: 10px 0;
-            padding: 12px;
+            margin: 12px 0;
+            padding: 14px;
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 5px;
+            border-radius: 8px;
             transition: 0.3s ease;
         }
 
@@ -114,6 +115,7 @@
             text-decoration: none;
             color: white;
             font-size: 18px;
+            font-weight: bold;
             display: block;
         }
 
@@ -124,12 +126,25 @@
         /* Footer */
         .footer {
             position: absolute;
-            bottom: 20px;
+            bottom: 15px;
             font-size: 14px;
             background: rgba(0, 0, 0, 0.6);
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
         }
+
+        /* Fade-in Effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -147,7 +162,7 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Welcome to Hubbardston's Budget Portal</h1>
+        <h1 class="title">Welcome to Hubbardston's Budget Portal</h1>
         <p>
             A **modern, interactive platform** designed to enhance **financial transparency** 
             and **community engagement** in Hubbardston.
