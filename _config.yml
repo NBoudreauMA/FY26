@@ -56,3 +56,12 @@ keep_files:
   - assets
   - docs/assets
 
+# Ensure Jekyll includes data files
+include:
+  - _layouts
+  - docs/assets
+  - _data  # Allow Jekyll to read YAML files
+
+# Base URL for GitHub Pages
+baseurl: "/FY26"  # Adjust if deploying elsewhere
+permalink: pretty
