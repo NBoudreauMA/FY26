@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,30 +6,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
             background-color: #f8f9fa;
+            text-align: center;
         }
-        h1 {
-            color: #6a0dad;
-        }
-        h2 {
-            color: #6a0dad;
+        h1, h2 {
+            color: #5a2d82;
         }
         table {
-            width: 100%;
+            width: 90%;
+            margin: 20px auto;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
         th {
-            background-color: #6a0dad;
+            background-color: #5a2d82;
             color: white;
+            font-weight: bold;
             position: sticky;
             top: 0;
             z-index: 2;
@@ -38,17 +35,17 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        tr:hover {
-            background-color: #ddd;
+        #error {
+            color: red;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <h1><a href="index.html" style="text-decoration: none; color: #6a0dad;">FY26</a></h1>
+    <h1><a href="index.html" style="text-decoration: none; color: #5a2d82;">FY26</a></h1>
     <h2>FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
-
+    
     <table id="budgetTable">
         <thead>
             <tr>
@@ -64,56 +61,42 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td colspan="9" style="text-align:center;">Loading data...</td>
+            <tr id="errorRow">
+                <td colspan="9" id="error">Loading data...</td>
             </tr>
         </tbody>
     </table>
 
     <script>
         async function loadCSV() {
+            const csvUrl = 'https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv';
             try {
-                const csvUrl = 'https://raw.githubusercontent.com/NBoudreauMA/FY26/main/assets/budget.csv';
                 const response = await fetch(csvUrl);
-                if (!response.ok) {
-                    throw new Error(`CSV file could not be loaded. HTTP Status: ${response.status}`);
-                }
-                const data = await response.text();
+                if (!response.ok) throw new Error('CSV file not found');
 
-                console.log("CSV Loaded Successfully!");
-                console.log("Raw CSV Data:", data); // Debugging step
-
-                // Normalize line breaks & parse CSV
-                let rows = data.trim().split(/\r?\n/).map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/));
-
-                // Check if rows were parsed correctly
-                console.log("Parsed CSV Data:", rows);
-
-                if (rows.length === 0 || rows[0].length < 2) {
-                    throw new Error("CSV parsing failed - no valid data found.");
-                }
+                const csvText = await response.text();
+                const rows = csvText.split('\n').map(row => row.split(','));
 
                 let tableBody = document.querySelector("#budgetTable tbody");
-                tableBody.innerHTML = "";
+                tableBody.innerHTML = ""; // Clear error message
 
-                rows.forEach((row, index) => {
-                    let tr = document.createElement("tr");
-                    row.forEach(cell => {
-                        let td = document.createElement(index === 0 ? "th" : "td");
-                        td.textContent = cell.replace(/"/g, '').trim(); // Remove extra quotes
-                        tr.appendChild(td);
-                    });
-                    tableBody.appendChild(tr);
+                rows.slice(1).forEach(row => {  // Skip the header
+                    if (row.length > 1) { // Ignore empty lines
+                        let tr = document.createElement("tr");
+                        row.forEach(cell => {
+                            let td = document.createElement("td");
+                            td.textContent = cell.trim();
+                            tr.appendChild(td);
+                        });
+                        tableBody.appendChild(tr);
+                    }
                 });
 
             } catch (error) {
-                console.error("Error loading CSV:", error);
-                document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="9" style="color: red; text-align: center;">Error loading data</td></tr>`;
+                document.getElementById("error").textContent = "Error loading data";
             }
         }
-
-        loadCSV();
+        window.onload = loadCSV;
     </script>
-
 </body>
 </html>
