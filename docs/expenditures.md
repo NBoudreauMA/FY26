@@ -81,18 +81,19 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const csvUrl = 'docs/budget.csv'; // Update if necessary
+            const csvUrl = 'docs/budget.csv'; // Ensure this matches actual location
 
             fetch(csvUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("Failed to load CSV");
+                        throw new Error(`Failed to load CSV: ${response.statusText}`);
                     }
                     return response.text();
                 })
                 .then(data => parseCSV(data))
                 .catch(error => {
-                    document.getElementById("budgetTable").innerHTML = 
+                    console.error("CSV Load Error:", error);
+                    document.querySelector("#budgetTable tbody").innerHTML = 
                         `<tr><td colspan="9" class="error">Error loading budget data: ${error.message}</td></tr>`;
                 });
 
