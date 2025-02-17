@@ -18,7 +18,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Navigation links (Optional, if you want dynamic navigation)
+# Navigation links for dynamic use (Optional, but useful)
 nav_links:
   Home: "index.html"
   Revenue: "revenue.html"
@@ -33,9 +33,26 @@ defaults:
     values:
       layout: "default"
 
-# Theme settings (Optional, can be referenced in CSS)
+# Theme settings (Used in CSS or site-wide styles)
 theme_settings:
   primary_color: "#004400"  # Dark Green (Hubbardston Style)
   secondary_color: "#F5F5F5"  # Light Gray for contrast
   background_image: "docs/assets/hubbardston_bg.jpg"  # Ensure this file exists
   logo: "docs/assets/seal.png"
+
+# Jekyll Build Options
+future: true  # Ensure future-dated posts/pages show up
+lsi: false  # Disable Latent Semantic Indexing (not needed for static sites)
+safe: true  # Keep safe mode enabled for GitHub Pages
+
+# Custom Collections (If Needed)
+collections:
+  budget:
+    output: true
+    permalink: /:collection/:path/
+
+# Site Generation Caching (Helps with speed)
+keep_files:
+  - assets
+  - docs/assets
+
