@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,12 +14,18 @@
             color: #5a2d82;
             margin-bottom: 5px;
         }
-        table {
+        .table-container {
             width: 95%;
+            max-height: 75vh;
+            overflow-y: auto;
             margin: 20px auto;
+            border: 1px solid #ddd;
+            background: white;
+        }
+        table {
+            width: 100%;
             border-collapse: collapse;
             background-color: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
         th, td {
             border: 1px solid #ddd;
@@ -39,14 +44,7 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .table-container {
-            max-height: 70vh;
-            overflow-y: auto;
-            margin: 20px;
-            border: 1px solid #ddd;
-            background: white;
-        }
-        #error {
+        .error-message {
             color: red;
             font-weight: bold;
         }
@@ -72,9 +70,9 @@
                     <th>Change (%)</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr id="errorRow">
-                    <td colspan="9" id="error">Loading data...</td>
+            <tbody id="tableBody">
+                <tr>
+                    <td colspan="9" class="error-message">Loading data...</td>
                 </tr>
             </tbody>
         </table>
@@ -90,11 +88,11 @@
                 const csvText = await response.text();
                 const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.replace(/['"]+/g, '').trim()));
 
-                let tableBody = document.querySelector("#budgetTable tbody");
+                let tableBody = document.querySelector("#tableBody");
                 tableBody.innerHTML = ""; // Clear error message
 
                 rows.slice(1).forEach(row => {  // Skip the header
-                    if (row.length > 1) { // Ignore empty lines
+                    if (row.length > 1 && row.some(cell => cell.trim() !== "")) { // Ignore empty lines
                         let tr = document.createElement("tr");
                         row.forEach(cell => {
                             let td = document.createElement("td");
@@ -106,7 +104,7 @@
                 });
 
             } catch (error) {
-                document.getElementById("error").textContent = "Error loading data";
+                document.querySelector(".error-message").textContent = "Error loading data";
             }
         }
         window.onload = loadCSV;
