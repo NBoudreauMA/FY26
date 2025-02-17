@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +11,9 @@
         }
         th, td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 6px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background-color: #f2f2f2;
@@ -49,19 +49,22 @@
             fetch('https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv')
             .then(response => response.text())
             .then(csv => {
-                let rows = csv.trim().split("\n").map(row => row.split(","));
+                let rows = csv.trim().split("\n");
 
                 let tbody = document.querySelector("#expendituresTable tbody");
 
                 rows.slice(1).forEach(row => { // Skip the header row
+                    // Handle quoted CSV values properly
+                    let columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
                     let tr = document.createElement("tr");
 
-                    row.forEach(cell => {
+                    columns.forEach(cell => {
                         let td = document.createElement("td");
-                        
-                        // Clean up quotes and extra spaces
-                        td.textContent = cell.replace(/['"]+/g, '').trim();
 
+                        // Remove surrounding quotes and trim whitespace
+                        td.textContent = cell.replace(/^"|"$/g, '').trim();
+                        
                         tr.appendChild(td);
                     });
 
