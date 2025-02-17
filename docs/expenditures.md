@@ -3,24 +3,38 @@ layout: default
 title: Expenditures
 ---
 
-# 💸 Expenditures Summary
+# 📊 Expenditures Summary
 This page provides an overview of the expenditures for the Town of Hubbardston.
 
-## 📊 Budget Expenditures
+## 💰 Budget Expenditures
 
-| Department | FY24 Actual | FY25 Requested | FY25 Actual | FY26 Dept | FY26 Admin | Change ($) | Change (%) |
-|------------|------------|---------------|------------|------------|------------|------------|------------|
-| **Moderator - 114** | $100 | $100 | $100 | $100 | $100 | $0 | 0.00% |
-| **Select Board - 122** | $77,161 | $76,473 | $76,473 | $86,170 | $86,648 | $10,175 | 13.31% |
-| **Town Admin - 129** | $121,253 | $120,400 | $119,400 | $120,800 | $122,766 | $3,366 | 2.82% |
-| **Finance Committee - 131** | $30,200 | $30,200 | $30,200 | $30,000 | $30,200 | $0 | 0.00% |
-| **Accountant - 135** | $44,800 | $45,470 | $43,770 | $45,229 | $44,249 | $479 | 1.10% |
-| **Assessor - 141** | $83,775 | $95,275 | $87,275 | $91,655 | $88,775 | $1,500 | 1.72% |
-| **IT Services - 155** | $76,000 | $86,000 | $84,000 | $91,000 | $91,000 | $7,000 | 8.33% |
-| **Police - 210** | $707,605 | $737,565 | $697,526 | $718,124 | $709,576 | $12,050 | 1.73% |
-| **Fire - 220** | $597,728 | $613,243 | $588,187 | $574,216 | $571,748 | -$16,439 | -2.79% |
-| **School - 300** | $6,297,699 | $6,757,325 | $6,784,097 | $7,294,875 | $7,294,875 | $510,778 | 7.53% |
-| **Debt - 750** | $412,998 | $146,862 | $146,862 | $146,862 | $146,862 | $0 | 0.00% |
-| **Health Insurance - 914** | $213,360 | $219,761 | $219,761 | $241,737 | $241,737 | $21,976 | 10.00% |
-
-[⬅ Back to Home](index.html)
+<table>
+  <thead>
+    <tr>
+      <th>Department</th>
+      <th>Category</th>
+      <th>FY24</th>
+      <th>FY25 Request</th>
+      <th>FY25</th>
+      <th>FY26 Dept</th>
+      <th>FY26 Admin</th>
+      <th>Change ($)</th>
+      <th>Change (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in site.data.budget.expenditures %}
+    <tr>
+      <td>{{ item.Department }}</td>
+      <td>{{ item.Category }}</td>
+      <td>{{ item.FY24 }}</td>
+      <td>{{ item.FY25_Request }}</td>
+      <td>{{ item.FY25 }}</td>
+      <td>{{ item.FY26_Dept }}</td>
+      <td>{{ item.FY26_Admin }}</td>
+      <td>{{ item.Change_Dollar }}</td>
+      <td>{{ item.Change_Percent }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
