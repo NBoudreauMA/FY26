@@ -1,6 +1,6 @@
 <script>
     async function loadBudgetData() {
-        const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Update with correct CSV link
+        const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Ensure the correct URL
 
         try {
             const response = await fetch(csvUrl);
@@ -9,19 +9,30 @@
             const data = await response.text();
             populateTable(data);
         } catch (error) {
-            document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
+            const tableBody = document.querySelector("#budgetTable tbody");
+            if (tableBody) {
+                tableBody.innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
+            } else {
+                console.error("Table not found. Ensure the HTML contains the correct table structure.");
+            }
         }
     }
 
     function populateTable(csvText) {
+        const tableBody = document.querySelector("#budgetTable tbody");
+        if (!tableBody) {
+            console.error("Table not found in the document.");
+            return;
+        }
+
         const rows = csvText.trim().split("\n").map(row => row.split(","));
-        let tableBody = "";
+        let tableContent = "";
         let departmentData = [];
         let expenseData = [];
 
         rows.slice(1).forEach(row => {
             if (row.length > 1) {
-                tableBody += "<tr>";
+                tableContent += "<tr>";
                 let department = "";
                 let fy26AdminValue = 0;
 
@@ -35,25 +46,25 @@
                             .replace(/([0-9])([A-Za-z])/g, '$1 $2') // Add space between numbers and words
                             .replace(/([A-Za-z])([0-9])/g, '$1 $2') // Add space between words and numbers
                             .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2') // Add space between uppercase acronyms & names
-                            .replace(/[-_]/g, " "); // Ensure hyphenated and underscored words are properly spaced
+                            .replace(/[-_]/g, " "); // Ensure hyphenated words are properly spaced
                     }
 
-                    // Fix Number Formatting: Remove spaces inside numbers & ensure correct commas
+                    // Fix Number Formatting: Remove spaces inside numbers & format them properly
                     cellValue = cellValue.replace(/"|\s(?=\d)/g, "");  // Remove extra spaces & quotes
 
                     // Convert numeric values correctly
-                    if (!isNaN(cellValue) && cellValue !== "" && cellValue.length > 0) {
-                        cellValue = parseFloat(cellValue.replace(/,/g, '')).toLocaleString(); // Format as number with commas
+                    if (!isNaN(cellValue) && cellValue !== "") {
+                        cellValue = parseFloat(cellValue.replace(/,/g, '')).toLocaleString(); // Format with commas
                     }
 
-                    if (index === 0) department = cellValue; // Store department name
+                    if (index === 0) department = cellValue;
                     if (index === 6 && !isNaN(cellValue.replace(/,/g, ''))) {
-                        fy26AdminValue = parseFloat(cellValue.replace(/,/g, '')); // Store FY26 Admin expenses
+                        fy26AdminValue = parseFloat(cellValue.replace(/,/g, ''));
                     }
 
-                    tableBody += `<td>${cellValue}</td>`;
+                    tableContent += `<td>${cellValue}</td>`;
                 });
-                tableBody += "</tr>";
+                tableContent += "</tr>";
 
                 // Add data to chart arrays
                 if (department && fy26AdminValue > 0) {
@@ -63,8 +74,14 @@
             }
         });
 
-        document.querySelector("#budgetTable tbody").innerHTML = tableBody;
+        tableBody.innerHTML = tableContent;
     }
 
-    loadBudgetData();
+    document.addEventListener("DOMContentLoaded", () => {
+        if (!document.querySelector("#budgetTable")) {
+            console.error("Table is missing from the HTML. Ensure the table exists.");
+            return;
+        }
+        loadBudgetData();
+    });
 </script>
