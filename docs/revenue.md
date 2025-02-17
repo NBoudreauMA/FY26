@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Revenue Summary
+title: "General Fund Revenue"
+---
+
 ---
 # 💰 Revenue Summary  
 > **Green Themed Budget Section for Clarity & Readability**  
