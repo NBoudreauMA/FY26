@@ -11,62 +11,87 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Arial", sans-serif;
+            scroll-behavior: smooth;
         }
 
+        /* Background Image */
         body {
-            background-color: #f8f9fa;
-            color: #2c3e50;
+            background: url('assets/hubbardston_bg.jpg') no-repeat center center/cover;
+            color: white;
             text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        /* Header */
+        /* Dark Overlay for Readability */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Transparent Header */
         .header {
-            background: url('assets/Dedication_PH.jpg') no-repeat center;
-            background-size: contain;
-            height: 150px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            opacity: 0.9;
         }
 
         /* Navbar */
         .navbar {
             display: flex;
-            justify-content: center;
-            background-color: #004d00;
-            padding: 15px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .navbar a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
             font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
             transition: 0.3s ease-in-out;
         }
 
         .navbar a:hover {
-            background: #006400;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Main Container */
         .container {
             max-width: 900px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
-            font-size: 28px;
-            color: #004d00;
-            margin-bottom: 15px;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
 
         p {
             font-size: 18px;
             line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         /* Quick Links */
@@ -76,10 +101,10 @@
         }
 
         .quick-links li {
-            background: #004d00;
             margin: 10px 0;
-            border-radius: 5px;
             padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 5px;
             transition: 0.3s ease;
         }
 
@@ -91,22 +116,24 @@
         }
 
         .quick-links li:hover {
-            background: #006400;
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Footer */
         .footer {
-            background: #002800;
-            color: white;
-            padding: 15px;
+            position: absolute;
+            bottom: 20px;
             font-size: 14px;
-            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <!-- Header with Hubbardston Seal -->
-    <div class="header"></div>
+
+    <!-- Transparent Logo -->
+    <img src="assets/Dedication_PH.png" alt="Hubbardston Seal" class="header">
 
     <!-- Navigation Bar -->
     <div class="navbar">
@@ -118,10 +145,10 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h1>Welcome to the Interactive Budget</h1>
+        <h1>Welcome to Hubbardston's Budget Portal</h1>
         <p>
-            This platform enhances **budget transparency and accessibility** for the residents of Hubbardston.
-            Explore the town’s financials with a **modern, easy-to-navigate dashboard**.
+            A **modern, interactive platform** designed to enhance **financial transparency** 
+            and **community engagement** in Hubbardston.
         </p>
 
         <h2>📂 Quick Links</h2>
@@ -136,5 +163,6 @@
     <div class="footer">
         &copy; 2025 Town of Hubbardston | All Rights Reserved
     </div>
+
 </body>
 </html>
