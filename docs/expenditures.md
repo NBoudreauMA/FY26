@@ -1,77 +1,120 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FY26 Budget Expenditures</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
             text-align: center;
-            margin: 0;
+            background-color: #f4f4f4;
         }
-        h1, h2 {
-            color: #5a2d82;
-            margin-bottom: 5px;
-        }
-        .table-container {
-            width: 98%;
-            max-height: 75vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            margin: 20px auto;
-            border: 1px solid #ddd;
-            background: white;
-            padding-bottom: 10px;
+        h1 {
+            color: #4A148C;
         }
         table {
-            width: 100%;
             border-collapse: collapse;
-            background-color: white;
-            table-layout: auto;
+            width: 90%;
+            margin: 20px auto;
+            background: white;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-            vertical-align: middle;
-            white-space: normal;
-            word-wrap: break-word;
-            font-size: 14px;
+            white-space: nowrap;
         }
         th {
-            background-color: #5a2d82;
+            background-color: #4A148C;
             color: white;
-            font-weight: bold;
             position: sticky;
             top: 0;
             z-index: 2;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+        .table-container {
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: auto;
+            border: 1px solid #ddd;
+            background: white;
         }
-        .error-message {
+        .error {
             color: red;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1><a href="index.html" style="text-decoration: none; color: #5a2d82;">FY26</a></h1>
-    <h2>FY26 Budget Expenditures</h2>
+    <h1><a href="index.html" style="text-decoration: none; color: #4A148C;">FY26</a></h1>
+    <h2 style="color: #4A148C;">FY26 Budget Expenditures</h2>
     <p>This page provides an overview of the expenditures for the Town of Hubbardston.</p>
 
     <div class="table-container">
         <table id="budgetTable">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Department</th>
-                    <th style="width: 12%;">Category</th>
-                    <th style="width: 10%;">FY24</th>
-                    <th style="width: 10%;">FY25 Request</th>
-                    <th style="width: 10%;">FY25</th>
-                    <th style="width: 10%;">FY26 Dept</th>
-                    <th style="width: 10%;">FY26 Admin</th>
-                    <th style="width: 10%;">Change ($)</th>
-                    <th style="width: 10%;">Change (%)</th>
-                </tr
+                    <th>Department</th>
+                    <th>Category</th>
+                    <th>FY24</th>
+                    <th>FY25 Request</th>
+                    <th>FY25</th>
+                    <th>FY26 Dept</th>
+                    <th>FY26 Admin</th>
+                    <th>Change ($)</th>
+                    <th>Change (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="loadingMessage">
+                    <td colspan="9">Loading data...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/assets/budget.csv";
+            
+            Papa.parse(csvUrl, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    const data = results.data;
+                    const tableBody = $("#budgetTable tbody");
+                    tableBody.empty();
+
+                    if (data.length === 0) {
+                        tableBody.append("<tr><td colspan='9' class='error'>No data available</td></tr>");
+                        return;
+                    }
+
+                    data.forEach(row => {
+                        const newRow = `
+                            <tr>
+                                <td>${row["Department"] || ""}</td>
+                                <td>${row["Category"] || ""}</td>
+                                <td>${row["FY24"] || ""}</td>
+                                <td>${row["FY25 Request"] || ""}</td>
+                                <td>${row["FY25"] || ""}</td>
+                                <td>${row["FY26 Dept"] || ""}</td>
+                                <td>${row["FY26 Admin"] || ""}</td>
+                                <td>${row["Change ($)"] || ""}</td>
+                                <td>${row["Change (%)"] || ""}</td>
+                            </tr>`;
+                        tableBody.append(newRow);
+                    });
+                },
+                error: function() {
+                    $("#budgetTable tbody").html("<tr><td colspan='9' class='error'>Error loading data</td></tr>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
