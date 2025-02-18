@@ -25,28 +25,25 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow: hidden;
-            max-height: 80vh;
-            overflow-y: auto;
+            overflow-x: auto;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 0;
-            position: relative;
+            table-layout: fixed;
         }
         th, td {
             padding: 12px;
             text-align: left;
             border: 1px solid #e2e8f0;
+            word-wrap: break-word;
+            overflow: hidden;
         }
         th {
             background-color: #5a2d82;
             color: white;
             font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 2;
         }
         tr:nth-child(even) {
             background-color: #f8fafc;
@@ -66,6 +63,12 @@
         .total-row {
             background-color: #f3f0f5 !important;
             font-weight: 600;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background: #5a2d82;
+            z-index: 2;
         }
     </style>
 </head>
@@ -99,11 +102,9 @@
     <script>
         async function loadBudgetData() {
             try {
-                const response = await fetch(
-                    'https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv'
-                );
+                const response = await fetch('https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv');
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.text();
                 populateTable(data);
@@ -115,40 +116,44 @@
         }
 
         function formatCurrency(value) {
-            if (!value || value === '') return '-';
-            const num = parseFloat(value.replace(/[$,]/g, '') || 0);
-            return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            if (!value || isNaN(value)) return '-';
+            return parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        }
+
+        function cleanNumber(value) {
+            if (!value) return 0;
+            return parseFloat(value.replace(/[$,"]/g, '')) || 0;
         }
 
         function populateTable(csvText) {
             const rows = csvText.split('\n').map(row => row.split(','));
             let tableBody = '';
 
-            // Skip header row, start from index 1
             for (let i = 1; i < rows.length; i++) {
-                const cols = rows[i].map(col => col.trim());
-                if (cols.length > 1) {
-                    const isTotal = cols[4] === 'TOTAL';
-                    tableBody += `<tr class="${isTotal ? 'total-row' : ''}">`;
-                    
-                    // Department and Description
-                    tableBody += `<td>${cols[0] || '-'}</td>`;
-                    tableBody += `<td>${cols[1] || '-'}</td>`;
+                const cols = rows[i];
 
-                    // Financial columns
-                    for (let j = 2; j <= 8; j++) {
-                        const value = cols[j] || '-';
-                        tableBody += `<td class="number">${j < 8 ? formatCurrency(value) : value}</td>`;
+                if (cols.length > 1) {
+                    const isTotal = cols[4]?.trim().toUpperCase() === 'TOTAL';
+
+                    tableBody += `<tr class="${isTotal ? 'total-row' : ''}">`;
+
+                    // Department and Description
+                    tableBody += `<td>${cols[1] || '-'}</td>`;
+                    tableBody += `<td>${cols[4] || '-'}</td>`;
+
+                    // Financial columns with formatting
+                    for (let j = 5; j <= 11; j++) {
+                        let value = cleanNumber(cols[j]);
+                        tableBody += `<td class="number">${formatCurrency(value)}</td>`;
                     }
-                    
+
                     tableBody += '</tr>';
                 }
             }
-            
+
             document.querySelector("#budgetTable tbody").innerHTML = tableBody;
         }
 
-        // Load data when page loads
         document.addEventListener('DOMContentLoaded', loadBudgetData);
     </script>
 </body>
