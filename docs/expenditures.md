@@ -44,13 +44,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
-            white-space: nowrap;
         }
         th {
             background-color: #2d6a4f;
@@ -114,16 +112,19 @@
             
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
-            let departments = new Set();
+            let departments = new Map();
             
-            rows.slice(1).forEach(row => {
+            rows.slice(1).forEach((row, index) => {
                 let department = row[0] ? row[0].trim() : "";
+                let departmentId = `dept-${index}`;
+                
                 if (department && !departments.has(department)) {
-                    departments.add(department);
+                    departments.set(department, departmentId);
                     let option = document.createElement("option");
-                    option.value = department.replace(/\s+/g, '');
+                    option.value = departmentId;
                     option.textContent = department;
                     dropdown.appendChild(option);
+                    tableContent += `<tr id="${departmentId}" style="background-color:#d4edda; font-weight:bold;"><td colspan="100%">${department}</td></tr>`;
                 }
                 tableContent += "<tr>" + row.map(cell => `<td>${cell.trim()}</td>`).join("") + "</tr>";
             });
