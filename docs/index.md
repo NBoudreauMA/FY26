@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FY26 Budget Expenditures</title>
-    
+    <title>FY26 Budget Overview</title>
+
     <!-- Google Fonts & Styling -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -21,136 +21,84 @@
         }
         h1 {
             color: #2d6a4f;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
         }
         .nav-container {
             display: flex;
-            justify-content: flex-end;
-            background-color: #2d6a4f;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
         }
-        .nav-container select {
-            background-color: white;
-            color: #2d6a4f;
-            font-weight: bold;
-            border: 1px solid #2d6a4f;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .table-container {
-            width: 100%;
-            max-height: 75vh;
-            overflow-y: auto;
-            background: white;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            white-space: nowrap;
-        }
-        th {
+        .nav-button {
             background-color: #2d6a4f;
             color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            font-size: 1rem;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
         }
-        tr:hover {
-            background-color: #f1f8f1;
+        .nav-button:hover {
+            background-color: #1e4e36;
+        }
+        .content-box {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        .content-box h2 {
+            color: #2d6a4f;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .content-box p {
+            color: #333;
+            line-height: 1.6;
+            font-size: 1rem;
         }
     </style>
 </head>
 <body>
-    <h1>FY26 Budget Expenditures</h1>
-    
+    <h1>FY26 Budget Overview</h1>
+    <p class="subtitle">A transparent, detailed look at the fiscal year 2026 budget.</p>
+
+    <!-- Navigation Buttons -->
     <div class="nav-container">
-        <label for="departmentDropdown" style="color: white; font-weight: bold;">Jump To:</label>
-        <select id="departmentDropdown" onchange="jumpToDepartment()">
-            <option value="">Select...</option>
-        </select>
+        <a href="expenditures.html" class="nav-button">View Expenditures</a>
+        <a href="revenue.html" class="nav-button">View Revenue</a>
+        <a href="summary.html" class="nav-button">Budget Summary</a>
     </div>
-    
-    <div class="table-container">
-        <table id="budgetTable">
-            <thead>
-                <tr id="tableHeader"></tr>
-            </thead>
-            <tbody>
-                <tr><td colspan="100%" class="error">Loading budget data...</td></tr>
-            </tbody>
-        </table>
+
+    <!-- Content Box -->
+    <div class="content-box">
+        <h2>About This Budget</h2>
+        <p>
+            The FY26 budget represents a balanced, strategic plan for resource allocation,
+            prioritizing essential services, infrastructure improvements, and community initiatives.
+            This platform provides transparency, allowing residents to explore expenditures and revenue sources in detail.
+        </p>
     </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            loadBudgetData();
-        });
 
-        async function loadBudgetData() {
-            const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget2.csv";
-            try {
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Failed to load CSV file. Ensure the URL is correct.");
-                const data = await response.text();
-                populateTable(data);
-            } catch (error) {
-                document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="100%">${error.message}</td></tr>`;
-            }
-        }
-
-        function populateTable(csvText) {
-            const tableHeader = document.querySelector("#tableHeader");
-            const tableBody = document.querySelector("#budgetTable tbody");
-            const dropdown = document.querySelector("#departmentDropdown");
-            const rows = csvText.trim().split("\n").map(row => row.split(","));
-            
-            tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
-            let tableContent = "";
-            let departments = new Set();
-            
-            rows.slice(1).forEach(row => {
-                let department = row[0] ? row[0].trim() : "";
-                if (department && !departments.has(department)) {
-                    departments.add(department);
-                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" style="background-color:#d4edda; font-weight:bold;"><td colspan="100%">${department}</td></tr>`;
-                    let option = document.createElement("option");
-                    option.value = department.replace(/\s+/g, '');
-                    option.textContent = department;
-                    dropdown.appendChild(option);
-                }
-                tableContent += "<tr>";
-                row.forEach((cell, index) => {
-                    let cellValue = cell.trim();
-                    if (index === rows[0].length - 1 && !isNaN(parseFloat(cellValue))) {
-                        tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
-                    } else {
-                        const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
-                    }
-                });
-                tableContent += "</tr>";
-            });
-            tableBody.innerHTML = tableContent;
-        }
-        
-        function jumpToDepartment() {
-            const dropdown = document.querySelector("#departmentDropdown");
-            const selectedDept = dropdown.value;
-            if (selectedDept) {
-                document.getElementById(selectedDept).scrollIntoView({ behavior: "smooth" });
-            }
-        }
-    </script>
+    <div class="content-box">
+        <h2>How to Use This Platform</h2>
+        <p>
+            Navigate through the different sections using the buttons above. The "Expenditures" section
+            details departmental spending, while "Revenue" provides insight into funding sources. The
+            "Summary" section offers a high-level breakdown of key financial metrics.
+        </p>
+    </div>
 </body>
 </html>
