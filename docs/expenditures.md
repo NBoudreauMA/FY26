@@ -119,10 +119,10 @@
             const tableBody = document.querySelector("#budgetTable tbody");
             const dropdown = document.querySelector("#departmentDropdown");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
-            
-            // Fix potential undefined errors
-            if (!rows.length || !rows[0]) {
-                tableBody.innerHTML = `<tr><td colspan="100%">Invalid CSV format.</td></tr>`;
+
+            // Ensure headers exist before processing
+            if (!rows.length || !rows[0] || rows[0].length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="100%">Invalid CSV format: No headers found.</td></tr>`;
                 return;
             }
 
@@ -131,11 +131,13 @@
 
             let tableContent = "";
             let departments = new Set();
-            
+
             rows.slice(1).forEach(row => {
-                let department = row[0] ? row[0].trim() : "";
+                if (!row || row.length === 0) return; // Skip empty rows
                 
-                // Fix department naming
+                let department = row[0] ? row[0].trim() : "";
+
+                // Fix department naming and avoid `undefined` issues
                 if (department && !departments.has(department)) {
                     departments.add(department);
                     tableContent += `<tr id="${department.replace(/\s+/g, '')}" class="department-header"><td colspan="${rows[0].length}">${department}</td></tr>`;
@@ -149,17 +151,18 @@
                 // Add data rows
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
-                    let cellValue = cell.trim();
+                    let cellValue = cell ? cell.trim() : "";
 
-                    // Fix percentage column
+                    // Fix percentage column formatting
                     const isPercentageColumn = rows[0][index] && rows[0][index].toLowerCase().includes("change_percent");
 
                     // Apply number formatting
                     if (isPercentageColumn && !isNaN(parseFloat(cellValue))) {
                         tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
+                    } else if (!isNaN(parseFloat(cellValue))) {
+                        tableContent += `<td>$${parseFloat(cellValue).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     } else {
-                        const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
+                        tableContent += `<td>${cellValue}</td>`;
                     }
                 });
                 tableContent += "</tr>";
