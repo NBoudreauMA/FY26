@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
             padding: 20px;
             background-color: #f4f9f4;
@@ -21,13 +21,47 @@
             background-color: #2d6a4f;
             padding: 10px;
             z-index: 1000;
-            text-align: left;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
-        .nav-container a {
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background-color: #2d6a4f;
             color: white;
-            margin: 0 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 5px;
+        }
+        .dropdown-content a {
+            color: #2d6a4f;
+            padding: 10px 12px;
             text-decoration: none;
-            font-weight: bold;
+            display: block;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .dropdown-content a:hover {
+            background-color: #d4edda;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
         .table-container {
             width: 100%;
@@ -39,15 +73,20 @@
             border-collapse: collapse;
             table-layout: fixed;
             white-space: nowrap;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            background: white;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
         th {
             background-color: #2d6a4f;
             color: white;
+            font-weight: bold;
         }
         .scrollable {
             display: block;
@@ -66,7 +105,12 @@
 
     <h1>FY26 Budget Expenditures</h1>
     
-    <div class="nav-container" id="departmentNav"></div>
+    <div class="nav-container">
+        <div class="dropdown">
+            <button class="dropbtn">Jump to Department ▼</button>
+            <div class="dropdown-content" id="departmentNav"></div>
+        </div>
+    </div>
     
     <div class="table-container">
         <table id="budgetTable" class="scrollable">
@@ -112,7 +156,8 @@
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
             let departments = new Set();
-            
+            let navLinks = "";
+
             rows.slice(1).forEach(row => {
                 let department = row[0].trim();
                 if (department && !departments.has(department)) {
@@ -131,9 +176,9 @@
                 });
                 tableContent += "</tr>";
             });
+
             tableBody.innerHTML = tableContent;
 
-            let navLinks = "<strong style='color: white;'>Jump to: </strong>";
             departments.forEach(dept => {
                 navLinks += `<a href="#${dept.replace(/\s+/g, '')}">${dept}</a>`;
             });
