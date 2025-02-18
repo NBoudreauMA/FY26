@@ -1,26 +1,119 @@
-```jsx
-import React, { useState, useEffect } from 'react';
-import Papa from 'papaparse';
-import _ from 'lodash';
+---
+title: FY26 Expenditures
+layout: default
+---
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/papaparse@5.3.0/papaparse.min.js"></script>
+<script src="https://unpkg.com/lodash@4.17.21/lodash.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+const CATEGORIES = {
+  'GENERAL GOVERNMENT': [
+    'Moderator - 114',
+    'Select Board -122',
+    'Town Admin - 129',
+    'Finance Committee - 131',
+    'Accountant - 135',
+    'Assessor - 141',
+    'Treasurer Collector - 149',
+    'Information Technology - 155',
+    'Town Clerk - 161',
+    'Building & Maintenance - 192'
+  ],
+  'PUBLIC SAFETY': [
+    'Police - 210',
+    'Fire - 220',
+    'Emergency Management - 291',
+    'Animal Control - 292',
+    'Tree Warden - 294',
+    'Dispatch - 299'
+  ],
+  'PUBLIC SERVICES': [
+    'Snow and Ice - 423',
+    'Street Lights - 424',
+    'Cemetery - 491',
+    'Land Use - 241'
+  ],
+  'HUMAN SERVICES': [
+    'Senior Center - 541',
+    'Veterans - 543'
+  ],
+  'CULTURE & RECREATION': [
+    'Library - 610',
+    'Recreation - 630',
+    'Agricultural Commission - 690',
+    'Historical Commission - 691'
+  ],
+  'EDUCATION': [
+    'School - 300'
+  ],
+  'DEBT': [
+    'Debt - Short-Term Interest - 750',
+    'Debt - Short Term Principal 750',
+    'Debt - Long-Term Principal - 751',
+    'Debt - Long-Term Interest - 752',
+    'Debt - School Roof Principal',
+    'Debt - School Roof Interest'
+  ],
+  'UNCLASSIFIED': [
+    'Cherry Sheet Assessment - 820',
+    'Worcester Regional Retirement - 911',
+    'Unemployment - 913',
+    'Health insurance - 914',
+    'Medicare - 916',
+    'Liability Insurance - 945',
+    'Offsets and Overlay - 999'
+  ]
+};
 
 const BudgetDisplay = () => {
-  const [budgetData, setBudgetData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [budgetData, setBudgetData] = React.useState({});
+  const [selectedCategory, setSelectedCategory] = React.useState('GENERAL GOVERNMENT');
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          'https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv'
-        );
+        const response = await fetch('budget.csv');
         const text = await response.text();
 
         Papa.parse(text, {
           header: true,
           skipEmptyLines: true,
           complete: (results) => {
-            setBudgetData(results.data);
+            const processedData = {};
+            let currentCategory = null;
+            let currentDept = null;
+            let deptData = [];
+
+            results.data.forEach(row => {
+              if (row['_1']) {
+                if (Object.keys(CATEGORIES).includes(row['_1'])) {
+                  currentCategory = row['_1'];
+                  processedData[currentCategory] = {};
+                } else if (currentCategory) {
+                  if (currentDept && deptData.length > 0) {
+                    processedData[currentCategory][currentDept] = deptData;
+                  }
+                  currentDept = row['_1'];
+                  deptData = [];
+                }
+              } else if (currentDept && (row['_4'] || row['_3'])) {
+                deptData.push(row);
+              }
+            });
+
+            if (currentDept && deptData.length > 0 && currentCategory) {
+              processedData[currentCategory][currentDept] = deptData;
+            }
+
+            setBudgetData(processedData);
             setLoading(false);
           }
         });
@@ -35,63 +128,88 @@ const BudgetDisplay = () => {
 
   const formatCurrency = (value) => {
     if (!value) return '-';
-    return parseFloat(value.replace(/[$,]/g, '') || 0).toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    });
+    return value.startsWith('$') ? value : `$${value}`;
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center h-64">
-      <p className="text-lg">Loading budget data...</p>
-    </div>
+    React.createElement('div', { className: 'flex items-center justify-center h-64' },
+      React.createElement('p', { className: 'text-lg' }, 'Loading budget data...')
+    )
   );
 
   if (error) return (
-    <div className="flex items-center justify-center h-64">
-      <p className="text-red-600">{error}</p>
-    </div>
+    React.createElement('div', { className: 'flex items-center justify-center h-64' },
+      React.createElement('p', { className: 'text-red-600' }, error)
+    )
   );
 
-  return (
-    <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">FY26 Budget Expenditures</h1>
+  return React.createElement('div', { className: 'max-w-7xl mx-auto p-4' },
+    React.createElement('h1', { className: 'text-3xl font-bold mb-6 text-gray-800' }, 'FY26 Budget Analysis'),
+    
+    React.createElement('div', { className: 'mb-6' },
+      React.createElement('div', { className: 'flex flex-wrap gap-2' },
+        Object.keys(CATEGORIES).map(category => 
+          React.createElement('button', {
+            key: category,
+            onClick: () => setSelectedCategory(category),
+            className: `px-6 py-3 rounded-lg font-semibold ${
+              selectedCategory === category
+                ? 'bg-purple-700 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`
+          }, category)
+        )
+      )
+    ),
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse border border-gray-300">
-          <thead className="bg-purple-700 text-white sticky top-0">
-            <tr>
-              <th className="px-4 py-2 border border-gray-300">Department</th>
-              <th className="px-4 py-2 border border-gray-300">Category</th>
-              <th className="px-4 py-2 border border-gray-300">FY24</th>
-              <th className="px-4 py-2 border border-gray-300">FY25 Request</th>
-              <th className="px-4 py-2 border border-gray-300">FY25</th>
-              <th className="px-4 py-2 border border-gray-300">FY26 Dept</th>
-              <th className="px-4 py-2 border border-gray-300">FY26 Admin</th>
-              <th className="px-4 py-2 border border-gray-300">Change ($)</th>
-              <th className="px-4 py-2 border border-gray-300">Change (%)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {budgetData.map((row, idx) => (
-              <tr key={idx} className="border-t border-gray-200">
-                <td className="px-4 py-2 border border-gray-300">{row['Department'] || '-'}</td>
-                <td className="px-4 py-2 border border-gray-300">{row['Category'] || '-'}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['FY24'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['FY25 Request'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['FY25'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['FY26 Dept'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['FY26 Admin'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{formatCurrency(row['Change ($)'])}</td>
-                <td className="px-4 py-2 border border-gray-300 text-right">{row['Change (%)'] || '-'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    budgetData[selectedCategory] && 
+    React.createElement('div', { className: 'space-y-8' },
+      Object.entries(budgetData[selectedCategory]).map(([dept, items]) =>
+        React.createElement('div', { key: dept, className: 'bg-white rounded-lg shadow-md p-6' },
+          React.createElement('h3', { className: 'text-xl font-medium mb-4 text-gray-600 border-b pb-2' }, dept),
+          
+          React.createElement('div', { className: 'overflow-x-auto' },
+            React.createElement('table', { className: 'min-w-full table-auto' },
+              React.createElement('thead', null,
+                React.createElement('tr', { className: 'bg-purple-700 text-white' },
+                  React.createElement('th', { className: 'px-4 py-2 text-left' }, 'Description'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'FY24 Actual'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'FY25 Requested'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'FY25 Actual'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'FY26 Dept'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'FY26 Admin'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'Change ($)'),
+                  React.createElement('th', { className: 'px-4 py-2 text-right' }, 'Change (%)')
+                )
+              ),
+              React.createElement('tbody', null,
+                items.map((item, idx) =>
+                  React.createElement('tr', { 
+                    key: idx,
+                    className: `border-t ${item['_4'] === 'TOTAL' ? 'bg-gray-50 font-semibold' : ''}`
+                  },
+                    React.createElement('td', { className: 'px-4 py-2' }, item['_4'] || item['_3'] || '-'),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['FY24 ACTUAL'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['FY25 REQUESTED'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['FY25 ACTUAL'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['FY26 DEPT'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['FY26 ADMIN'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, formatCurrency(item['CHANGE ($)'])),
+                    React.createElement('td', { className: 'px-4 py-2 text-right' }, item['CHANGE (%)'])
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
   );
 };
 
-export default BudgetDisplay;
-```
+// Render the app
+ReactDOM.render(
+  React.createElement(BudgetDisplay),
+  document.getElementById('root')
+);
+</script>
