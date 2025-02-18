@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FY26 Budget Overview</title>
-
+    <title>FY26 Budget</title>
+    
     <!-- Google Fonts & Styling -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -19,15 +19,19 @@
             text-align: center;
             padding: 20px;
         }
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 120px;
+            margin-bottom: 10px;
+        }
         h1 {
             color: #2d6a4f;
             font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #555;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
         }
         .nav-container {
             display: flex;
@@ -72,16 +76,18 @@
     </style>
 </head>
 <body>
-    <h1>FY26 Budget Overview</h1>
-    <p class="subtitle">A transparent, detailed look at the fiscal year 2026 budget.</p>
-
+    <div class="header">
+        <img src="seal.png" alt="Town Seal">
+        <h1>FY26 Budget</h1>
+    </div>
+    
     <!-- Navigation Buttons -->
     <div class="nav-container">
-        <a href="expenditures.html" class="nav-button">View Expenditures</a>
-        <a href="revenue.html" class="nav-button">View Revenue</a>
-        <a href="summary.html" class="nav-button">Budget Summary</a>
+        <a href="expenditures.html" class="nav-button">Expenditures</a>
+        <a href="revenue.html" class="nav-button">Revenue</a>
+        <a href="summary.html" class="nav-button">Summary</a>
     </div>
-
+    
     <!-- Content Box -->
     <div class="content-box">
         <h2>About This Budget</h2>
@@ -89,15 +95,6 @@
             The FY26 budget represents a balanced, strategic plan for resource allocation,
             prioritizing essential services, infrastructure improvements, and community initiatives.
             This platform provides transparency, allowing residents to explore expenditures and revenue sources in detail.
-        </p>
-    </div>
-
-    <div class="content-box">
-        <h2>How to Use This Platform</h2>
-        <p>
-            Navigate through the different sections using the buttons above. The "Expenditures" section
-            details departmental spending, while "Revenue" provides insight into funding sources. The
-            "Summary" section offers a high-level breakdown of key financial metrics.
         </p>
     </div>
 </body>
