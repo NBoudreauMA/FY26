@@ -7,109 +7,73 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f9f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
         h1 {
             color: #2d6a4f;
+            margin-top: 20px;
         }
         .nav-container {
             position: sticky;
             top: 0;
             background-color: #2d6a4f;
-            padding: 5px;
+            padding: 10px;
             z-index: 1000;
-            text-align: right;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            padding: 10px 20px;
         }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropbtn {
-            background-color: #2d6a4f;
-            color: white;
-            padding: 6px 10px;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
+        .nav-container select {
             background-color: white;
-            min-width: 140px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-            border-radius: 5px;
-            right: 0;
-        }
-        .dropdown-content a {
             color: #2d6a4f;
-            padding: 8px 10px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            transition: 0.3s;
+            font-weight: bold;
+            border: 1px solid #2d6a4f;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 14px;
-        }
-        .dropdown-content a:hover {
-            background-color: #d4edda;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
         }
         .table-container {
-            width: 100%;
+            width: 95%;
+            margin: auto;
+            max-height: 80vh;
             overflow-y: auto;
-            max-height: 70vh;
-            border-radius: 5px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
             background: white;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            white-space: nowrap;
-            position: relative;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background-color: #2d6a4f;
             color: white;
-            font-weight: bold;
             position: sticky;
             top: 0;
-            z-index: 2;
-        }
-        .dept-header {
-            background-color: #d4edda;
-            font-weight: bold;
-            text-align: left;
-            padding: 10px;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-
     <h1>FY26 Budget Expenditures</h1>
     
     <div class="nav-container">
-        <div class="dropdown">
-            <button class="dropbtn">Jump ▼</button>
-            <div class="dropdown-content" id="departmentNav"></div>
-        </div>
+        <label for="departmentDropdown" style="color: white; font-weight: bold;">Jump To:</label>
+        <select id="departmentDropdown" onchange="jumpToDepartment()">
+            <option value="">Select...</option>
+        </select>
     </div>
     
     <div class="table-container">
@@ -124,7 +88,7 @@
             </tbody>
         </table>
     </div>
-
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             loadBudgetData();
@@ -145,53 +109,45 @@
         function populateTable(csvText) {
             const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
-            const navContainer = document.querySelector("#departmentNav");
+            const dropdown = document.querySelector("#departmentDropdown");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
-
-            if (rows.length < 2) {
-                tableBody.innerHTML = `<tr><td colspan="100%">No data available.</td></tr>`;
-                return;
-            }
-
-            // Populate header row
+            
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
-
             let tableContent = "";
             let departments = new Set();
-
+            
             rows.slice(1).forEach(row => {
-                let department = row[0].trim();
+                let department = row[0] ? row[0].trim() : "";
                 if (department && !departments.has(department)) {
                     departments.add(department);
-                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" class="dept-header"><td colspan="100%">${department}</td></tr>`;
+                    tableContent += `<tr id="${department.replace(/\s+/g, '')}"><td colspan="100%" style="background-color:#d4edda; font-weight:bold;">${department}</td></tr>`;
+                    let option = document.createElement("option");
+                    option.value = department.replace(/\s+/g, '');
+                    option.textContent = department;
+                    dropdown.appendChild(option);
                 }
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
                     let cellValue = cell.trim();
-                    const numValue = parseFloat(cellValue);
-                    if (!isNaN(numValue)) {
-                        if (rows[0][index].toLowerCase().includes("change")) {
-                            tableContent += `<td>${numValue.toFixed(1)}%</td>`; // Keep percentages as x.x%
-                        } else {
-                            tableContent += `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
-                        }
+                    if (index === rows[0].length - 1 && !isNaN(parseFloat(cellValue))) {
+                        tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
                     } else {
-                        tableContent += `<td>${cellValue}</td>`;
+                        const numValue = parseFloat(cellValue);
+                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     }
                 });
                 tableContent += "</tr>";
             });
-
             tableBody.innerHTML = tableContent;
-
-            // Populate dropdown navigation
-            let navLinks = "";
-            departments.forEach(dept => {
-                navLinks += `<a href="#${dept.replace(/\s+/g, '')}">${dept}</a>`;
-            });
-            navContainer.innerHTML = navLinks;
+        }
+        
+        function jumpToDepartment() {
+            const dropdown = document.querySelector("#departmentDropdown");
+            const selectedDept = dropdown.value;
+            if (selectedDept) {
+                document.getElementById(selectedDept).scrollIntoView({ behavior: "smooth" });
+            }
         }
     </script>
-
 </body>
 </html>
