@@ -19,11 +19,11 @@
             position: sticky;
             top: 0;
             background-color: #2d6a4f;
-            padding: 10px;
+            padding: 5px;
             z-index: 1000;
-            text-align: center;
+            text-align: right;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
             gap: 10px;
         }
@@ -34,8 +34,8 @@
         .dropbtn {
             background-color: #2d6a4f;
             color: white;
-            padding: 10px 15px;
-            font-size: 16px;
+            padding: 6px 10px;
+            font-size: 14px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
@@ -44,18 +44,20 @@
             display: none;
             position: absolute;
             background-color: white;
-            min-width: 160px;
+            min-width: 140px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1;
             border-radius: 5px;
+            right: 0;
         }
         .dropdown-content a {
             color: #2d6a4f;
-            padding: 10px 12px;
+            padding: 8px 10px;
             text-decoration: none;
             display: block;
             text-align: left;
             transition: 0.3s;
+            font-size: 14px;
         }
         .dropdown-content a:hover {
             background-color: #d4edda;
@@ -65,18 +67,18 @@
         }
         .table-container {
             width: 100%;
-            overflow-x: auto;
-            margin-top: 20px;
+            overflow-y: auto;
+            max-height: 70vh;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
             white-space: nowrap;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            background: white;
+            position: relative;
         }
         th, td {
             border: 1px solid #ddd;
@@ -87,11 +89,9 @@
             background-color: #2d6a4f;
             color: white;
             font-weight: bold;
-        }
-        .scrollable {
-            display: block;
-            overflow-x: auto;
-            max-width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 2;
         }
         .dept-header {
             background-color: #d4edda;
@@ -107,13 +107,13 @@
     
     <div class="nav-container">
         <div class="dropdown">
-            <button class="dropbtn">Jump to Department ▼</button>
+            <button class="dropbtn">Jump ▼</button>
             <div class="dropdown-content" id="departmentNav"></div>
         </div>
     </div>
     
     <div class="table-container">
-        <table id="budgetTable" class="scrollable">
+        <table id="budgetTable">
             <thead>
                 <tr id="tableHeader"></tr>
             </thead>
@@ -153,10 +153,11 @@
                 return;
             }
 
+            // Populate header row
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
+
             let tableContent = "";
             let departments = new Set();
-            let navLinks = "";
 
             rows.slice(1).forEach(row => {
                 let department = row[0].trim();
@@ -167,11 +168,15 @@
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
                     let cellValue = cell.trim();
-                    if (index === rows[0].length - 1) {
-                        tableContent += `<td>${cellValue}%</td>`;
+                    const numValue = parseFloat(cellValue);
+                    if (!isNaN(numValue)) {
+                        if (rows[0][index].toLowerCase().includes("change")) {
+                            tableContent += `<td>${numValue.toFixed(1)}%</td>`; // Keep percentages as x.x%
+                        } else {
+                            tableContent += `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
+                        }
                     } else {
-                        const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
+                        tableContent += `<td>${cellValue}</td>`;
                     }
                 });
                 tableContent += "</tr>";
@@ -179,6 +184,8 @@
 
             tableBody.innerHTML = tableContent;
 
+            // Populate dropdown navigation
+            let navLinks = "";
             departments.forEach(dept => {
                 navLinks += `<a href="#${dept.replace(/\s+/g, '')}">${dept}</a>`;
             });
