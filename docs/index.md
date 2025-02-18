@@ -15,9 +15,18 @@
             font-family: 'Inter', sans-serif;
         }
         body {
-            background-color: #f4f9f4;
+            background: url('assets/hubbardston_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
             text-align: center;
             padding: 20px;
+        }
+        .overlay {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 1000px;
+            margin: auto;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
         .header {
             display: flex;
@@ -59,9 +68,8 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
-            margin: 20px auto;
             text-align: left;
+            margin-top: 20px;
         }
         .content-box h2 {
             color: #2d6a4f;
@@ -76,26 +84,28 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="seal.png" alt="Town Seal">
-        <h1>FY26 Budget</h1>
-    </div>
-    
-    <!-- Navigation Buttons -->
-    <div class="nav-container">
-        <a href="expenditures.html" class="nav-button">Expenditures</a>
-        <a href="revenue.html" class="nav-button">Revenue</a>
-        <a href="summary.html" class="nav-button">Summary</a>
-    </div>
-    
-    <!-- Content Box -->
-    <div class="content-box">
-        <h2>About This Budget</h2>
-        <p>
-            The FY26 budget represents a balanced, strategic plan for resource allocation,
-            prioritizing essential services, infrastructure improvements, and community initiatives.
-            This platform provides transparency, allowing residents to explore expenditures and revenue sources in detail.
-        </p>
+    <div class="overlay">
+        <div class="header">
+            <img src="seal.png" alt="Town Seal">
+            <h1>FY26 Budget</h1>
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="nav-container">
+            <a href="expenditures.html" class="nav-button">Expenditures</a>
+            <a href="revenue.html" class="nav-button">Revenue</a>
+            <a href="summary.html" class="nav-button">Summary</a>
+        </div>
+        
+        <!-- Content Box -->
+        <div class="content-box">
+            <h2>About This Budget</h2>
+            <p>
+                The FY26 budget represents a balanced, strategic plan for resource allocation,
+                prioritizing essential services, infrastructure improvements, and community initiatives.
+                This platform provides transparency, allowing residents to explore expenditures and revenue sources in detail.
+            </p>
+        </div>
     </div>
 </body>
 </html>
