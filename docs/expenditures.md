@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FY26 Budget Expenditures</title>
     
-    <!-- Google Fonts & Styling -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -18,31 +17,24 @@
             background-color: #f4f9f4;
             text-align: center;
             padding: 20px;
+            overflow-x: hidden;
         }
         h1 {
             color: #2d6a4f;
             font-size: 2.2rem;
         }
         .nav-container {
-            display: flex;
-            justify-content: flex-end;
-            background-color: #2d6a4f;
-            padding: 10px;
-            border-radius: 8px;
             margin-bottom: 10px;
         }
         .nav-container select {
-            background-color: white;
-            color: #2d6a4f;
-            font-weight: bold;
-            border: 1px solid #2d6a4f;
             padding: 5px;
+            font-size: 1rem;
+            border: 1px solid #2d6a4f;
             border-radius: 5px;
-            cursor: pointer;
         }
         .table-container {
             width: 100%;
-            max-height: 75vh;
+            max-height: 90vh;
             overflow-y: auto;
             background: white;
             border-radius: 8px;
@@ -52,10 +44,11 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: left;
             white-space: nowrap;
         }
@@ -66,8 +59,12 @@
             top: 0;
             z-index: 10;
         }
-        tr:hover {
+        tr:nth-child(even) {
             background-color: #f1f8f1;
+        }
+        td:first-child {
+            font-weight: bold;
+            background-color: #d4edda;
         }
     </style>
 </head>
@@ -75,7 +72,7 @@
     <h1>FY26 Budget Expenditures</h1>
     
     <div class="nav-container">
-        <label for="departmentDropdown" style="color: white; font-weight: bold;">Jump To:</label>
+        <label for="departmentDropdown">Jump To:</label>
         <select id="departmentDropdown" onchange="jumpToDepartment()">
             <option value="">Select...</option>
         </select>
@@ -123,23 +120,12 @@
                 let department = row[0] ? row[0].trim() : "";
                 if (department && !departments.has(department)) {
                     departments.add(department);
-                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" style="background-color:#d4edda; font-weight:bold;"><td colspan="100%">${department}</td></tr>`;
                     let option = document.createElement("option");
                     option.value = department.replace(/\s+/g, '');
                     option.textContent = department;
                     dropdown.appendChild(option);
                 }
-                tableContent += "<tr>";
-                row.forEach((cell, index) => {
-                    let cellValue = cell.trim();
-                    if (index === rows[0].length - 1 && !isNaN(parseFloat(cellValue))) {
-                        tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
-                    } else {
-                        const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
-                    }
-                });
-                tableContent += "</tr>";
+                tableContent += "<tr>" + row.map(cell => `<td>${cell.trim()}</td>`).join("") + "</tr>";
             });
             tableBody.innerHTML = tableContent;
         }
@@ -148,7 +134,7 @@
             const dropdown = document.querySelector("#departmentDropdown");
             const selectedDept = dropdown.value;
             if (selectedDept) {
-                document.getElementById(selectedDept).scrollIntoView({ behavior: "smooth" });
+                document.getElementById(selectedDept)?.scrollIntoView({ behavior: "smooth" });
             }
         }
     </script>
