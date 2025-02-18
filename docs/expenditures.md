@@ -28,6 +28,10 @@
             align-items: center;
             padding: 10px 20px;
         }
+        .nav-container label {
+            color: white;
+            font-weight: bold;
+        }
         .nav-container select {
             background-color: white;
             color: #2d6a4f;
@@ -42,20 +46,22 @@
             width: 95%;
             margin: auto;
             max-height: 80vh;
-            overflow-y: auto;
+            overflow-y: auto; /* Vertical scrolling only */
             border: 1px solid #ddd;
             background: white;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
+            table-layout: fixed; /* Ensures even spacing */
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         th {
             background-color: #2d6a4f;
@@ -65,9 +71,7 @@
             z-index: 100;
         }
         td {
-            min-width: 100px; /* Ensures each column has even width */
-            overflow: hidden;
-            text-overflow: ellipsis;
+            min-width: 120px; /* Ensures proper spacing */
         }
         .department-header {
             background-color: #d4edda;
@@ -80,7 +84,7 @@
     <h1>FY26 Budget Expenditures</h1>
     
     <div class="nav-container">
-        <label for="departmentDropdown" style="color: white; font-weight: bold;">Jump To:</label>
+        <label for="departmentDropdown">Jump To:</label>
         <select id="departmentDropdown" onchange="jumpToDepartment()">
             <option value="">Select...</option>
         </select>
@@ -139,11 +143,14 @@
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
                     let cellValue = cell.trim();
-                    if (index === rows[0].length - 1 && !isNaN(parseFloat(cellValue))) {
+                    const isPercentageColumn = rows[0][index].toLowerCase().includes("change");
+                    
+                    if (isPercentageColumn && !isNaN(parseFloat(cellValue))) {
                         tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
+                    } else if (!isNaN(parseFloat(cellValue))) {
+                        tableContent += `<td>$${parseFloat(cellValue).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     } else {
-                        const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
+                        tableContent += `<td>${cellValue}</td>`;
                     }
                 });
                 tableContent += "</tr>";
