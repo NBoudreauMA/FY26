@@ -4,33 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FY26 Budget Expenditures</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts & Styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f9f4;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #f4f9f4;
             text-align: center;
+            padding: 20px;
         }
         h1 {
             color: #2d6a4f;
-            margin-top: 20px;
+            font-size: 2.2rem;
         }
         .nav-container {
-            position: sticky;
-            top: 0;
+            display: flex;
+            justify-content: flex-end;
             background-color: #2d6a4f;
             padding: 10px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-container label {
-            color: white;
-            font-weight: bold;
-            margin-left: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
         .nav-container select {
             background-color: white;
@@ -40,24 +39,23 @@
             padding: 5px;
             border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
         }
         .table-container {
-            width: 95%;
-            margin: auto;
-            max-height: 80vh;
+            width: 100%;
+            max-height: 75vh;
             overflow-y: auto;
-            border: 1px solid #ddd;
             background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
             white-space: nowrap;
         }
@@ -66,37 +64,34 @@
             color: white;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10;
         }
-        .department-header {
-            background-color: #d4edda;
-            font-weight: bold;
+        tr:hover {
+            background-color: #f1f8f1;
         }
     </style>
 </head>
 <body>
     <h1>FY26 Budget Expenditures</h1>
-
+    
     <div class="nav-container">
-        <label for="departmentDropdown">Jump To:</label>
+        <label for="departmentDropdown" style="color: white; font-weight: bold;">Jump To:</label>
         <select id="departmentDropdown" onchange="jumpToDepartment()">
             <option value="">Select...</option>
         </select>
     </div>
-
+    
     <div class="table-container">
         <table id="budgetTable">
             <thead>
                 <tr id="tableHeader"></tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="100%" class="error">Loading budget data...</td>
-                </tr>
+                <tr><td colspan="100%" class="error">Loading budget data...</td></tr>
             </tbody>
         </table>
     </div>
-
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             loadBudgetData();
@@ -119,55 +114,33 @@
             const tableBody = document.querySelector("#budgetTable tbody");
             const dropdown = document.querySelector("#departmentDropdown");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
-
-            // Ensure headers exist before processing
-            if (!rows.length || !rows[0] || rows[0].length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="100%">Invalid CSV format: No headers found.</td></tr>`;
-                return;
-            }
-
-            // Populate headers
+            
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
-
             let tableContent = "";
             let departments = new Set();
-
+            
             rows.slice(1).forEach(row => {
-                if (!row || row.length === 0) return; // Skip empty rows
-                
                 let department = row[0] ? row[0].trim() : "";
-
-                // Fix department naming and avoid `undefined` issues
                 if (department && !departments.has(department)) {
                     departments.add(department);
-                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" class="department-header"><td colspan="${rows[0].length}">${department}</td></tr>`;
-                    
+                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" style="background-color:#d4edda; font-weight:bold;"><td colspan="100%">${department}</td></tr>`;
                     let option = document.createElement("option");
                     option.value = department.replace(/\s+/g, '');
                     option.textContent = department;
                     dropdown.appendChild(option);
                 }
-
-                // Add data rows
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
-                    let cellValue = cell ? cell.trim() : "";
-
-                    // Fix percentage column formatting
-                    const isPercentageColumn = rows[0][index] && rows[0][index].toLowerCase().includes("change_percent");
-
-                    // Apply number formatting
-                    if (isPercentageColumn && !isNaN(parseFloat(cellValue))) {
+                    let cellValue = cell.trim();
+                    if (index === rows[0].length - 1 && !isNaN(parseFloat(cellValue))) {
                         tableContent += `<td>${parseFloat(cellValue).toFixed(1)}%</td>`;
-                    } else if (!isNaN(parseFloat(cellValue))) {
-                        tableContent += `<td>$${parseFloat(cellValue).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     } else {
-                        tableContent += `<td>${cellValue}</td>`;
+                        const numValue = parseFloat(cellValue);
+                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     }
                 });
                 tableContent += "</tr>";
             });
-
             tableBody.innerHTML = tableContent;
         }
         
