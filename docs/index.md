@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FY26 Budget</title>
     
-    <!-- Google Fonts & Styling -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -19,14 +20,15 @@
             background-size: cover;
             text-align: center;
             padding: 20px;
+            color: #ffffff;
         }
         .overlay {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 900px;
             margin: auto;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.2);
         }
         .header {
             display: flex;
@@ -35,13 +37,15 @@
             margin-bottom: 20px;
         }
         .header img {
-            width: 120px;
+            width: 110px;
             margin-bottom: 10px;
         }
         h1 {
             color: #2d6a4f;
-            font-size: 2.5rem;
+            font-size: 2.3rem;
+            font-weight: 600;
         }
+        /* Navigation */
         .nav-container {
             display: flex;
             justify-content: center;
@@ -53,19 +57,21 @@
             background-color: #2d6a4f;
             color: white;
             font-size: 1rem;
-            padding: 12px 20px;
+            padding: 12px 18px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, transform 0.2s;
         }
         .nav-button:hover {
             background-color: #1e4e36;
+            transform: scale(1.05);
         }
+        /* Content Box */
         .content-box {
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             text-align: left;
@@ -73,7 +79,7 @@
         }
         .content-box h2 {
             color: #2d6a4f;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 10px;
         }
         .content-box p {
@@ -86,7 +92,7 @@
 <body>
     <div class="overlay">
         <div class="header">
-            <img src="seal.png" alt="Town Seal">
+            <img src="assets/seal.png" alt="Town Seal">
             <h1>FY26 Budget</h1>
         </div>
         
