@@ -134,7 +134,7 @@
             
             for (let i = 1; i < rows.length; i++) { // Skip header
                 const cols = rows[i].map(cell => cell.trim());
-                if (cols.length < 8) continue;
+                if (cols.length < 9 || !cols[0]) continue; // Ensure valid row
 
                 const isTotal = cols[1]?.toLowerCase().includes('total');
                 tableBody += `<tr class="${isTotal ? 'total-row' : ''}">`;
@@ -158,7 +158,7 @@
                 tableBody += `<td class="number">${formatCurrency(fy26Admin)}</td>`;
                 tableBody += `<td class="number">${formatCurrency(changeDollar)}</td>`;
 
-                let changePercent = calculatePercentageChange(fy24, fy26Admin);
+                let changePercent = calculatePercentageChange(fy25, fy26Admin);
                 tableBody += `<td class="number">${changePercent}</td>`;
 
                 tableBody += '</tr>';
