@@ -24,13 +24,13 @@
             padding: 10px;
             z-index: 1000;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            padding: 10px 20px;
         }
         .nav-container label {
             color: white;
             font-weight: bold;
+            margin-right: 10px;
         }
         .nav-container select {
             background-color: white;
@@ -47,21 +47,20 @@
             margin: auto;
             max-height: 80vh;
             overflow-y: auto; /* Vertical scrolling only */
-            border: 1px solid #ddd;
             background: white;
+            border: 1px solid #ddd;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* Ensures even spacing */
+            table-layout: auto; /* Allows flexible column widths */
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal; /* Ensures text wraps */
+            word-wrap: break-word;
         }
         th {
             background-color: #2d6a4f;
@@ -71,7 +70,7 @@
             z-index: 100;
         }
         td {
-            min-width: 120px; /* Ensures proper spacing */
+            min-width: 100px; /* Ensures better column fit */
         }
         .department-header {
             background-color: #d4edda;
