@@ -49,7 +49,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
+            table-layout: auto;
         }
         th, td {
             border: 1px solid #ddd;
@@ -63,6 +63,16 @@
             position: sticky;
             top: 0;
             z-index: 100;
+        }
+        td {
+            min-width: 100px; /* Ensures each column has even width */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .department-header {
+            background-color: #d4edda;
+            font-weight: bold;
+            text-align: left;
         }
     </style>
 </head>
@@ -120,7 +130,7 @@
                 let department = row[0] ? row[0].trim() : "";
                 if (department && !departments.has(department)) {
                     departments.add(department);
-                    tableContent += `<tr id="${department.replace(/\s+/g, '')}"><td colspan="100%" style="background-color:#d4edda; font-weight:bold;">${department}</td></tr>`;
+                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" class="department-header"><td colspan="${rows[0].length}">${department}</td></tr>`;
                     let option = document.createElement("option");
                     option.value = department.replace(/\s+/g, '');
                     option.textContent = department;
