@@ -53,14 +53,15 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto; /* Allows flexible column widths */
+            table-layout: fixed; /* Keeps spacing correct */
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-            white-space: normal; /* Ensures text wraps */
-            word-wrap: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         th {
             background-color: #2d6a4f;
@@ -70,7 +71,7 @@
             z-index: 100;
         }
         td {
-            min-width: 100px; /* Ensures better column fit */
+            min-width: 80px; /* Keeps columns evenly spaced */
         }
         .department-header {
             background-color: #d4edda;
