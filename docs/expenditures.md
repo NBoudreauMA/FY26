@@ -124,6 +124,7 @@
             if (!oldValue || isNaN(parseFloat(oldValue)) || !newValue || isNaN(parseFloat(newValue))) {
                 return '-';
             }
+            if (parseFloat(oldValue) === 0) return 'N/A';
             let change = ((parseFloat(newValue) - parseFloat(oldValue)) / Math.abs(parseFloat(oldValue))) * 100;
             return `${change.toFixed(2)}%`;
         }
@@ -141,33 +142,4 @@
                 
                 // Department and Description
                 tableBody += `<td>${cols[0] || '-'}</td>`;
-                tableBody += `<td>${cols[1] || '-'}</td>`;
-                
-                // Financial columns
-                let fy24 = cols[2] || '0';
-                let fy25Request = cols[3] || '0';
-                let fy25 = cols[4] || '0';
-                let fy26Dept = cols[5] || '0';
-                let fy26Admin = cols[6] || '0';
-                let changeDollar = cols[7] || '0';
-
-                tableBody += `<td class="number">${formatCurrency(fy24)}</td>`;
-                tableBody += `<td class="number">${formatCurrency(fy25Request)}</td>`;
-                tableBody += `<td class="number">${formatCurrency(fy25)}</td>`;
-                tableBody += `<td class="number">${formatCurrency(fy26Dept)}</td>`;
-                tableBody += `<td class="number">${formatCurrency(fy26Admin)}</td>`;
-                tableBody += `<td class="number">${formatCurrency(changeDollar)}</td>`;
-
-                let changePercent = calculatePercentageChange(fy25, fy26Admin);
-                tableBody += `<td class="number">${changePercent}</td>`;
-
-                tableBody += '</tr>';
-            }
-            
-            document.querySelector("#budgetTable tbody").innerHTML = tableBody;
-        }
-
-        document.addEventListener('DOMContentLoaded', loadBudgetData);
-    </script>
-</body>
-</html>
+                table
