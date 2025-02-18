@@ -14,16 +14,23 @@
         h1 {
             color: #5a2d82;
         }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
         table {
-            width: 90%;
-            margin: 20px auto;
+            width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            table-layout: fixed;
+            min-width: 1500px;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         th {
             background-color: #5a2d82;
@@ -40,26 +47,18 @@
 
     <h1>FY26 Budget Expenditures</h1>
     
-    <table id="budgetTable">
-        <thead>
-            <tr>
-                <th>Department</th>
-                <th>Category</th>
-                <th>FY24</th>
-                <th>FY25 Request</th>
-                <th>FY25</th>
-                <th>FY26 Dept</th>
-                <th>FY26 Admin</th>
-                <th>Change ($)</th>
-                <th>Change (%)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="9" class="error">Loading budget data...</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table id="budgetTable">
+            <thead>
+                <tr id="tableHeader"></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="9" class="error">Loading budget data...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div id="chartContainer">
         <canvas id="budgetChart"></canvas>
@@ -67,11 +66,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const table = document.querySelector("#budgetTable");
-            if (!table) {
-                console.error("🚨 Table is missing from expenditures.html. Ensure the table exists inside <body>.");
-                return;
-            }
             loadBudgetData();
         });
 
@@ -87,20 +81,17 @@
                 const tableBody = document.querySelector("#budgetTable tbody");
                 if (tableBody) {
                     tableBody.innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
-                } else {
-                    console.error("Table body is missing.");
                 }
             }
         }
 
         function populateTable(csvText) {
+            const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
-            if (!tableBody) {
-                console.error("Table not found in expenditures.html.");
-                return;
-            }
-
+            
             const rows = csvText.trim().split("\n").map(row => row.split(","));
+            tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
+            
             let tableContent = "";
             let departmentData = [];
             let expenseData = [];
@@ -112,7 +103,7 @@
                     let fy26AdminValue = 0;
 
                     row.forEach((cell, index) => {
-                        let cellValue = cell.trim().replace(/"|\s(?=\d)/g, "");
+                        let cellValue = cell.trim();
                         if (!isNaN(cellValue) && cellValue !== "") {
                             cellValue = parseFloat(cellValue.replace(/,/g, '')).toLocaleString();
                         }
@@ -152,6 +143,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
