@@ -1,27 +1,21 @@
 <script>
     async function loadBudgetData() {
-        const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv"; // Ensure the correct URL
+        const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget.csv";
 
         try {
             const response = await fetch(csvUrl);
             if (!response.ok) throw new Error("Failed to load CSV file. Ensure the URL is correct.");
-
             const data = await response.text();
             populateTable(data);
         } catch (error) {
-            const tableBody = document.querySelector("#budgetTable tbody");
-            if (tableBody) {
-                tableBody.innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
-            } else {
-                console.error("Table not found. Ensure the HTML contains the correct table structure.");
-            }
+            document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="9" class="error">${error.message}</td></tr>`;
         }
     }
 
     function populateTable(csvText) {
         const tableBody = document.querySelector("#budgetTable tbody");
         if (!tableBody) {
-            console.error("Table not found in the document.");
+            console.error("Table not found in expenditures.html.");
             return;
         }
 
@@ -39,22 +33,22 @@
                 row.forEach((cell, index) => {
                     let cellValue = cell.trim();
 
-                    // Fix Department & Category Spacing
+                    // ✅ Fix Department & Category Spacing
                     if (index === 0 || index === 1) {
                         cellValue = cellValue
-                            .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space in camelCase text
-                            .replace(/([0-9])([A-Za-z])/g, '$1 $2') // Add space between numbers and words
-                            .replace(/([A-Za-z])([0-9])/g, '$1 $2') // Add space between words and numbers
-                            .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2') // Add space between uppercase acronyms & names
-                            .replace(/[-_]/g, " "); // Ensure hyphenated words are properly spaced
+                            .replace(/([a-z])([A-Z])/g, '$1 $2') 
+                            .replace(/([0-9])([A-Za-z])/g, '$1 $2') 
+                            .replace(/([A-Za-z])([0-9])/g, '$1 $2') 
+                            .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2') 
+                            .replace(/[-_]/g, " ");
                     }
 
-                    // Fix Number Formatting: Remove spaces inside numbers & format them properly
-                    cellValue = cellValue.replace(/"|\s(?=\d)/g, "");  // Remove extra spaces & quotes
+                    // ✅ Fix Number Formatting: Remove spaces inside numbers
+                    cellValue = cellValue.replace(/\s(?=\d)/g, "");
 
-                    // Convert numeric values correctly
+                    // ✅ Convert numeric values correctly
                     if (!isNaN(cellValue) && cellValue !== "") {
-                        cellValue = parseFloat(cellValue.replace(/,/g, '')).toLocaleString(); // Format with commas
+                        cellValue = parseFloat(cellValue.replace(/,/g, '')).toLocaleString();
                     }
 
                     if (index === 0) department = cellValue;
@@ -66,7 +60,6 @@
                 });
                 tableContent += "</tr>";
 
-                // Add data to chart arrays
                 if (department && fy26AdminValue > 0) {
                     departmentData.push(department);
                     expenseData.push(fy26AdminValue);
@@ -75,13 +68,34 @@
         });
 
         tableBody.innerHTML = tableContent;
+        drawChart(departmentData, expenseData);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!document.querySelector("#budgetTable")) {
-            console.error("Table is missing from the HTML. Ensure the table exists.");
-            return;
-        }
-        loadBudgetData();
-    });
+    function drawChart(labels, data) {
+        const ctx = document.getElementById("budgetChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "FY26 Admin Expenditures",
+                    data: data,
+                    backgroundColor: "rgba(90, 45, 130, 0.7)",
+                    borderColor: "rgba(90, 45, 130, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadBudgetData);
 </script>
