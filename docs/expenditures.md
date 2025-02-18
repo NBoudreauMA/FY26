@@ -10,21 +10,34 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
+            background-color: #f4f9f4;
         }
         h1 {
             color: #2d6a4f;
         }
+        .nav-container {
+            position: sticky;
+            top: 0;
+            background-color: #2d6a4f;
+            padding: 10px;
+            z-index: 1000;
+            text-align: left;
+        }
+        .nav-container a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
         .table-container {
             width: 100%;
             overflow-x: auto;
-            max-height: 600px;
-            overflow-y: auto;
+            margin-top: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
-            min-width: 100%;
+            table-layout: fixed;
             white-space: nowrap;
         }
         th, td {
@@ -35,20 +48,25 @@
         th {
             background-color: #2d6a4f;
             color: white;
-            position: sticky;
-            top: 0;
-            z-index: 2;
         }
         .scrollable {
             display: block;
             overflow-x: auto;
             max-width: 100%;
         }
+        .dept-header {
+            background-color: #d4edda;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
 
     <h1>FY26 Budget Expenditures</h1>
+    
+    <div class="nav-container" id="departmentNav"></div>
     
     <div class="table-container">
         <table id="budgetTable" class="scrollable">
@@ -83,26 +101,43 @@
         function populateTable(csvText) {
             const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
+            const navContainer = document.querySelector("#departmentNav");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
-            
+
+            if (rows.length < 2) {
+                tableBody.innerHTML = `<tr><td colspan="100%">No data available.</td></tr>`;
+                return;
+            }
+
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
+            let departments = new Set();
+            
             rows.slice(1).forEach(row => {
+                let department = row[0].trim();
+                if (department && !departments.has(department)) {
+                    departments.add(department);
+                    tableContent += `<tr id="${department.replace(/\s+/g, '')}" class="dept-header"><td colspan="100%">${department}</td></tr>`;
+                }
                 tableContent += "<tr>";
                 row.forEach((cell, index) => {
                     let cellValue = cell.trim();
                     if (index === rows[0].length - 1) {
-                        // Keep the last column as percentage if applicable
-                        tableContent += cellValue && !isNaN(parseFloat(cellValue)) ? `<td>${parseFloat(cellValue).toFixed(2)}%</td>` : "<td></td>";
+                        tableContent += `<td>${cellValue}%</td>`;
                     } else {
-                        // Format all other numerical values as currency
                         const numValue = parseFloat(cellValue);
-                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString()}</td>`;
+                        tableContent += isNaN(numValue) ? `<td>${cellValue}</td>` : `<td>$${numValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>`;
                     }
                 });
                 tableContent += "</tr>";
             });
             tableBody.innerHTML = tableContent;
+
+            let navLinks = "<strong style='color: white;'>Jump to: </strong>";
+            departments.forEach(dept => {
+                navLinks += `<a href="#${dept.replace(/\s+/g, '')}">${dept}</a>`;
+            });
+            navContainer.innerHTML = navLinks;
         }
     </script>
 
