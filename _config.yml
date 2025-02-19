@@ -1,7 +1,7 @@
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: ""
-url: "https://yourwebsite.com"
+baseurl: "/FY26"
+url: "https://nboudreauma.github.io/FY26"
 
 # Theme settings
 theme: minima
