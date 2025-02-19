@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FY26 Budget Expenditures</title>
-    
+    <title>Interactive Donut Chart</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -80,19 +79,17 @@
     </style>
 </head>
 <body>
-    <h1>FY26 Budget Expenditures</h1>
-    
+    <h1>Interactive Donut Chart</h1>
+    <p>This interactive chart provides a visual breakdown of the proposed budget allocations across various departments. Hover over each section to see detailed figures and use the dropdown to jump to specific budget sections.</p>
     <div class="chart-container">
         <canvas id="budgetChart"></canvas>
     </div>
-    
     <div class="dropdown-container">
         <label for="jumpTo">Jump to Department:</label>
         <select id="jumpTo" onchange="jumpToSection()">
             <option value="">Select...</option>
         </select>
     </div>
-    
     <div class="full-budget-container">
         <h2>Full Budget Details</h2>
         <table id="budgetTable">
@@ -104,13 +101,31 @@
             </tbody>
         </table>
     </div>
-    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            loadBudgetData();
             renderChart();
+            loadBudgetData();
         });
-
+        function renderChart() {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        "General Government", "Public Safety", "Public Works", "Education", 
+                        "Human Services", "Culture and Recreation", "Debt", "Liabilities and Assessments"
+                    ],
+                    datasets: [{
+                        data: [
+                            731340.38, 1581842.23, 920184.29, 7294874.64, 
+                            25550.00, 94289.70, 146862.00, 1004948.96
+                        ],
+                        backgroundColor: ['#2d6a4f', '#52b788', '#74c69d', '#95d5b2', '#ff9800', '#9c27b0', '#8e44ad', '#2ecc71']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }} }
+            });
+        }
         async function loadBudgetData() {
             const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget2.csv";
             try {
@@ -122,17 +137,14 @@
                 document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="100%">${error.message}</td></tr>`;
             }
         }
-
         function populateBudgetTable(csvText) {
             const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
             const dropdown = document.getElementById("jumpTo");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
-            
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
             let departmentSet = new Set();
-            
             rows.slice(1).forEach(row => {
                 let department = row[0].trim();
                 let departmentId = department.replace(/\s+/g, '-').toLowerCase();
@@ -144,28 +156,6 @@
             });
             tableBody.innerHTML = tableContent;
         }
-
-        function renderChart() {
-            const ctx = document.getElementById('budgetChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: [
-                        "General Government", "Public Safety", "Public Works", "Education", 
-                        "Human Services", "Culture and Recreation", "Debt", "Liabilities and Assessments"
-                    ],
-                    datasets: [{
-                        data: [
-                            731340.38, 1581842.23, 920184.29, 7294874.64, 
-                            25550.00, 94289.70, 146862.00, 1004948.96
-                        ],
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71']
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }} }
-            });
-        }
-
         function jumpToSection() {
             const value = document.getElementById("jumpTo").value;
             if (value) document.getElementById(value).scrollIntoView({ behavior: 'smooth' });
