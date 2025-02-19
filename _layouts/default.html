@@ -4,28 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} | Hubbardston Budget Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
     <header>
-        <div class="header-container">
-            <h1><a href="/">Hubbardston Budget Portal</a></h1>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/revenue">Revenue</a></li>
-                    <li><a href="/expenditures">Expenditures</a></li>
-                    <li><a href="/budget-book">Budget Book</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ site.baseurl }}/">Home</a></li>
+                <li><a href="{{ site.baseurl }}/revenue">Revenue</a></li>
+                <li><a href="{{ site.baseurl }}/expenditures">Expenditures</a></li>
+                <li><a href="{{ site.baseurl }}/docs/budget-book">Budget Book</a></li>
+                <li><a href="{{ site.baseurl }}/dashboard">Dashboard</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main class="container">
-        <h1>{{ page.title }}</h1>
+    <main>
         {{ content }}
     </main>
+
+    <footer>
+        <p>&copy; {{ site.time | date: "%Y" }} Town of Hubbardston Budget Portal</p>
+    </footer>
+
 </body>
 </html>
