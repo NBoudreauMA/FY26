@@ -1,19 +1,17 @@
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: ""  # Removed FY26 to prevent it from appearing at the top
-url: "https://yourwebsite.com" # Update with your actual site URL
+baseurl: ""
+url: "https://yourwebsite.com"
 
 # Theme settings
-theme: minima # You can replace with another Jekyll theme if needed
+theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Navigation (Sidebar or Top Navigation)
+# Navigation
 nav:
-  - title: "Home"
-    url: "/"
   - title: "Revenue Breakdown"
     url: "/revenue"
   - title: "Expenditures Breakdown"
@@ -32,27 +30,28 @@ kramdown:
 # Permalinks
 permalink: pretty
 
-# Collections (for structured budget data)
+# Collections
 collections:
   budget:
     output: true
     permalink: /:collection/:path/
 
-# Exclude files (Prevents unnecessary files from being built)
+# Exclude files
 exclude:
   - README.md
   - node_modules/
   - Gemfile
   - Gemfile.lock
   - vendor/
-# Default Layout for All Pages
+
+# Default Layout
 defaults:
   - scope:
-      path: ""  # Applies to all pages
+      path: ""
     values:
       layout: "default"
 
-theme: minima
+# Minima theme settings
 minima:
   skin: auto
-  header_pages: []  # This removes the extra "Home" link
+  header_pages: []  # This removes the default theme header
