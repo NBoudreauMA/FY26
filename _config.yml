@@ -45,3 +45,9 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor/
+# Default Layout for All Pages
+defaults:
+  - scope:
+      path: ""  # Applies to all pages
+    values:
+      layout: "default"
