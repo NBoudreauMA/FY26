@@ -1,35 +1,32 @@
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: "/FY26"  # This must match your GitHub repository name
+baseurl: "/FY26"  # Ensure this matches the repository name
 url: "https://nboudreauMA.github.io"  # Your GitHub Pages URL
 
 # Theme settings
 theme: minima
 minima:
   skin: auto
-  header_pages: []  # Prevents extra Home link
+  header_pages: []  
 
-# Navigation (Sidebar or Top Navigation)
+# Navigation
 nav:
   - title: "Home"
     url: "/FY26/"
-  - title: "Revenue Breakdown"
+  - title: "Revenue"
     url: "/FY26/revenue"
-  - title: "Expenditures Breakdown"
+  - title: "Expenditures"
     url: "/FY26/expenditures"
   - title: "Budget Book"
-    url: "/FY26/budget-book"
-  - title: "Contact"
-    url: "/FY26/contact"
+    url: "/FY26/docs/budget-book"
+  - title: "Dashboard"
+    url: "/FY26/dashboard"
 
 # Markdown processing
 markdown: kramdown
 kramdown:
   input: GFM
   auto_ids: true
-
-# Permalinks
-permalink: pretty
 
 # Default Layouts
 defaults:
@@ -38,13 +35,16 @@ defaults:
     values:
       layout: "default"
 
-# Collections (For structured budget data)
+# Permalinks
+permalink: pretty
+
+# Collections (Structured budget data)
 collections:
   budget:
     output: true
     permalink: /FY26/:collection/:path/
 
-# Exclude files (Prevents unnecessary files from being built)
+# Exclude unnecessary files
 exclude:
   - README.md
   - node_modules/
