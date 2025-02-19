@@ -1,7 +1,50 @@
-theme: null
-title: Hubbardston FY26 Budget
-description: Interactive budget proposal site for the Town of Hubbardston, MA.
-markdown: kramdown
+@@ -1,48 +1,47 @@
+# Site settings
+title: "Hubbardston Budget Portal"
+description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
+baseurl: "" # Removed FY26 to prevent it from appearing at the top
+baseurl: ""  # Removed FY26 to prevent it from appearing at the top
+url: "https://yourwebsite.com" # Update with your actual site URL
+
+# Theme settings
+theme: minima # You can replace with another Jekyll theme if needed
 plugins:
+  - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
+
+# Navigation (Sidebar or Top Navigation)
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "Revenue Breakdown"
+    url: "/revenue"
+  - title: "Expenditures Breakdown"
+    url: "/expenditures"
+  - title: "Capital Planning"
+    url: "/capital-planning"
+  - title: "Contact"
+    url: "/contact"
+
+# Markdown processing
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+
+# Permalinks
+permalink: pretty
+
+# Collections (for structured budget data)
+collections:
+  budget:
+    output: true
+    permalink: /:collection/:path/
+
+# Exclude files (Prevents unnecessary files from being built)
+exclude:
+  - README.md
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
