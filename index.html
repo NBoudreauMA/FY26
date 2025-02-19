@@ -7,31 +7,57 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <header class="nav-container">
-        <div class="logo">
-            <img src="assets/images/seal.png" alt="Hubbardston Town Seal">
-            <h1>Hubbardston FY26 Budget</h1>
-        </div>
+    <header>
+        <h1>Hubbardston FY26 Budget Proposal</h1>
         <nav>
             <ul>
-                <li><a href="docs/index.html">Dashboard</a></li>
-                <li><a href="docs/revenue.html">Revenue</a></li>
-                <li><a href="docs/expenditures.html">Expenditures</a></li>
+                <li><a href="docs/revenue.md">Revenue</a></li>
+                <li><a href="docs/expenditures.md">Expenditures</a></li>
+                <li><a href="docs/budget2.csv">Budget Data</a></li>
             </ul>
         </nav>
     </header>
-    
-    <main class="home-container">
-        <h1>Building a Stronger Future</h1>
-        <p>Explore the financial blueprint of Hubbardston for FY26. Transparency and sustainability at the core of governance.</p>
-        <div class="btn-container">
-            <a href="docs/revenue.html" class="btn">View Revenue</a>
-            <a href="docs/expenditures.html" class="btn">View Expenditures</a>
-        </div>
+
+    <main>
+        <section>
+            <h2>Welcome</h2>
+            <p>Explore Hubbardston’s proposed FY26 budget with interactive charts and detailed financial data.</p>
+        </section>
+
+        <section class="chart-container">
+            <canvas id="budgetChart"></canvas>
+        </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Town of Hubbardston. All rights reserved.</p>
+        <p>&copy; 2025 Town of Hubbardston</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById("budgetChart").getContext("2d");
+            new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: ["Tax Levy", "State Aid", "Local Receipts"],
+                    datasets: [{
+                        data: [9276260, 730906, 1616184],
+                        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
