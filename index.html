@@ -1,113 +1,15 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-}
+---
+layout: default
+title: Home
+---
 
-/* Navigation Bar */
-.nav-container {
-    background-color: #5a2d82;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 20px;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
-
-.nav-container .logo {
-    display: flex;
-    align-items: center;
-}
-
-.nav-container .logo img {
-    height: 50px;
-    margin-right: 10px;
-}
-
-.nav-container .logo h1 {
-    font-size: 1.5rem;
-    margin: 0;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding: 10px 15px;
-    transition: background 0.3s;
-}
-
-nav ul li a:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-}
-
-/* Content Padding to Prevent Overlap */
-.content-area {
-    padding-top: 80px; /* Adjusted for fixed navbar */
-}
-
-/* Home Page Background */
-.home-container {
-    background: url('/assets/images/home-bg.jpg') no-repeat center center/cover;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-.home-container h1 {
-    font-size: 3rem;
-    font-weight: bold;
-}
-
-.home-container img {
-    height: 120px;
-    margin-bottom: 20px;
-}
-
-.home-container .btn-container {
-    display: flex;
-    gap: 20px;
-}
-
-.btn {
-    background-color: #5a2d82;
-    color: white;
-    padding: 12px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn:hover {
-    background-color: #431c62;
-}
-
-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #5a2d82;
-}
+<div class="home-container">
+    <img src="/assets/images/seal.png" alt="Hubbardston Town Seal">
+    <h1>Welcome to the FY26 Budget Portal</h1>
+    <p>Explore key financial data for the Town of Hubbardston.</p>
+    <div class="btn-container">
+        <a href="/dashboard.html" class="btn">View Dashboard</a>
+        <a href="/revenue.html" class="btn">View Revenue</a>
+        <a href="/expenditures.html" class="btn">View Budget</a>
+    </div>
+</div>
