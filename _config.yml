@@ -1,5 +1,5 @@
-title: Hubbardston FY26 Budget
-description: Comprehensive financial breakdown of Hubbardston's FY26 budget.
+title: "Hubbardston FY26 Budget"
+description: "A modern municipal budget overview for Hubbardston, MA."
 theme: jekyll-theme-cayman
 
 github:
@@ -7,11 +7,11 @@ github:
 
 nav:
   - title: Dashboard
-    url: /dashboard.html
+    url: /docs/index.html
   - title: Revenue
-    url: /revenue.html
+    url: /docs/revenue.html
   - title: Expenditures
-    url: /expenditures.html
+    url: /docs/expenditures.html
 
 plugins:
   - jekyll-feed
