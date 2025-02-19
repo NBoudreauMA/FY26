@@ -90,36 +90,7 @@
         <label for="jumpTo">Jump to Department:</label>
         <select id="jumpTo" onchange="jumpToSection()">
             <option value="">Select...</option>
-            <option value="general">General Government</option>
-            <option value="safety">Public Safety</option>
-            <option value="works">Public Works</option>
-            <option value="education">Education</option>
-            <option value="human">Human Services</option>
-            <option value="culture">Culture and Recreation</option>
-            <option value="debt">Debt</option>
-            <option value="liabilities">Liabilities and Assessments</option>
         </select>
-    </div>
-    
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Department</th>
-                    <th>Proposed Budget</th>
-                </tr>
-            </thead>
-            <tbody id="summaryTableBody">
-                <tr id="general"><td>General Government</td><td>$731,340.38</td></tr>
-                <tr id="safety"><td>Public Safety</td><td>$1,581,842.23</td></tr>
-                <tr id="works"><td>Public Works</td><td>$920,184.29</td></tr>
-                <tr id="education"><td>Education</td><td>$7,294,874.64</td></tr>
-                <tr id="human"><td>Human Services</td><td>$25,550.00</td></tr>
-                <tr id="culture"><td>Culture and Recreation</td><td>$94,289.70</td></tr>
-                <tr id="debt"><td>Debt</td><td>$146,862.00</td></tr>
-                <tr id="liabilities"><td>Liabilities and Assessments</td><td>$1,004,948.96</td></tr>
-            </tbody>
-        </table>
     </div>
     
     <div class="full-budget-container">
@@ -155,13 +126,21 @@
         function populateBudgetTable(csvText) {
             const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
+            const dropdown = document.getElementById("jumpTo");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
             
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
+            let departmentSet = new Set();
             
             rows.slice(1).forEach(row => {
-                tableContent += "<tr>" + row.map(cell => `<td>${cell.trim()}</td>`).join("") + "</tr>";
+                let department = row[0].trim();
+                let departmentId = department.replace(/\s+/g, '-').toLowerCase();
+                if (!departmentSet.has(department)) {
+                    departmentSet.add(department);
+                    dropdown.innerHTML += `<option value="${departmentId}">${department}</option>`;
+                }
+                tableContent += `<tr id="${departmentId}">` + row.map(cell => `<td>${cell.trim()}</td>`).join("") + "</tr>";
             });
             tableBody.innerHTML = tableContent;
         }
@@ -183,7 +162,7 @@
                         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }}}
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }} }
             });
         }
 
