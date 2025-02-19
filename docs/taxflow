@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FY26 Hubbardston Tax Revenue Flowchart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #2c6e49, #1e3d32);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            max-width: 900px;
+            margin: auto;
+        }
+        .box {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(14px);
+            width: 90%;
+            max-width: 650px;
+            font-size: 1.6rem;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .box:hover {
+            transform: scale(1.08);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .arrow {
+            font-size: 3rem;
+            color: #ffeb3b;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(12px); }
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 750px;
+            margin: auto;
+            margin-top: 60px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <h1>Where Hubbardston's Money Goes</h1>
+    <div class="flowchart">
+        <div class="box">🏠 Residents contribute through property and excise taxes.</div>
+        <div class="arrow">⬇</div>
+        <div class="box">🏛 Hubbardston collects and manages tax revenues.</div>
+        <div class="arrow">⬇</div>
+        <div class="box">📊 The Select Board, Assessors & Finance Team allocate funds.</div>
+        <div class="arrow">⬇</div>
+        <div class="box">🗳 The Town Meeting votes to approve the annual budget.</div>
+        <div class="arrow">⬇</div>
+        <div class="box">🚧 Funds are distributed to essential town services.</div>
+    </div>
+    
+    <h2>FY26 Hubbardston Budget Breakdown</h2>
+    <div class="chart-container">
+        <canvas id="budgetChart"></canvas>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ["General Gov", "Public Safety", "Public Works", "Other", "Education"],
+                    datasets: [{
+                        data: [8, 12.2, 13.8, 6.1, 60.9],
+                        backgroundColor: ['#43A047', '#388E3C', '#C0CA33', '#FF9800', '#FFEB3B'],
+                        borderWidth: 3,
+                        hoverOffset: 14
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: 'white', font: { size: 16 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ": " + tooltipItem.raw + "%";
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
