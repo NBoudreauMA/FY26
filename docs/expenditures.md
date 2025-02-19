@@ -22,30 +22,24 @@
         }
         h1 {
             color: #2d6a4f;
-            font-size: 2.2rem;
+            font-size: 2rem;
+            margin-bottom: 20px;
         }
         .chart-container {
-            width: 60%;
+            width: 100%;
+            max-width: 500px;
             margin: auto;
             margin-bottom: 20px;
         }
-        .nav-container {
-            margin-bottom: 10px;
-        }
-        .nav-container select {
-            padding: 5px;
-            font-size: 1rem;
-            border: 1px solid #2d6a4f;
-            border-radius: 5px;
-        }
         .table-container {
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 600px;
+            margin: auto;
             background: white;
             border-radius: 8px;
             padding: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
         table {
             width: 100%;
@@ -53,22 +47,28 @@
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 12px;
+            padding: 10px;
             text-align: left;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
         th {
             background-color: #2d6a4f;
             color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
         }
         tr:nth-child(even) {
             background-color: #f1f8f1;
         }
-        td:first-child {
-            font-weight: bold;
-            background-color: #d4edda;
+        .full-budget-container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            overflow-x: auto;
         }
     </style>
 </head>
@@ -79,14 +79,29 @@
         <canvas id="budgetChart"></canvas>
     </div>
     
-    <div class="nav-container">
-        <label for="departmentDropdown">Jump To:</label>
-        <select id="departmentDropdown" onchange="jumpToDepartment()">
-            <option value="">Select...</option>
-        </select>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Proposed Budget</th>
+                </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+                <tr><td>General Government</td><td>$731,340.38</td></tr>
+                <tr><td>Public Safety</td><td>$1,581,842.23</td></tr>
+                <tr><td>Public Works</td><td>$920,184.29</td></tr>
+                <tr><td>Education</td><td>$7,294,874.64</td></tr>
+                <tr><td>Human Services</td><td>$25,550.00</td></tr>
+                <tr><td>Culture and Recreation</td><td>$94,289.70</td></tr>
+                <tr><td>Debt</td><td>$146,862.00</td></tr>
+                <tr><td>Liabilities and Assessments</td><td>$1,004,948.96</td></tr>
+            </tbody>
+        </table>
     </div>
     
-    <div class="table-container">
+    <div class="full-budget-container">
+        <h2>Full Budget Details</h2>
         <table id="budgetTable">
             <thead>
                 <tr id="tableHeader"></tr>
@@ -100,6 +115,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             loadBudgetData();
+            renderChart();
         });
 
         async function loadBudgetData() {
@@ -108,63 +124,53 @@
                 const response = await fetch(csvUrl);
                 if (!response.ok) throw new Error("Failed to load CSV file. Ensure the URL is correct.");
                 const data = await response.text();
-                populateTableAndChart(data);
+                populateBudgetTable(data);
             } catch (error) {
                 document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="100%">${error.message}</td></tr>`;
             }
         }
 
-        function populateTableAndChart(csvText) {
+        function populateBudgetTable(csvText) {
             const tableHeader = document.querySelector("#tableHeader");
             const tableBody = document.querySelector("#budgetTable tbody");
-            const dropdown = document.querySelector("#departmentDropdown");
             const rows = csvText.trim().split("\n").map(row => row.split(","));
             
             tableHeader.innerHTML = rows[0].map(header => `<th>${header.trim()}</th>`).join("");
             let tableContent = "";
-            let departmentTotals = {};
             
             rows.slice(1).forEach(row => {
-                let department = row[0] ? row[0].trim() : "";
-                let amount = parseFloat(row[5]) || 0; // Assuming FY26 Dept is at index 5
-                
-                if (!departmentTotals[department]) {
-                    departmentTotals[department] = 0;
-                }
-                departmentTotals[department] += amount;
-                
                 tableContent += "<tr>" + row.map(cell => `<td>${cell.trim()}</td>`).join("") + "</tr>";
             });
             tableBody.innerHTML = tableContent;
-            renderChart(departmentTotals);
         }
-        
-        function renderChart(data) {
+
+        function renderChart() {
             const ctx = document.getElementById('budgetChart').getContext('2d');
             new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: Object.keys(data),
+                    labels: [
+                        "General Government", "Public Safety", "Public Works", "Education", 
+                        "Human Services", "Culture and Recreation", "Debt", "Liabilities and Assessments"
+                    ],
                     datasets: [{
-                        data: Object.values(data),
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71', '#F39C12', '#E74C3C'],
+                        data: [
+                            731340.38, 1581842.23, 920184.29, 7294874.64, 
+                            25550.00, 94289.70, 146862.00, 1004948.96
+                        ],
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71'
+                        ],
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: { position: 'bottom' }
                     }
                 }
             });
-        }
-        
-        function jumpToDepartment() {
-            const dropdown = document.querySelector("#departmentDropdown");
-            const selectedDept = dropdown.value;
-            if (selectedDept) {
-                document.getElementById(selectedDept)?.scrollIntoView({ behavior: "smooth" });
-            }
         }
     </script>
 </body>
