@@ -1,18 +1,13 @@
-title: "Hubbardston FY26 Budget"
-description: "A modern municipal budget overview for Hubbardston, MA."
-theme: jekyll-theme-cayman
+title: Hubbardston Budget
+baseurl: "" # Keep empty if deploying from root
+url: "https://nboudreauMA.github.io" # Your GitHub Pages URL
 
-github:
-  is_project_page: false
+permalink: pretty
 
 nav:
-  - title: Dashboard
-    url: /docs/index.html
+  - title: Home
+    url: /
   - title: Revenue
     url: /docs/revenue.html
   - title: Expenditures
     url: /docs/expenditures.html
-
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
