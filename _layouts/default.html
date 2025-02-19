@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
+    <title>{{ page.title }} | Hubbardston Budget Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -36,11 +36,9 @@
             max-width: 1200px;
             margin: auto;
         }
-        header h1 {
+        .site-title {
             font-size: 1.8rem;
             margin: 0;
-        }
-        header h1 a {
             text-decoration: none;
             color: white;
         }
@@ -69,7 +67,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-            margin-top: 80px; /* Adjusted for the fixed header */
+            margin-top: 80px;
         }
         h1 {
             font-size: 2.5rem;
@@ -81,14 +79,13 @@
 <body>
     <header>
         <div class="header-container">
-            <h1><a href="/">Hubbardston Budget Portal</a></h1>
+            <a href="{{ site.baseurl }}/" class="site-title">Hubbardston Budget Portal</a>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/revenue">Revenue</a></li>
-                    <li><a href="/expenditures">Expenditures</a></li>
-                    <li><a href="/budget-book">Budget Book</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="{{ site.baseurl }}/revenue">Revenue</a></li>
+                    <li><a href="{{ site.baseurl }}/expenditures">Expenditures</a></li>
+                    <li><a href="{{ site.baseurl }}/capital-planning">Capital Planning</a></li>
+                    <li><a href="{{ site.baseurl }}/contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
