@@ -1,21 +1,18 @@
-title: FY26 Budget
-description: A detailed overview of the FY26 budget for the Town of Hubbardston.
+title: Hubbardston FY26 Budget
+description: Comprehensive financial breakdown of Hubbardston's FY26 budget.
 theme: jekyll-theme-cayman
 
-# Enable GitHub Pages
 github:
   is_project_page: false
 
-# Navigation Links
 nav:
   - title: Dashboard
     url: /dashboard.html
   - title: Revenue
     url: /revenue.html
-  - title: Budget Expenditures
+  - title: Expenditures
     url: /expenditures.html
 
-# Plugins
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
