@@ -9,101 +9,28 @@ layout: default
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} | Hubbardston Budget Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #2c6e49, #1e3d32);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        header {
-            background: #2c6e49;
-            color: white;
-            padding: 15px 20px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .site-title {
-            font-size: 1.8rem;
-            margin: 0;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        nav ul li {
-            margin-left: 20px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-        nav ul li a:hover {
-            color: #FFC107;
-        }
-        .container {
-            max-width: 900px;
-            margin: 80px auto 20px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-        }
-        .content {
-            margin-top: 20px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
 </head>
 <body>
+    <div class="background"></div>
+    
     <header>
-        <div class="header-container">
-            <a href="{{ site.baseurl }}/" class="site-title">Hubbardston Budget Portal</a>
-            <nav>
-                <ul>
-                    <li><a href="{{ site.baseurl }}/revenue">Revenue</a></li>
-                    <li><a href="{{ site.baseurl }}/expenditures">Expenditures</a></li>
-                    <li><a href="{{ site.baseurl }}/capital-planning">Capital Planning</a></li>
-                    <li><a href="{{ site.baseurl }}/contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+        <img src="{{ site.baseurl }}/assets/seal.png" alt="Hubbardston Town Seal" class="seal-logo">
+        <h1>{{ page.title }}</h1>
+        <nav>
+            <a href="{{ site.baseurl }}/revenue">Revenue</a>
+            <a href="{{ site.baseurl }}/expenditures">Expenditures</a>
+            <a href="{{ site.baseurl }}/capital-planning">Capital Planning</a>
+            <a href="{{ site.baseurl }}/contact">Contact</a>
+        </nav>
     </header>
 
-    <div class="container">
-        <div class="content">
-            {{ content }}
-        </div>
-    </div>
+    <main class="content">
+        {{ content }}
+    </main>
+
+    <footer>
+        <p>&copy; {{ site.time | date: '%Y' }} Town of Hubbardston. All rights reserved.</p>
+    </footer>
 </body>
 </html>
