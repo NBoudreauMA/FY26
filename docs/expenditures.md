@@ -1,3 +1,83 @@
+import React from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
+const BudgetPieChart = () => {
+  const data = [
+    { name: 'General Government', value: 731340.38 },
+    { name: 'Public Safety', value: 1581842.23 },
+    { name: 'Public Works', value: 920184.29 },
+    { name: 'Education', value: 7294874.64 },
+    { name: 'Human Services', value: 25550.00 },
+    { name: 'Culture & Recreation', value: 94289.70 },
+    { name: 'Debt', value: 146862.00 },
+    { name: 'Liabilities & Assessments', value: 1004948.96 }
+  ];
+
+  const COLORS = [
+    '#2563eb', // Blue
+    '#dc2626', // Red
+    '#16a34a', // Green
+    '#9333ea', // Purple
+    '#ea580c', // Orange
+    '#0d9488', // Teal
+    '#db2777', // Pink
+    '#854d0e'  // Brown
+  ];
+
+  const renderLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    
+    return percent > 0.03 ? (
+      <text
+        x={x}
+        y={y}
+        fill="#374151"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+        className="text-sm font-medium"
+      >
+        {`${name} (${(percent * 100).toFixed(1)}%)`}
+      </text>
+    ) : null;
+  };
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>Proposed Budget Distribution</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-96">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                outerRadius="65%"
+                innerRadius="45%"
+                dataKey="value"
+                labelLine={true}
+                label={renderLabel}
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default BudgetPieChart;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
