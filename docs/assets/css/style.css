@@ -1,27 +1,21 @@
-* {
+body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
 }
 
-body {
-    background: linear-gradient(135deg, #2c6e49, #1e3d32);
+header {
+    background-color: #2d6a4f;
     color: white;
     text-align: center;
     padding: 20px;
 }
 
-header {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
 nav ul {
     list-style: none;
     padding: 0;
+    text-align: center;
 }
 
 nav ul li {
@@ -39,8 +33,12 @@ nav ul li a {
     width: 100%;
     max-width: 600px;
     margin: auto;
-    padding: 25px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.full-budget-container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
