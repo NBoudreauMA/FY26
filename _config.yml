@@ -1,32 +1,53 @@
 title: "Hubbardston Budget Portal"
-description: "An interactive portal for Hubbardston's FY26 budget"
-baseurl: "/FY26"
-url: "https://nboudreauma.github.io"
+description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
+baseurl: ""  # Removed FY26 to prevent it from appearing at the top
+url: "https://yourwebsite.com" # Update with your actual site URL
 
-# Build settings
+# Theme settings
+theme: minima 
+minima:
+  skin: auto
+  header_pages: []  # Prevents GitHub from adding an extra Home link
+
+# Navigation (Sidebar or Top Navigation)
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "Revenue Breakdown"
+    url: "/revenue"
+  - title: "Expenditures Breakdown"
+    url: "/expenditures"
+  - title: "Budget Book"
+    url: "/budget-book"
+  - title: "Contact"
+    url: "/contact"
+
+# Markdown processing
 markdown: kramdown
-theme: minima
+kramdown:
+  input: GFM
+  auto_ids: true
 
-# GitHub Pages settings
-github:
-  is_project_page: false
+# Permalinks
+permalink: pretty
 
-# Default Layout
+# Default Layouts
 defaults:
   - scope:
       path: ""
     values:
       layout: "default"
 
-# Include files and folders
-include:
-  - docs
-  - _layouts
-  - assets
+# Collections
+collections:
+  budget:
+    output: true
+    permalink: /:collection/:path/
 
-# Exclude files and folders
+# Exclude files
 exclude:
+  - README.md
+  - node_modules/
   - Gemfile
   - Gemfile.lock
-  - node_modules
-  - vendor
+  - vendor/
