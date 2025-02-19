@@ -1,4 +1,4 @@
-theme: jekyll-theme-cayman
+theme: null
 title: Hubbardston FY26 Budget
 description: Interactive budget proposal site for the Town of Hubbardston, MA.
 markdown: kramdown
