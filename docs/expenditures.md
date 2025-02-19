@@ -3,15 +3,15 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 const BudgetPieChart = () => {
-  const data = [
-    { name: 'General Government', value: 731340.38 },
-    { name: 'Public Safety', value: 1581842.23 },
-    { name: 'Public Works', value: 920184.29 },
-    { name: 'Education', value: 7294874.64 },
-    { name: 'Human Services', value: 25550.00 },
-    { name: 'Culture & Recreation', value: 94289.70 },
-    { name: 'Debt', value: 146862.00 },
-    { name: 'Liabilities & Assessments', value: 1004948.96 }
+  const data = [ 
+    { name: 'General Government', value: 731340.38 }, 
+    { name: 'Public Safety', value: 1581842.23 }, 
+    { name: 'Public Works', value: 920184.29 }, 
+    { name: 'Education', value: 7294874.64 }, 
+    { name: 'Human Services', value: 25550.00 }, 
+    { name: 'Culture & Recreation', value: 94289.70 }, 
+    { name: 'Debt', value: 146862.00 }, 
+    { name: 'Liabilities & Assessments', value: 1004948.96 } 
   ];
 
   const COLORS = [
@@ -30,7 +30,7 @@ const BudgetPieChart = () => {
     const radius = innerRadius + (outerRadius - innerRadius) * 1.2;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    
+
     return percent > 0.03 ? (
       <text
         x={x}
@@ -48,7 +48,7 @@ const BudgetPieChart = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Proposed Budget Distribution</CardTitle>
+        <CardTitle>FY26 Proposed Budget Distribution</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-96">
@@ -77,12 +77,6 @@ const BudgetPieChart = () => {
 };
 
 export default BudgetPieChart;
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FY26 Budget Expenditures</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
