@@ -1,48 +1,15 @@
 title: "Hubbardston Budget Portal"
-description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
+description: "An interactive portal for Hubbardston's FY26 budget"
 baseurl: "/FY26"
-url: "https://nboudreauma.github.io/FY26"
+url: "https://nboudreauma.github.io"
 
-# Theme settings
-theme: minima
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
-
-# Navigation
-nav:
-  - title: "Revenue Breakdown"
-    url: "/revenue"
-  - title: "Expenditures Breakdown"
-    url: "/expenditures"
-  - title: "Capital Planning"
-    url: "/capital-planning"
-  - title: "Contact"
-    url: "/contact"
-
-# Markdown processing
+# Build settings
 markdown: kramdown
-kramdown:
-  input: GFM
-  auto_ids: true
+theme: minima
 
-# Permalinks
-permalink: pretty
-
-# Collections
-collections:
-  budget:
-    output: true
-    permalink: /:collection/:path/
-
-# Exclude files
-exclude:
-  - README.md
-  - node_modules/
-  - Gemfile
-  - Gemfile.lock
-  - vendor/
+# GitHub Pages settings
+github:
+  is_project_page: false
 
 # Default Layout
 defaults:
@@ -51,7 +18,15 @@ defaults:
     values:
       layout: "default"
 
-# Minima theme settings
-minima:
-  skin: auto
-  header_pages: []  # This removes the default theme header
+# Include files and folders
+include:
+  - docs
+  - _layouts
+  - assets
+
+# Exclude files and folders
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
