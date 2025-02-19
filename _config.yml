@@ -1,34 +1,48 @@
-# Site Information
-title: "Town of Hubbardston Budget Portal"
-description: "A modern, interactive platform for financial transparency and community engagement."
+# Site settings
+title: "Hubbardston Budget Portal"
+description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
+baseurl: "" # Removed FY26 to prevent it from appearing at the top
+url: "https://yourwebsite.com" # Update with your actual site URL
 
-# GitHub Pages Base URL (Adjust if deploying elsewhere)
-baseurl: "/FY26" 
-url: "https://NBoudreauMA.github.io"
-
-# Build Configuration
-theme: null
-markdown: kramdown
-exclude: ["README.md"]
-
-# Ensure Jekyll processes necessary folders
-include:
-  - _data
-  - _layouts
-  - docs/assets
-  - docs/budget.csv  # Ensure the CSV file is processed by Jekyll
-
-# Plugins for SEO and Sitemap
+# Theme settings
+theme: minima # You can replace with another Jekyll theme if needed
 plugins:
+  - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# Navigation Links
-nav_links:
-  Home: "/docs/index.html"
-  Revenue: "/docs/revenue.html"
-  Expenditures: "/docs/expenditures.html"
-  Dashboard: "/dashboard/index.html"
+# Navigation (Sidebar or Top Navigation)
+nav:
+  - title: "Home"
+    url: "/"
+  - title: "Revenue Breakdown"
+    url: "/revenue"
+  - title: "Expenditures Breakdown"
+    url: "/expenditures"
+  - title: "Capital Planning"
+    url: "/capital-planning"
+  - title: "Contact"
+    url: "/contact"
 
-# Permalink Settings for Pretty URLs
+# Markdown processing
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+
+# Permalinks
 permalink: pretty
+
+# Collections (for structured budget data)
+collections:
+  budget:
+    output: true
+    permalink: /:collection/:path/
+
+# Exclude files (Prevents unnecessary files from being built)
+exclude:
+  - README.md
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
