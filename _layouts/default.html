@@ -3,52 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Hubbardston Budget</title>
-    
-    <link rel="stylesheet" href="{{ site.baseurl }}/assets/style.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #2E7D32, #1B5E20);
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            display: flex;
-            justify-content: center;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            font-weight: bold;
-        }
-        .navbar a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-        }
-        .content {
-            padding: 20px;
-        }
-    </style>
+    <title>{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
 
-    <div class="navbar">
-        <a href="{{ site.baseurl }}/">Home</a>
-        <a href="{{ site.baseurl }}/revenue">Revenue</a>
-        <a href="{{ site.baseurl }}/expenditures">Expenditures</a>
-        <a href="{{ site.baseurl }}/docs/budget-book">Budget Book</a>
-        <a href="{{ site.baseurl }}/dashboard">Dashboard</a>
-    </div>
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <h1>{{ site.title }}</h1>
+            </div>
+            <nav>
+                <ul>
+                    {% for item in site.nav %}
+                        <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <div class="content">
+    <main class="content-area">
         {{ content }}
-    </div>
+    </main>
+
+    <footer>
+        <p>&copy; {{ site.time | date: '%Y' }} Town of Hubbardston. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
