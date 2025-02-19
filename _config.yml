@@ -1,13 +1,13 @@
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: ""  # Removed FY26 to prevent it from appearing at the top
+baseurl: ""  # Ensure FY26 is removed from the top
 url: "https://yourwebsite.com" # Update with your actual site URL
 
 # Theme settings
-theme: minima 
+theme: minima
 minima:
   skin: auto
-  header_pages: []  # Prevents GitHub from adding an extra Home link
+  header_pages: []  # Prevents duplicate Home links from appearing
 
 # Navigation (Sidebar or Top Navigation)
 nav:
