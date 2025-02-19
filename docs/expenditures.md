@@ -31,6 +31,13 @@
             margin: auto;
             margin-bottom: 20px;
         }
+        .dropdown-container {
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 8px;
+            font-size: 1rem;
+        }
         .table-container {
             width: 100%;
             max-width: 600px;
@@ -79,6 +86,21 @@
         <canvas id="budgetChart"></canvas>
     </div>
     
+    <div class="dropdown-container">
+        <label for="jumpTo">Jump to Department:</label>
+        <select id="jumpTo" onchange="jumpToSection()">
+            <option value="">Select...</option>
+            <option value="general">General Government</option>
+            <option value="safety">Public Safety</option>
+            <option value="works">Public Works</option>
+            <option value="education">Education</option>
+            <option value="human">Human Services</option>
+            <option value="culture">Culture and Recreation</option>
+            <option value="debt">Debt</option>
+            <option value="liabilities">Liabilities and Assessments</option>
+        </select>
+    </div>
+    
     <div class="table-container">
         <table>
             <thead>
@@ -88,14 +110,14 @@
                 </tr>
             </thead>
             <tbody id="summaryTableBody">
-                <tr><td>General Government</td><td>$731,340.38</td></tr>
-                <tr><td>Public Safety</td><td>$1,581,842.23</td></tr>
-                <tr><td>Public Works</td><td>$920,184.29</td></tr>
-                <tr><td>Education</td><td>$7,294,874.64</td></tr>
-                <tr><td>Human Services</td><td>$25,550.00</td></tr>
-                <tr><td>Culture and Recreation</td><td>$94,289.70</td></tr>
-                <tr><td>Debt</td><td>$146,862.00</td></tr>
-                <tr><td>Liabilities and Assessments</td><td>$1,004,948.96</td></tr>
+                <tr id="general"><td>General Government</td><td>$731,340.38</td></tr>
+                <tr id="safety"><td>Public Safety</td><td>$1,581,842.23</td></tr>
+                <tr id="works"><td>Public Works</td><td>$920,184.29</td></tr>
+                <tr id="education"><td>Education</td><td>$7,294,874.64</td></tr>
+                <tr id="human"><td>Human Services</td><td>$25,550.00</td></tr>
+                <tr id="culture"><td>Culture and Recreation</td><td>$94,289.70</td></tr>
+                <tr id="debt"><td>Debt</td><td>$146,862.00</td></tr>
+                <tr id="liabilities"><td>Liabilities and Assessments</td><td>$1,004,948.96</td></tr>
             </tbody>
         </table>
     </div>
@@ -158,19 +180,16 @@
                             731340.38, 1581842.23, 920184.29, 7294874.64, 
                             25550.00, 94289.70, 146862.00, 1004948.96
                         ],
-                        backgroundColor: [
-                            '#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71'
-                        ],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71']
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }}}
             });
+        }
+
+        function jumpToSection() {
+            const value = document.getElementById("jumpTo").value;
+            if (value) document.getElementById(value).scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
