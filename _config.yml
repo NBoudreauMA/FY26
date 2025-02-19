@@ -51,3 +51,8 @@ defaults:
       path: ""  # Applies to all pages
     values:
       layout: "default"
+
+theme: minima
+minima:
+  skin: auto
+  header_pages: []  # This removes the extra "Home" link
