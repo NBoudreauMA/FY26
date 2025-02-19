@@ -1,7 +1,6 @@
-# Site settings
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: "" # Removed FY26 to prevent it from appearing at the top
+baseurl: ""  # Removed FY26 to prevent it from appearing at the top
 url: "https://yourwebsite.com" # Update with your actual site URL
 
 # Theme settings
