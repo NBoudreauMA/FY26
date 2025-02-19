@@ -1,34 +1,158 @@
----
-layout: default
----
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Hubbardston Budget Portal</title>
+    <title>{{ page.title }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .background {
+            background: url('{{ site.baseurl }}/docs/assets/hubbardston_bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        /* Municipal-style header */
+        .municipal-header {
+            background: linear-gradient(to bottom, #1a472a, #2d6a4f);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            border-bottom: 3px solid #ffd700;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .seal-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #ffd700;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-top: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a472a;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header-left {
+                flex-direction: column;
+            }
+
+            .site-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="background"></div>
     
-    <header>
-        <img src="{{ site.baseurl }}/assets/seal.png" alt="Hubbardston Town Seal" class="seal-logo">
-        <h1>{{ page.title }}</h1>
-        <nav>
-            <a href="{{ site.baseurl }}/revenue">Revenue</a>
-            <a href="{{ site.baseurl }}/expenditures">Expenditures</a>
-            <a href="{{ site.baseurl }}/capital-planning">Capital Planning</a>
-            <a href="{{ site.baseurl }}/contact">Contact</a>
-        </nav>
+    <header class="municipal-header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="{{ site.baseurl }}/docs/assets/seal.png" alt="Hubbardston Seal" class="seal-logo">
+                <a href="{{ site.baseurl }}/" class="site-title">Hubbardston Budget Portal</a>
+            </div>
+            <nav class="nav-links">
+                <a href="{{ site.baseurl }}/docs/revenue">Revenue</a>
+                <a href="{{ site.baseurl }}/docs/expenditures">Expenditures</a>
+                <a href="{{ site.baseurl }}/docs/summary">Summary</a>
+                <a href="{{ site.baseurl }}/docs/taxflow">Tax Flow</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="content">
+    <main class="main-content">
         {{ content }}
     </main>
-
+    
     <footer>
         <p>&copy; {{ site.time | date: '%Y' }} Town of Hubbardston. All rights reserved.</p>
     </footer>
