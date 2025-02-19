@@ -1,13 +1,7 @@
-title: Hubbardston Budget
-baseurl: "" # Keep empty if deploying from root
-url: "https://nboudreauMA.github.io" # Your GitHub Pages URL
-
-permalink: pretty
-
-nav:
-  - title: Home
-    url: /
-  - title: Revenue
-    url: /docs/revenue.html
-  - title: Expenditures
-    url: /docs/expenditures.html
+theme: jekyll-theme-cayman
+title: Hubbardston FY26 Budget
+description: Interactive budget proposal site for the Town of Hubbardston, MA.
+markdown: kramdown
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
