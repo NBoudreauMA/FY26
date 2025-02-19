@@ -1,53 +1,21 @@
-title: "Hubbardston Budget Portal"
-description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: "/FY26"  # Ensure this matches the repository name
-url: "https://nboudreauMA.github.io"  # Your GitHub Pages URL
+title: FY26 Budget
+description: A detailed overview of the FY26 budget expenditures for the Town of Hubbardston.
+theme: jekyll-theme-cayman
 
-# Theme settings
-theme: minima
-minima:
-  skin: auto
-  header_pages: []  
+# Enable GitHub Pages
+github:
+  is_project_page: false
 
-# Navigation
+# Navigation Links
 nav:
-  - title: "Home"
-    url: "/FY26/"
-  - title: "Revenue"
-    url: "/FY26/revenue"
-  - title: "Expenditures"
-    url: "/FY26/expenditures"
-  - title: "Budget Book"
-    url: "/FY26/docs/budget-book"
-  - title: "Dashboard"
-    url: "/FY26/dashboard"
+  - title: Dashboard
+    url: /dashboard.html
+  - title: Revenue
+    url: /revenue.html
+  - title: Budget Expenditures
+    url: /expenditures.html
 
-# Markdown processing
-markdown: kramdown
-kramdown:
-  input: GFM
-  auto_ids: true
-
-# Default Layouts
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: "default"
-
-# Permalinks
-permalink: pretty
-
-# Collections (Structured budget data)
-collections:
-  budget:
-    output: true
-    permalink: /FY26/:collection/:path/
-
-# Exclude unnecessary files
-exclude:
-  - README.md
-  - node_modules/
-  - Gemfile
-  - Gemfile.lock
-  - vendor/
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
