@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FY26 Budget Expenditures</title>
-    
+    <title>FY26 Hubbardston Revenue Breakdown</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <style>
         * {
             margin: 0;
@@ -16,119 +14,88 @@
             font-family: 'Inter', sans-serif;
         }
         body {
-            background-color: #f4f9f4;
+            background: linear-gradient(135deg, #2c6e49, #1e3d32);
+            color: white;
             text-align: center;
             padding: 20px;
-            overflow-x: hidden;
         }
         h1 {
-            color: #2d6a4f;
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
         }
         .chart-container {
             width: 100%;
-            max-width: 400px;
-            height: 400px;
+            max-width: 600px;
             margin: auto;
+            padding: 25px;
             background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
         }
-        .dropdown-container {
-            margin-bottom: 20px;
+        .folder {
+            width: 80%;
+            max-width: 700px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
-        select {
-            padding: 8px;
-            font-size: 1rem;
-        }
-        .full-budget-container {
-            width: 100%;
-            max-width: 900px;
-            margin: auto;
-            background: white;
+        .folder h2 {
+            margin: 0;
+            padding: 10px;
+            background: #388E3C;
             border-radius: 8px;
+            text-align: left;
+            padding-left: 15px;
+        }
+        .folder-content {
+            display: none;
             padding: 15px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            overflow-x: auto;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
         th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
+            border: 1px solid white;
+            padding: 8px;
             text-align: left;
-            font-size: 0.9rem;
-            white-space: nowrap;
+            font-size: 1rem;
         }
         th {
-            background-color: #2d6a4f;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-        }
-        tr:nth-child(even) {
-            background-color: #f1f8f1;
+            background: #388E3C;
         }
     </style>
 </head>
 <body>
-    <h1>FY26 Budget Expenditures</h1>
+    <h1>FY26 Hubbardston Revenue Breakdown</h1>
     
     <div class="chart-container">
-        <h2>Where Your Tax Dollars Go</h2>
-        <canvas id="taxDollarChart"></canvas>
+        <canvas id="revenueChart"></canvas>
     </div>
     
-    <div class="dropdown-container">
-        <label for="jumpTo">Jump to Department:</label>
-        <select id="jumpTo" onchange="jumpToSection()">
-            <option value="">Select...</option>
-        </select>
-    </div>
-    
-    <div class="full-budget-container">
-        <h2>Full Budget Details</h2>
-        <table id="budgetTable">
-            <thead>
-                <tr id="tableHeader">
-                    <th>Department</th>
-                    <th>Proposed Budget</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Loading budget data...</td></tr>
-            </tbody>
-        </table>
-    </div>
+    <p>The following sections break down Hubbardston’s revenue sources for FY26. Click each section to expand and view more details.</p>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            loadBudgetData();
-            renderTaxChart();
-        });
-
-        function renderTaxChart() {
-            const ctx = document.getElementById('taxDollarChart').getContext('2d');
-            const budgetValues = [731340.38, 1581842.23, 920184.29, 7294874.64, 25550.00, 94289.70, 146862.00, 1004948.96];
-            const totalBudget = budgetValues.reduce((acc, val) => acc + val, 0);
-            const budgetPercentages = budgetValues.map(value => ((value / totalBudget) * 100).toFixed(2));
-            
+            const ctx = document.getElementById("revenueChart").getContext("2d");
             new Chart(ctx, {
-                type: 'doughnut',
+                type: "doughnut",
                 data: {
-                    labels: ["General Government", "Public Safety", "Public Works", "Education", "Human Services", "Culture & Recreation", "Debt", "Liabilities & Assessments"],
+                    labels: ["Tax Levy", "State Aid", "Local Receipts"],
                     datasets: [{
-                        data: budgetPercentages,
-                        backgroundColor: ['#43A047', '#388E3C', '#C0CA33', '#FFEB3B', '#FF9800', '#9C27B0', '#8E44AD', '#2ECC71'],
-                        borderWidth: 2,
+                        data: [9276260, 730906, 1616184],
+                        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
                         hoverOffset: 10
                     }]
                 },
@@ -136,45 +103,58 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { color: 'black' } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    return tooltipItem.label + ": " + budgetPercentages[tooltipItem.dataIndex] + "%";
-                                }
-                            }
+                        legend: {
+                            position: "bottom",
+                            labels: { color: "white" }
                         }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
                     }
                 }
             });
-        }
-
-        async function loadBudgetData() {
-            const csvUrl = "https://raw.githubusercontent.com/NBoudreauMA/FY26/main/docs/budget2.csv";
-            try {
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Failed to load CSV file. Ensure the URL is correct.");
-                const data = await response.text();
-                populateBudgetTable(data);
-            } catch (error) {
-                document.querySelector("#budgetTable tbody").innerHTML = `<tr><td colspan="2">${error.message}</td></tr>`;
-            }
-        }
-
-        function populateBudgetTable(csvText) {
-            const tableBody = document.querySelector("#budgetTable tbody");
-            const dropdown = document.getElementById("jumpTo");
-            const rows = csvText.trim().split("\n").map(row => row.split(","));
-            let tableContent = "";
-            rows.slice(1).forEach(row => {
-                tableContent += `<tr><td>${row[0].trim()}</td><td>${row[1].trim()}</td></tr>`;
-                dropdown.innerHTML += `<option value="${row[0].trim()}">${row[0].trim()}</option>`;
-            });
-            tableBody.innerHTML = tableContent;
+        });
+    </script>
+    
+    <div class="folder" onclick="toggleFolder(this)">
+        <h2>Tax Levy</h2>
+        <div class="folder-content">
+            <p>The tax levy is the primary revenue source for the town, including general taxation, annual increases under Prop 2.5%, new growth, and approved debt exclusions.</p>
+            <table>
+                <tr><th>Category</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26 Proposed</th></tr>
+                <tr><td>Tax Levy</td><td>$8,052,778</td><td>$8,425,343</td><td>$8,852,569</td><td>$9,276,260</td></tr>
+                <tr><td>Prop 2.5%</td><td>$202,089</td><td>$210,633</td><td>$221,314</td><td>$230,000</td></tr>
+                <tr><td>New Growth</td><td>$133,000</td><td>$134,215</td><td>$120,000</td><td>$140,000</td></tr>
+                <tr><td>Debt Exclusions</td><td>$37,476</td><td>$82,377</td><td>$82,377</td><td>$85,000</td></tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="folder" onclick="toggleFolder(this)">
+        <h2>State Aid</h2>
+        <div class="folder-content">
+            <p>State aid includes unrestricted government assistance, reimbursements, and allocations for specific programs such as veterans' benefits and education offsets.</p>
+            <table>
+                <tr><th>Category</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26 Proposed</th></tr>
+                <tr><td>Unrestricted Aid</td><td>$521,806</td><td>$530,155</td><td>$554,659</td><td>$568,525</td></tr>
+                <tr><td>Veterans' Benefits</td><td>$29,038</td><td>$24,861</td><td>$25,706</td><td>$26,348</td></tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="folder" onclick="toggleFolder(this)">
+        <h2>Local Receipts</h2>
+        <div class="folder-content">
+            <p>Local receipts capture revenue from excise taxes, licenses, permits, fines, service fees, and other locally generated income sources.</p>
+            <table>
+                <tr><th>Category</th><th>FY23</th><th>FY24</th><th>FY25</th><th>FY26 Proposed</th></tr>
+                <tr><td>Motor Vehicle</td><td>$647,660</td><td>$716,352</td><td>$727,600</td><td>$778,532</td></tr>
+                <tr><td>Building Permits</td><td>$47,750</td><td>$27,253</td><td>$50,000</td><td>$40,000</td></tr>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function toggleFolder(folder) {
+            let content = folder.querySelector(".folder-content");
+            content.style.display = content.style.display === "block" ? "none" : "block";
         }
     </script>
 </body>
