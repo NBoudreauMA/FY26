@@ -73,13 +73,13 @@
     <div class="flowchart">
         <div class="box">🏠 Residents contribute through property and excise taxes.</div>
         <div class="arrow">⬇</div>
-        <div class="box">🏛 Hubbardston collects and manages tax revenues.</div>
+        <div class="box">🏛 Hubbardston collects and manages tax revenues to support essential services.</div>
         <div class="arrow">⬇</div>
-        <div class="box">📊 The Select Board, Assessors & Finance Team allocate funds.</div>
+        <div class="box">📊 The Select Board, Assessors & Finance Team allocate funds based on town needs.</div>
         <div class="arrow">⬇</div>
-        <div class="box">🗳 The Town Meeting votes to approve the annual budget.</div>
+        <div class="box">🗳 Hubbardston's Town Meeting votes to approve the annual budget.</div>
         <div class="arrow">⬇</div>
-        <div class="box">🚧 Funds are distributed to essential town services.</div>
+        <div class="box">🚧 Approved funds are distributed to schools, public safety, infrastructure, and municipal services.</div>
     </div>
     
     <h2>FY26 Hubbardston Budget Breakdown</h2>
@@ -93,7 +93,7 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ["General Gov", "Public Safety", "Public Works", "Other", "Education"],
+                    labels: ["General Government", "Public Safety", "Public Works", "Other Municipal Services", "Education"],
                     datasets: [{
                         data: [8, 12.2, 13.8, 6.1, 60.9],
                         backgroundColor: ['#43A047', '#388E3C', '#C0CA33', '#FF9800', '#FFEB3B'],
