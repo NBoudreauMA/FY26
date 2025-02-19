@@ -1,26 +1,26 @@
 title: "Hubbardston Budget Portal"
 description: "An interactive portal for Hubbardston's FY26 budget, including revenue and expenditures breakdowns."
-baseurl: ""  # Ensure FY26 is removed from the top
-url: "https://yourwebsite.com" # Update with your actual site URL
+baseurl: "/FY26"  # This must match your GitHub repository name
+url: "https://nboudreauMA.github.io"  # Your GitHub Pages URL
 
 # Theme settings
 theme: minima
 minima:
   skin: auto
-  header_pages: []  # Prevents duplicate Home links from appearing
+  header_pages: []  # Prevents extra Home link
 
 # Navigation (Sidebar or Top Navigation)
 nav:
   - title: "Home"
-    url: "/"
+    url: "/FY26/"
   - title: "Revenue Breakdown"
-    url: "/revenue"
+    url: "/FY26/revenue"
   - title: "Expenditures Breakdown"
-    url: "/expenditures"
+    url: "/FY26/expenditures"
   - title: "Budget Book"
-    url: "/budget-book"
+    url: "/FY26/budget-book"
   - title: "Contact"
-    url: "/contact"
+    url: "/FY26/contact"
 
 # Markdown processing
 markdown: kramdown
@@ -38,13 +38,13 @@ defaults:
     values:
       layout: "default"
 
-# Collections
+# Collections (For structured budget data)
 collections:
   budget:
     output: true
-    permalink: /:collection/:path/
+    permalink: /FY26/:collection/:path/
 
-# Exclude files
+# Exclude files (Prevents unnecessary files from being built)
 exclude:
   - README.md
   - node_modules/
