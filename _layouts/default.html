@@ -3,32 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Hubbardston Budget Portal</title>
+    <title>{{ page.title }} | Hubbardston Budget</title>
     
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+        .content {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ site.baseurl }}/">Home</a></li>
-                <li><a href="{{ site.baseurl }}/revenue">Revenue</a></li>
-                <li><a href="{{ site.baseurl }}/expenditures">Expenditures</a></li>
-                <li><a href="{{ site.baseurl }}/docs/budget-book">Budget Book</a></li>
-                <li><a href="{{ site.baseurl }}/dashboard">Dashboard</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="navbar">
+        <a href="{{ site.baseurl }}/">Home</a>
+        <a href="{{ site.baseurl }}/revenue">Revenue</a>
+        <a href="{{ site.baseurl }}/expenditures">Expenditures</a>
+        <a href="{{ site.baseurl }}/docs/budget-book">Budget Book</a>
+        <a href="{{ site.baseurl }}/dashboard">Dashboard</a>
+    </div>
 
-    <main>
+    <div class="content">
         {{ content }}
-    </main>
-
-    <footer>
-        <p>&copy; {{ site.time | date: "%Y" }} Town of Hubbardston Budget Portal</p>
-    </footer>
+    </div>
 
 </body>
 </html>
