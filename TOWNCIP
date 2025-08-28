@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VAULT — TownConnect CIP (Town X)</title>
+<style>
+  :root{
+    --bg:#f6f8f7;
+    --card:#ffffff;
+    --text:#1b1f1e;
+    --muted:#5b6b63;
+    --accent:#2e7d32;     /* municipal green */
+    --accent-2:#1b5e20;
+    --danger:#b00020;
+    --border:#e2e6e3;
+    --focus:#2962ff;
+    --chip:#e8f5e9;
+    --shadow:0 6px 20px rgba(0,0,0,.08);
+    --radius:12px;
+    --space:14px;
+    --space-lg:22px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    line-height:1.35;
+  }
+  header{
+    background:linear-gradient(135deg,var(--accent) 0%, var(--accent-2) 100%);
+    color:#fff;
+    padding:20px;
+  }
+  .wrap{max-width:1100px;margin:0 auto}
+  .hbar{display:flex;align-items:center;gap:16px}
+  .seal{
+    width:56px;height:56px;border-radius:8px;
+    background:#fff2; display:grid; place-items:center; font-weight:700;
+    border:1px solid #ffffff55;
+  }
+  .seal span{font-size:12px;letter-spacing:.4px;text-transform:uppercase}
+  h1{margin:0;font-size:clamp(20px,2vw,28px)}
+  .subtitle{margin-top:6px;opacity:.9}
+  .head-actions{margin-left:auto;display:flex;gap:10px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px 14px;border-radius:10px;border:1px solid #ffffff55;color:#fff;background:#ffffff22;
+    text-decoration:none;cursor:pointer;font-weight:600
+  }
+  .btn:focus{outline:3px solid #fff8}
+  main{padding:20px 16px}
+  .grid{display:grid;grid-template-columns:1fr;gap:18px}
+  @media (min-width:980px){.grid{grid-template-columns:1fr 360px}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .card>.hd{
+    padding:16px var(--space);
+    border-bottom:1px solid var(--border);
+    font-weight:700;
+  }
+  .card>.body{padding:var(--space-lg)}
+  fieldset{
+    border:1px dashed var(--border);
+    border-radius:10px;padding:14px;margin:0 0 16px 0
+  }
+  legend{padding:0 8px;color:var(--muted);font-weight:700}
+  label{display:block;font-weight:600;margin:12px 0 6px}
+  input[type="text"], input[type="email"], input[type="number"], select, textarea{
+    width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff;
+  }
+  textarea{min-height:110px;resize:vertical}
+  .hint{color:var(--muted);font-size:.9rem;margin-top:4px}
+  .row{display:grid;grid-template-columns:1fr;gap:12px}
+  @media (min-width:700px){.row.two{grid-template-columns:1fr 1fr}}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--chip);border:1px solid #cfe8d0;padding:6px 10px;border-radius:999px}
+  .checkline{display:flex;align-items:center;gap:10px;margin:6px 0}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn-quiet{background:#fff;border:1px solid var(--border);color:var(--text)}
+  .btn-warn{background:#fff;border:1px solid var(--danger);color:var(--danger)}
+  .error{color:var(--danger);font-size:.92rem;margin-top:6px}
+  .banner{padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:#f8fff8}
+  .banner.err{background:#fff5f6;border-color:#ffd1d7;color:var(--danger)}
+  .hidden{display:none !important}
+
+  /* Drawer (receipt / admin) */
+  .drawer{
+    position:fixed;top:0;right:-560px;width:560px;max-width:92vw;height:100%;
+    background:#fff;border-left:1px solid var(--border);box-shadow:-6px 0 24px rgba(0,0,0,.15);
+    transition:right .25s ease;z-index:50;display:flex;flex-direction:column;
+  }
+  .drawer.open{right:0}
+  .drawer .dh{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .drawer .dc{padding:16px;overflow:auto}
+  .keyval{display:grid;grid-template-columns:160px 1fr;gap:8px;margin:10px 0}
+  .kv{display:contents}
+  pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:10px;overflow:auto}
+
+  /* FAQ accordion */
+  details{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:10px 0;background:#fff}
+  summary{cursor:pointer;font-weight:700}
+
+  /* Print */
+  @media print{
+    header,.head-actions,.actions,.admin-toggle,#adminPanelToggle,.drawer:not(.open){display:none !important}
+    body{background:#fff}
+    .card{box-shadow:none;border:none}
+    .receipt-print{display:block}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <div class="seal" aria-hidden="true"><span>Town X</span></div>
+    <div>
+      <h1>VAULT — TownConnect CIP</h1>
+      <div class="subtitle">Submit and track <b>Capital Improvement</b> requests for <b>Town X</b>. This page collects your request and sends it to the Town’s workflow.</div>
+    </div>
+    <div class="head-actions">
+      <a class="btn" href="#faq">Help / FAQ</a>
+      <button id="adminPanelToggle" class="btn" type="button" aria-expanded="false" aria-controls="adminDrawer">Admin Inspect</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <!-- Form card -->
+    <section class="card" aria-labelledby="formTitle">
+      <div class="hd" id="formTitle">Capital Request Form</div>
+      <div class="body">
+        <div class="banner" role="status" id="msg" aria-live="polite">Tip: Fill the form, click “Review & Submit” to see a receipt. Nothing is sent until you press “Submit Request”.</div>
+
+        <form id="cipForm" novalidate>
+          <fieldset>
+            <legend>Request Basics</legend>
+            <label for="dept">Department / Board <span aria-hidden="true">*</span></label>
+            <select id="dept" name="Dept" required>
+              <option value="">Select…</option>
+              <option>Town Administrator</option>
+              <option>DPW</option>
+              <option>Police</option>
+              <option>Fire/EMS</option>
+              <option>Library</option>
+              <option>Parks & Recreation</option>
+              <option>IT / Technology</option>
+              <option>Other (specify below)</option>
+            </select>
+            <input type="text" id="deptOther" class="hidden" placeholder="If Other, specify department/board" />
+            <p class="hint">Who is requesting this capital project?</p>
+
+            <label for="title">Project Title <span aria-hidden="true">*</span></label>
+            <input id="title" name="Project_Title" type="text" maxlength="120" required />
+            <p class="hint">Short, clear name (e.g., “Replace 2009 Plow Truck”).</p>
+
+            <label for="desc">Project Description <span aria-hidden="true">*</span></label>
+            <textarea id="desc" name="Project_Description" required></textarea>
+            <p class="hint">What is it? Why do we need it? What changes/improves?</p>
+
+            <div aria-labelledby="justLbl" role="group">
+              <div id="justLbl" style="font-weight:600;margin:12px 0 6px">Justification (pick at least one) <span aria-hidden="true">*</span></div>
+              <div class="checkline"><input id="j1" type="checkbox" value="Safety"><label for="j1">Safety</label></div>
+              <div class="checkline"><input id="j2" type="checkbox" value="Compliance/Legal"><label for="j2">Compliance / Legal</label></div>
+              <div class="checkline"><input id="j3" type="checkbox" value="Strategic Need"><label for="j3">Strategic Need</label></div>
+              <div class="checkline"><input id="j4" type="checkbox" value="Efficiency/Cost Savings"><label for="j4">Efficiency / Cost Savings</label></div>
+              <div class="checkline"><input id="j5" type="checkbox" value="Mandate"><label for="j5">Mandate</label></div>
+              <div class="checkline"><input id="j6" type="checkbox" value="End-of-Life/Replacement"><label for="j6">End-of-Life / Replacement</label></div>
+              <div id="justErr" class="error hidden">Please select at least one justification.</div>
+            </div>
+
+            <label for="cat">Category <span aria-hidden="true">*</span></label>
+            <select id="cat" required>
+              <option value="">Select…</option>
+              <option>Facilities / Buildings</option>
+              <option>DPW / Equipment</option>
+              <option>Public Safety</option>
+              <option>IT / Technology</option>
+              <option>Recreation / Fields</option>
+              <option>Roads / Drainage</option>
+              <option>Other</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Scope & Timing</legend>
+            <div class="row two">
+              <div>
+                <label for="fy">Requested Fiscal Year <span aria-hidden="true">*</span></label>
+                <select id="fy" required>
+                  <option value="">Select…</option>
+                  <option>FY26</option><option>FY27</option><option>FY28</option>
+                  <option>FY29</option><option>FY30</option><option>FY31</option>
+                </select>
+              </div>
+              <div>
+                <label for="phased">Multi-year / Phased?</label>
+                <select id="phased">
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="phasingBlock" class="hidden" aria-live="polite">
+              <label>Phasing Table</label>
+              <div id="phases"></div>
+              <div class="actions">
+                <button class="btn btn-quiet" type="button" id="addPhase">Add Phase</button>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Cost & Funding</legend>
+            <div class="row two">
+              <div>
+                <label for="cost">Estimated Total Cost (USD) <span aria-hidden="true">*</span></label>
+                <input id="cost" type="text" inputmode="decimal" required placeholder="e.g., 250000" />
+                <div id="costErr" class="error hidden">Enter a valid cost (e.g., 250000).</div>
+              </div>
+              <div>
+                <label for="life">Expected Asset Life (years) <span aria-hidden="true">*</span></label>
+                <input id="life" type="number" min="1" step="1" required />
+              </div>
+            </div>
+
+            <div aria-labelledby="fundLbl" role="group">
+              <div id="fundLbl" style="font-weight:600;margin:12px 0 6px">Potential Funding Sources</div>
+              <div class="checkline"><input id="f1" type="checkbox" value="Free Cash"><label for="f1">Free Cash</label></div>
+              <div class="checkline"><input id="f2" type="checkbox" value="Borrowing"><label for="f2">Borrowing (Debt)</label></div>
+              <div class="checkline"><input id="f3" type="checkbox" value="Grants"><label for="f3">Grants</label></div>
+              <div class="checkline"><input id="f4" type="checkbox" value="CPA"><label for="f4">CPA</label></div>
+              <div class="checkline"><input id="f5" type="checkbox" value="Other"><label for="f5">Gift / Other</label></div>
+            </div>
+
+            <div id="grantBlock" class="hidden">
+              <div class="row two">
+                <div>
+                  <label for="gname">Grant Name</label>
+                  <input id="gname" type="text" placeholder="e.g., MassWorks" />
+                </div>
+                <div>
+                  <label for="gstatus">Award Status</label>
+                  <select id="gstatus">
+                    <option>Exploring</option><option>Applied</option><option>Awarded</option><option>Not Eligible</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Attachments (filenames only in this demo)</legend>
+            <label for="files">Upload Quotes / Plans / Photos</label>
+            <input id="files" type="file" multiple />
+            <p class="hint">Demo note: this page records filenames only. In production, files would be uploaded to SharePoint or another storage.</p>
+            <div id="fileList" class="chips" aria-live="polite"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Contact</legend>
+            <div class="row two">
+              <div>
+                <label for="sname">Your Name <span aria-hidden="true">*</span></label>
+                <input id="sname" type="text" required />
+              </div>
+              <div>
+                <label for="srole">Role / Title <span aria-hidden="true">*</span></label>
+                <input id="srole" type="text" required />
+              </div>
+            </div>
+            <div class="row two">
+              <div>
+                <label for="semail">Email <span aria-hidden="true">*</span></label>
+                <input id="semail" type="email" required />
+              </div>
+              <div>
+                <label for="sphone">Phone (optional)</label>
+                <input id="sphone" type="text" />
+              </div>
+            </div>
+            <label for="cchead">Department Head to CC (optional)</label>
+            <input id="cchead" type="email" placeholder="head@townx.gov" />
+          </fieldset>
+
+          <div class="actions">
+            <button class="btn btn-quiet" type="button" id="saveDraft">Save Draft</button>
+            <button class="btn btn-warn" type="button" id="clearForm">Clear Form</button>
+            <button class="btn btn-primary" type="button" id="review">Review & Submit</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Right column: FAQ -->
+    <aside class="card" aria-labelledby="faq">
+      <div class="hd" id="faq">Help / FAQ</div>
+      <div class="body">
+        <details open>
+          <summary>What does this page do?</summary>
+          <p>This page collects your Capital Improvement request for <b>Town X</b>, creates a receipt, and sends your data to the Town’s workflow (VAULT). It does not finalize anything until you press <b>Submit Request</b>.</p>
+        </details>
+        <details>
+          <summary>Where does my request go?</summary>
+          <p>After you submit, the request is routed to the Town Administrator, Capital Planning Committee, Finance Committee, and Select Board as part of the normal CIP process.</p>
+        </details>
+        <details>
+          <summary>Can I save a draft?</summary>
+          <p>Yes. Click <b>Save Draft</b>. Your text fields are stored in your browser (local to this device). Files must be reattached before submitting.</p>
+        </details>
+        <details>
+          <summary>Printing the receipt</summary>
+          <p>Use <b>Review & Submit</b> to preview. You can print or save as PDF from your browser.</p>
+        </details>
+        <hr />
+        <p class="hint">Contact: Town Administrator’s Office — <a href="mailto:admin@townx.gov">admin@townx.gov</a> • (555) 555-5555</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<!-- Receipt Drawer -->
+<aside id="receiptDrawer" class="drawer" aria-hidden="true" aria-labelledby="receiptTitle" role="dialog">
+  <div class="dh">
+    <div>
+      <div id="receiptTitle" style="font-weight:800">Receipt Preview</div>
+      <div class="hint">Review details below. This is what will be submitted.</div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-quiet" onclick="window.print()">Print / Save PDF</button>
+      <button type="button" class="btn" id="closeReceipt">Close</button>
+    </div>
+  </div>
+  <div class="dc">
+    <div id="receiptContent"></div>
+    <div class="actions">
+      <button class="btn btn-primary" id="submit">Submit Request</button>
+    </div>
+    <div id="submitMsg" class="banner hidden" role="status" aria-live="polite"></div>
+  </div>
+</aside>
+
+<!-- Admin Drawer -->
+<aside id="adminDrawer" class="drawer" aria-hidden="true" aria-labelledby="adminTitle" role="dialog">
+  <div class="dh">
+    <div id="adminTitle" style="font-weight:800">Admin Inspect (JSON Payload)</div>
+    <button type="button" class="btn" id="closeAdmin">Close</button>
+  </div>
+  <div class="dc">
+    <p class="hint">This shows the exact JSON that will be posted to the Town’s flow endpoint.</p>
+    <pre id="adminJson" aria-label="JSON Payload"></pre>
+    <div class="hint">FLOW_URL is set at the top of the script. Replace with your Power Automate / Logic Apps HTTP trigger URL.</div>
+  </div>
+</aside>
+
+<footer class="wrap" style="padding:20px;color:var(--muted)">
+  <small>
+    © Town X • VAULT™ (Verified Automation & Unified Logic for Towns) — TownConnect Portal.
+    Submissions are public records and retained per municipal schedules.
+  </small>
+</footer>
+
+<script>
+  // ===================== CONFIG =====================
+  // Replace this with your Power Automate / Logic Apps HTTP trigger URL
+  const FLOW_URL = 'https://YOUR-FLOW-URL-HERE';
+
+  // ===================== HELPERS =====================
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+  const byId = id => document.getElementById(id);
+
+  function uuidv4(){
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
+  function toNumber(val){
+    if(typeof val!=='string') return NaN;
+    const n = Number(val.replace(/[^0-9.]/g,''));
+    return isFinite(n) ? n : NaN;
+  }
+  function formatCurrency(n){
+    if(isNaN(n)) return '';
+    return new Intl.NumberFormat(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+  }
+  function nowISO(){
+    const d = new Date();
+    const tzOff = -d.getTimezoneOffset();
+    const diff = tzOff >= 0 ? '+' : '-';
+    const pad = n => String(Math.floor(Math.abs(n))).padStart(2,'0');
+    return d.toISOString().slice(0,19) + diff + pad(tzOff/60) + ':' + pad(tzOff%60);
+  }
+
+  // ===================== STATE =====================
+  const state = { attachments: [] };
+
+  // ===================== UI WIRING =====================
+  const dept = byId('dept');
+  const deptOther = byId('deptOther');
+  const phased = byId('phased');
+  const phasingBlock = byId('phasingBlock');
+  const phasesWrap = byId('phases');
+  const addPhaseBtn = byId('addPhase');
+  const files = byId('files');
+  const fileList = byId('fileList');
+  const cost = byId('cost');
+  const costErr = byId('costErr');
+  const grantBlock = byId('grantBlock');
+  const f3 = byId('f3'); // Grants
+  const msg = byId('msg');
+
+  // Dept Other toggle
+  dept.addEventListener('change', () => {
+    const isOther = dept.value.includes('Other');
+    deptOther.classList.toggle('hidden', !isOther);
+  });
+
+  // Phasing
+  phased.addEventListener('change', () => {
+    phasingBlock.classList.toggle('hidden', phased.value !== 'Yes');
+  });
+  addPhaseBtn.addEventListener('click', addPhaseRow);
+  function addPhaseRow(data = {}){
+    const row = document.createElement('div');
+    row.className = 'row two';
+    row.style.alignItems = 'end';
+    row.innerHTML = `
+      <div>
+        <label>Phase Name</label>
+        <input type="text" value="${data.Phase_Name||''}">
+      </div>
+      <div>
+        <label>FY</label>
+        <select>
+          <option>FY26</option><option>FY27</option><option>FY28</option>
+          <option>FY29</option><option>FY30</option><option>FY31</option>
+        </select>
+      </div>
+      <div>
+        <label>Estimated Cost (USD)</label>
+        <input type="text" inputmode="decimal" value="${data.Estimated_Cost||''}">
+      </div>
+      <div>
+        <button type="button" class="btn btn-quiet removePhase">Remove</button>
+      </div>
+    `;
+    phasesWrap.appendChild(row);
+    row.querySelector('.removePhase').addEventListener('click', () => row.remove());
+  }
+
+  // Files (filenames only in demo)
+  files.addEventListener('change', () => {
+    state.attachments = Array.from(files.files).map(f => ({
+      FileName: f.name,
+      Type: guessType(f.name),
+      Note: ''
+    }));
+    renderFiles();
+  });
+  function guessType(name){
+    const n = name.toLowerCase();
+    if(n.endsWith('.pdf')) return 'quote';
+    if(n.match(/\.(png|jpg|jpeg|gif|webp)$/)) return 'photo';
+    return 'plan';
+  }
+  function renderFiles(){
+    fileList.innerHTML = '';
+    state.attachments.forEach((a, i) => {
+      const el = document.createElement('div');
+      el.className = 'chip';
+      el.textContent = `${a.FileName} (${a.Type})`;
+      el.title = 'Click to remove';
+      el.tabIndex = 0;
+      el.addEventListener('click', () => { state.attachments.splice(i,1); renderFiles(); });
+      el.addEventListener('keypress', (e)=>{ if(e.key==='Enter') { state.attachments.splice(i,1); renderFiles(); }});
+      fileList.appendChild(el);
+    });
+  }
+
+  // Grant block toggle
+  [f3].forEach(cb => cb.addEventListener('change', () => {
+    grantBlock.classList.toggle('hidden', !f3.checked);
+  }));
+
+  // Cost formatting / validation
+  cost.addEventListener('blur', () => {
+    const n = toNumber(cost.value);
+    if(isNaN(n) || n < 0){ costErr.classList.remove('hidden'); }
+    else{
+      costErr.classList.add('hidden');
+      cost.value = String(Math.round(n));
+    }
+  });
+
+  // Justification validation
+  function validateJustification(){
+    const checked = $$('input[id^="j"]').some(x => x.checked);
+    byId('justErr').classList.toggle('hidden', checked);
+    return checked;
+  }
+  $$('input[id^="j"]').forEach(x => x.addEventListener('change', validateJustification));
+
+  // Save Draft / Clear
+  byId('saveDraft').addEventListener('click', () => {
+    const data = serialize();
+    localStorage.setItem('cip_draft_townx', JSON.stringify(data));
+    toast('Draft saved on this device.');
+  });
+  byId('clearForm').addEventListener('click', () => {
+    if(confirm('Clear all fields and local draft?')) {
+      byId('cipForm').reset();
+      localStorage.removeItem('cip_draft_townx');
+      state.attachments = [];
+      renderFiles();
+      phasesWrap.innerHTML = '';
+      phasingBlock.classList.add('hidden');
+      grantBlock.classList.add('hidden');
+      deptOther.classList.add('hidden');
+      toast('Form cleared.');
+    }
+  });
+
+  // Load draft if present
+  (function loadDraft(){
+    try{
+      const d = JSON.parse(localStorage.getItem('cip_draft_townx')||'null');
+      if(!d) return;
+      setIf(dept, d.Dept);
+      if(dept.value.includes('Other')){ deptOther.classList.remove('hidden'); deptOther.value = d.Dept_Other||''; }
+      byId('title').value = d.Project_Title||'';
+      byId('desc').value = d.Project_Description||'';
+      // justifications
+      $$('input[id^="j"]').forEach(x => x.checked = (d.Justification||[]).includes(x.value));
+      setIf(byId('cat'), d.Category);
+      setIf(byId('fy'), d.Requested_FY);
+      setIf(phased, d.Phased ? 'Yes':'No');
+      if(d.Phased){ phasingBlock.classList.remove('hidden'); (d.Phases||[]).forEach(addPhaseRow); }
+      byId('cost').value = d.Estimated_Total_Cost || '';
+      byId('life').value = d.Asset_Life_Years || '';
+      (d.Funding_Sources||[]).forEach(v=>{
+        const el = $$('#fundLbl ~ .checkline input').find(i=>i.value===v);
+        if(el) el.checked = true;
+      });
+      if((d.Funding_Sources||[]).includes('Grants')){
+        grantBlock.classList.remove('hidden');
+        byId('gname').value = (d.Grant_Details||{}).Name || '';
+        setIf(byId('gstatus'), (d.Grant_Details||{}).Status || 'Exploring');
+      }
+      byId('sname').value = (d.Submitter||{}).Name || '';
+      byId('srole').value = (d.Submitter||{}).Role || '';
+      byId('semail').value = (d.Submitter||{}).Email || '';
+      byId('sphone').value = (d.Submitter||{}).Phone || '';
+      byId('cchead').value = d.CC_Head || '';
+      state.attachments = d.Attachments || [];
+      renderFiles();
+      toast('Draft loaded.');
+    }catch(e){}
+  })();
+  function setIf(sel,val){ if(!val) return; sel.value = val; }
+
+  // Review & Submit
+  byId('review').addEventListener('click', () => {
+    const form = byId('cipForm');
+    const ok = form.checkValidity() && validateJustification() && validateCost();
+    if(!ok){
+      // show native invalid messages nicely
+      form.reportValidity();
+      return;
+    }
+    const payload = buildPayload();
+    renderReceipt(payload);
+    openDrawer('receiptDrawer', true);
+    // show in admin panel too for convenience
+    byId('adminJson').textContent = JSON.stringify(payload, null, 2);
+  });
+
+  function validateCost(){
+    const n = toNumber(cost.value);
+    const good = !isNaN(n) && n >= 0;
+    costErr.classList.toggle('hidden', good);
+    return good;
+  }
+
+  function serialize(){
+    // lightweight JSON used for draft storage
+    const data = buildPayload();
+    // include Dept_Other hint for reload
+    data.Dept_Other = deptOther.classList.contains('hidden') ? '' : deptOther.value.trim();
+    data.CC_Head = byId('cchead').value.trim();
+    return data;
+  }
+
+  function buildPayload(){
+    const just = $$('input[id^="j"]').filter(x=>x.checked).map(x=>x.value);
+    const fsrc = $$('#fundLbl ~ .checkline input').filter(x=>x.checked).map(x=>x.value);
+    const phs = [];
+    if(phased.value==='Yes'){
+      for(const row of phasesWrap.children){
+        const [nEl, fyEl, cEl] = row.querySelectorAll('input,select');
+        const n = nEl.value.trim();
+        const fy = fyEl.value.trim();
+        const c = toNumber(cEl.value);
+        if(n || fy || !isNaN(c)) phs.push({Phase_Name:n, FY:fy, Estimated_Cost: isNaN(c)? 0 : c});
+      }
+    }
+    const deptVal = dept.value.includes('Other') ? (deptOther.value.trim() || 'Other') : dept.value;
+    const payload = {
+      Dept: deptVal,
+      Project_Title: byId('title').value.trim(),
+      Project_Description: byId('desc').value.trim(),
+      Justification: just,
+      Category: byId('cat').value.trim(),
+      Requested_FY: byId('fy').value.trim(),
+      Phased: phased.value==='Yes',
+      Phases: phs,
+      Estimated_Total_Cost: toNumber(cost.value),
+      Funding_Sources: fsrc,
+      Grant_Details: fsrc.includes('Grants') ? {
+        Name: byId('gname').value.trim(),
+        Status: byId('gstatus').value.trim()
+      } : null,
+      Asset_Life_Years: Number(byId('life').value || 0),
+      Attachments: state.attachments.slice(),
+      Submitter: {
+        Name: byId('sname').value.trim(),
+        Role: byId('srole').value.trim(),
+        Email: byId('semail').value.trim(),
+        Phone: byId('sphone').value.trim()
+      },
+      Client_Receipt_ID: uuidv4(),
+      Submitted_At_ISO: nowISO()
+    };
+    return payload;
+  }
+
+  function renderReceipt(p){
+    const el = byId('receiptContent');
+    el.innerHTML = `
+      <div class="receipt-print">
+        <h3 style="margin:0 0 6px">Town X — Capital Request Receipt</h3>
+        <div class="hint">Client Receipt ID: <b>${p.Client_Receipt_ID}</b> • Timestamp: ${p.Submitted_At_ISO}</div>
+      </div>
+      <div class="keyval">
+        <div class="kv"><div>Department</div><div>${p.Dept}</div></div>
+        <div class="kv"><div>Title</div><div>${p.Project_Title}</div></div>
+        <div class="kv"><div>Description</div><div>${escapeHtml(p.Project_Description)}</div></div>
+        <div class="kv"><div>Justification</div><div>${p.Justification.map(j=>`<span class="chip">${j}</span>`).join(' ')||'—'}</div></div>
+        <div class="kv"><div>Category</div><div>${p.Category}</div></div>
+        <div class="kv"><div>Requested FY</div><div>${p.Requested_FY}</div></div>
+        <div class="kv"><div>Phased</div><div>${p.Phased ? 'Yes' : 'No'}</div></div>
+        ${p.Phases && p.Phases.length ? `<div class="kv"><div>Phases</div><div>${renderPhaseTable(p.Phases)}</div></div>`:''}
+        <div class="kv"><div>Total Cost</div><div>${formatCurrency(p.Estimated_Total_Cost)}</div></div>
+        <div class="kv"><div>Funding Sources</div><div>${(p.Funding_Sources||[]).join(', ')||'—'}</div></div>
+        ${p.Grant_Details ? `<div class="kv"><div>Grant</div><div>${p.Grant_Details.Name||'–'} (${p.Grant_Details.Status})</div></div>`:''}
+        <div class="kv"><div>Asset Life</div><div>${p.Asset_Life_Years} years</div></div>
+        <div class="kv"><div>Attachments</div><div>${(p.Attachments||[]).map(a=>a.FileName).join(', ')||'—'}</div></div>
+        <div class="kv"><div>Submitter</div><div>${p.Submitter.Name} • ${p.Submitter.Role} • ${p.Submitter.Email}${p.Submitter.Phone?(' • '+p.Submitter.Phone):''}</div></div>
+      </div>
+    `;
+  }
+  function renderPhaseTable(phases){
+    const rows = phases.map(ph=>`
+      <tr><td>${escapeHtml(ph.Phase_Name||'')}</td><td>${ph.FY||''}</td><td style="text-align:right">${formatCurrency(ph.Estimated_Cost||0)}</td></tr>
+    `).join('');
+    return `
+      <div style="overflow:auto">
+      <table style="border-collapse:collapse;width:100%">
+        <thead>
+          <tr>
+            <th style="text-align:left;border-bottom:1px solid var(--border);padding:6px">Phase</th>
+            <th style="text-align:left;border-bottom:1px solid var(--border);padding:6px">FY</th>
+            <th style="text-align:right;border-bottom:1px solid var(--border);padding:6px">Cost</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      </div>
+    `;
+  }
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+
+  // Submit to FLOW_URL
+  byId('submit').addEventListener('click', async () => {
+    const payload = buildPayload();
+    byId('adminJson').textContent = JSON.stringify(payload, null, 2);
+    const out = byId('submitMsg');
+    out.classList.remove('hidden','err');
+    out.textContent = 'Submitting…';
+    try{
+      if(!FLOW_URL || FLOW_URL.includes('YOUR-FLOW-URL-HERE')) throw new Error('FLOW_URL not set.');
+      const res = await fetch(FLOW_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Submission failed. HTTP '+res.status);
+      out.textContent = 'Success! Your request has been submitted. Receipt ID: ' + payload.Client_Receipt_ID;
+      toast('Submitted successfully.');
+    }catch(e){
+      out.classList.add('err');
+      out.textContent = 'Could not submit: ' + (e.message||e);
+      toast('Submit error — see receipt panel.', true);
+    }
+  });
+
+  // Drawers
+  const receiptDrawer = byId('receiptDrawer');
+  const adminDrawer = byId('adminDrawer');
+  byId('closeReceipt').addEventListener('click', ()=>openDrawer('receiptDrawer', false));
+  byId('adminPanelToggle').addEventListener('click', ()=>{
+    const next = !adminDrawer.classList.contains('open');
+    openDrawer('adminDrawer', next);
+    byId('adminPanelToggle').setAttribute('aria-expanded', String(next));
+  });
+  byId('closeAdmin').addEventListener('click', ()=>openDrawer('adminDrawer', false));
+  function openDrawer(id, open){
+    const el = byId(id);
+    el.classList.toggle('open', !!open);
+    el.setAttribute('aria-hidden', String(!open));
+  }
+
+  // Toaster
+  let toastTimer = null;
+  function toast(text, isErr=false){
+    msg.classList.toggle('err', isErr);
+    msg.textContent = text;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{ msg.textContent = 'Tip: Fill the form, click “Review & Submit” to see a receipt.'; msg.classList.remove('err'); }, 5000);
+  }
+
+</script>
+</body>
+</html>
